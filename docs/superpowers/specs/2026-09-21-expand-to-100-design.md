@@ -38,7 +38,10 @@ Wave sizes: Wave 1 +26 → 50; Wave 2 +28 → 78; Wave 3 +22 → 100.
 ## 3. Wave 1 scope (+26 → 50; existing sections only)
 
 - 01_intro +2: `03_packages` (imports, exported names across files in one
-  dir), `04_tooling` (fix gofmt formatting + a real `go vet` finding).
+  dir), `04_tooling` (fix gofmt formatting + a behavior bug; README shows a
+  `go vet` printf-mismatch example and the learner runs vet to confirm the
+  exercise itself is clean — no live vet failure exists on `main`, since vet
+  must stay green).
 - 02_calculator +4: `12_floats` (truncation, `math` pkg), `13_runes`
   (byte vs rune, `len` vs rune count), `14_strings` (concat, `==`,
   immutability), `15_bitwise` (`<<`, `&`, `|`, `iota` flag sets).
