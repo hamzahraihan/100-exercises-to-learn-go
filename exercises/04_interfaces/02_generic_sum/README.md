@@ -6,9 +6,7 @@ a constraint lists the permitted types:
 ```go
 func Sum[T int64 | float64](vals []T) T {
     var total T
-    for _, v := range vals {
-        total += v
-    }
+    // ... range over vals and accumulate into total ...
     return total
 }
 ```
