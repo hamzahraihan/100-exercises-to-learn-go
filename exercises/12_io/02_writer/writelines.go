@@ -1,10 +1,17 @@
 // Package writelines teaches the io.Writer contract.
 package writelines
 
-import "io"
+import (
+	"fmt"
+	"io"
+)
 
 // WriteLines writes each line plus "\n".
-// TODO: range over lines writing s + "\n" (Fprintf helps).
 func WriteLines(w io.Writer, lines []string) error {
+	for _, s := range lines {
+		if _, err := fmt.Fprintf(w, "%s\n", s); err != nil {
+			return err
+		}
+	}
 	return nil
 }

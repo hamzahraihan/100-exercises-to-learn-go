@@ -1,10 +1,18 @@
 // Package wcount teaches bufio.Scanner.
 package wcount
 
-import "io"
+import (
+	"bufio"
+	"io"
+)
 
 // WordCount counts whitespace-separated words in r.
-// TODO: bufio.Scanner with ScanWords; check scanner.Err().
 func WordCount(r io.Reader) (int, error) {
-	return 0, nil
+	sc := bufio.NewScanner(r)
+	sc.Split(bufio.ScanWords)
+	n := 0
+	for sc.Scan() {
+		n++
+	}
+	return n, sc.Err()
 }

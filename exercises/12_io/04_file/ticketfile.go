@@ -4,9 +4,8 @@ package ticketfile
 import "os"
 
 // SaveTicket writes data to path.
-// TODO: os.WriteFile(path, data, 0o644).
 func SaveTicket(path string, data []byte) error {
-	return nil
+	return os.WriteFile(path, data, 0o644)
 }
 
 // LoadTicket reads path back (already correct).
