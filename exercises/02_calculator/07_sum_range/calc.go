@@ -1,7 +1,10 @@
 package calc
 
 // SumRange adds all slice elements.
-// TODO: for _, v := range vals { total += v }.
 func SumRange(vals []int) int {
-	return 0
+	total := 0
+	for _, v := range vals {
+		total += v
+	}
+	return total
 }

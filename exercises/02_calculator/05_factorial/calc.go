@@ -1,7 +1,10 @@
 package calc
 
 // Factorial returns n! with Factorial(0) == 1.
-// TODO: loop with for, multiplying result by 1..n.
 func Factorial(n int) int {
-	return 0
+	result := 1
+	for i := 1; i <= n; i++ {
+		result *= i
+	}
+	return result
 }
