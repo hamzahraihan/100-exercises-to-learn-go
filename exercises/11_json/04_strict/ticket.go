@@ -1,7 +1,10 @@
 // Package ticket teaches strict JSON decoding.
 package ticket
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strings"
+)
 
 // Ticket is a support request.
 type Ticket struct {
@@ -12,10 +15,11 @@ type Ticket struct {
 }
 
 // UnmarshalStrict decodes, rejecting unknown fields.
-// TODO: use json.Decoder with DisallowUnknownFields instead of Unmarshal.
 func UnmarshalStrict(data string) (Ticket, error) {
 	var t Ticket
-	if err := json.Unmarshal([]byte(data), &t); err != nil {
+	dec := json.NewDecoder(strings.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&t); err != nil {
 		return Ticket{}, err
 	}
 	return t, nil

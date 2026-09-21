@@ -1,6 +1,8 @@
 // Package ticket teaches JSON marshaling.
 package ticket
 
+import "encoding/json"
+
 // Ticket is a support request.
 type Ticket struct {
 	ID          int    `json:"id"`
@@ -10,7 +12,10 @@ type Ticket struct {
 }
 
 // MarshalTicket encodes t as JSON.
-// TODO: use json.Marshal and return string(out) (import encoding/json).
 func MarshalTicket(t Ticket) (string, error) {
-	return "", nil
+	out, err := json.Marshal(t)
+	if err != nil {
+		return "", err
+	}
+	return string(out), nil
 }

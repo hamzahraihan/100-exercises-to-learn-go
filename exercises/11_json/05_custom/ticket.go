@@ -1,7 +1,11 @@
 // Package ticket teaches custom JSON marshaling.
 package ticket
 
-import "errors"
+import (
+	"encoding/json"
+	"errors"
+	"strconv"
+)
 
 // Status is the ticket state.
 type Status int
@@ -19,13 +23,22 @@ type Ticket struct {
 }
 
 // MarshalJSON renders the status as "open"/"closed".
-// TODO: switch on s and return the quoted string (strconv.Quote helps).
 func (s Status) MarshalJSON() ([]byte, error) {
-	return nil, errors.New("TODO")
+	switch s {
+	case StatusOpen:
+		return []byte(strconv.Quote("open")), nil
+	case StatusClosed:
+		return []byte(strconv.Quote("closed")), nil
+	default:
+		return nil, errors.New("unknown status")
+	}
 }
 
 // MarshalTicket encodes t as JSON (status via MarshalJSON).
-// TODO: use json.Marshal (import encoding/json).
 func MarshalTicket(t Ticket) (string, error) {
-	return "", nil
+	out, err := json.Marshal(t)
+	if err != nil {
+		return "", err
+	}
+	return string(out), nil
 }

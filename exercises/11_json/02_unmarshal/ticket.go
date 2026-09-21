@@ -1,6 +1,11 @@
 // Package ticket teaches JSON unmarshaling with validation.
 package ticket
 
+import (
+	"encoding/json"
+	"errors"
+)
+
 // Ticket is a support request.
 type Ticket struct {
 	ID          int    `json:"id"`
@@ -10,7 +15,13 @@ type Ticket struct {
 }
 
 // UnmarshalTicket decodes JSON and validates: title must be non-empty.
-// TODO: json.Unmarshal into Ticket, then check Title (import encoding/json).
 func UnmarshalTicket(data string) (Ticket, error) {
-	return Ticket{}, nil
+	var t Ticket
+	if err := json.Unmarshal([]byte(data), &t); err != nil {
+		return Ticket{}, err
+	}
+	if t.Title == "" {
+		return Ticket{}, errors.New("title must be non-empty")
+	}
+	return t, nil
 }

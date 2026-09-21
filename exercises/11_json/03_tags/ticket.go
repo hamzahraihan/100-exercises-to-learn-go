@@ -1,6 +1,8 @@
 // Package ticket teaches JSON struct tags.
 package ticket
 
+import "encoding/json"
+
 // Ticket is a support request. InternalNote never leaves the process.
 type Ticket struct {
 	ID           int    `json:"id"`
@@ -11,8 +13,10 @@ type Ticket struct {
 }
 
 // MarshalTicket encodes t as JSON.
-// TODO: use json.Marshal so the struct tags take effect. The hardcoded
-// string below leaks InternalNote — real marshaling with json:"-" won't.
 func MarshalTicket(t Ticket) (string, error) {
-	return `{"id":1,"title":"t","internal_note":"leak"}`, nil
+	out, err := json.Marshal(t)
+	if err != nil {
+		return "", err
+	}
+	return string(out), nil
 }
