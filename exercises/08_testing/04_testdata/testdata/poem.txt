@@ -1,0 +1,4 @@
+Roses are red
+Violets are blue
+Go tests are green
+When fixtures help you
