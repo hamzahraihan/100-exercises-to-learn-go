@@ -2,8 +2,6 @@
 package status
 
 // Status is a ticket state.
-// TODO: define Status as int-based type with iota constants
-// StatusOpen, StatusInProgress, StatusClosed, and a Valid() method.
 type Status int
 
 const (
@@ -14,5 +12,10 @@ const (
 
 // Valid reports whether s is a known status.
 func (s Status) Valid() bool {
-	return false // TODO: switch on s
+	switch s {
+	case StatusOpen, StatusInProgress, StatusClosed:
+		return true
+	default:
+		return false
+	}
 }

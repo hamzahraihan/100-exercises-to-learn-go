@@ -1,7 +1,10 @@
 // Package ticket teaches sentinel + wrapped errors (errors.Is/As).
 package ticket
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // Status is a ticket state.
 type Status int
@@ -23,8 +26,17 @@ type Ticket struct {
 }
 
 // NewTicketWithStatus builds a Ticket or fails.
-// TODO: validate title/description like 03_ticket_v1 and wrap
-// ErrUnknownStatus with %w when status is unknown.
 func NewTicketWithStatus(title, description string, status Status) (Ticket, error) {
-	return Ticket{}, errors.New("TODO")
+	if title == "" {
+		return Ticket{}, errors.New("title must not be empty")
+	}
+	if len(description) < 10 {
+		return Ticket{}, errors.New("description must be at least 10 characters")
+	}
+	switch status {
+	case StatusOpen, StatusInProgress, StatusClosed:
+		return Ticket{Title: title, Description: description, Status: status}, nil
+	default:
+		return Ticket{}, fmt.Errorf("unknown status %d: %w", int(status), ErrUnknownStatus)
+	}
 }
