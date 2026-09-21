@@ -16,8 +16,8 @@ in the Rust course this section is adapted from.
 
 ## Task
 
-Add `Title` and `Description` string fields to `Ticket` in `ticket.go`, and
-make `NewTicket` populate and return the struct so the test passes.
+Populate `NewTicket` in `ticket.go` to return the struct with the given
+title and description so the test passes.
 
 ## Check
 
