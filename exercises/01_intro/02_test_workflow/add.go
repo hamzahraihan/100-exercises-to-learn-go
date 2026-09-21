@@ -2,7 +2,6 @@
 package workflow
 
 // Add returns a+b.
-// TODO: return a+b instead of 0.
 func Add(a, b int) int {
-	return 0
+	return a + b
 }
