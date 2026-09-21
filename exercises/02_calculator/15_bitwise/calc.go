@@ -10,7 +10,6 @@ const (
 )
 
 // Has reports whether flag is set in p.
-// TODO: return p&flag == flag.
 func Has(p, flag Perm) bool {
-	return false
+	return p&flag == flag
 }
