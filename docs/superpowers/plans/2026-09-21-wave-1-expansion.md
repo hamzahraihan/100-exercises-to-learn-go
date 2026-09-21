@@ -267,7 +267,7 @@ func TestToUpperFirst(t *testing.T) {
 		t.Fatalf("ToUpperFirst(%q) = %q, want %q", "hello", got, want)
 	}
 	if got := ToUpperFirst(""); got != "" {
-		t.Fatalf("ToUpperFirst(%q) = %q, want %q", "", got, want)
+		t.Fatalf("ToUpperFirst(%q) = %q, want %q", "", got, "")
 	}
 }
 ```
