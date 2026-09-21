@@ -1,8 +1,13 @@
 // Package concat teaches strings.Builder.
 package concat
 
+import "strings"
+
 // ConcatN repeats s n times efficiently.
-// TODO: loop n times writing into a strings.Builder (import strings).
 func ConcatN(s string, n int) string {
-	return ""
+	var b strings.Builder
+	for i := 0; i < n; i++ {
+		b.WriteString(s)
+	}
+	return b.String()
 }

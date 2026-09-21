@@ -1,8 +1,17 @@
 // Package parse teaches string/number conversion.
 package parse
 
+import "strconv"
+
 // SumStrings parses a and b and returns their sum.
-// TODO: use strconv.Atoi on each (import strconv); return wrapped errors as-is.
 func SumStrings(a, b string) (int, error) {
-	return 0, nil
+	ai, err := strconv.Atoi(a)
+	if err != nil {
+		return 0, err
+	}
+	bi, err := strconv.Atoi(b)
+	if err != nil {
+		return 0, err
+	}
+	return ai + bi, nil
 }
