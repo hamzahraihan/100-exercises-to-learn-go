@@ -745,24 +745,28 @@ func TestNewTicket(t *testing.T) {
 }
 ```
 
-Stub:
+Stub (`ticket.go` — human ruling 2026-09-21: fields present, constructor broken,
+so vet stays green and the test fails on assertion rather than on build):
 
 ```go
 // Package ticket models a support ticket.
 package ticket
 
-// Ticket is a support request.
-// TODO: add Title and Description string fields.
-type Ticket struct{}
+// Ticket is a support request with a title and description.
+// TODO: populate and return the struct in NewTicket.
+type Ticket struct {
+	Title       string
+	Description string
+}
 
 // NewTicket builds a Ticket.
-// TODO: populate and return the struct.
+// TODO: return Ticket{Title: title, Description: description} instead of Ticket{}.
 func NewTicket(title, description string) Ticket {
 	return Ticket{}
 }
 ```
 
-README: structs, exported fields (capitalized = visible outside package — replaces Rust visibility/encapsulation lesson).
+README: structs, struct literals, exported fields (capitalized = visible outside package — replaces Rust visibility/encapsulation lesson); Task wording: populate `NewTicket`.
 
 - [ ] **Step 2: `02_validation` test + stub**
 
