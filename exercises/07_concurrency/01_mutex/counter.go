@@ -4,7 +4,7 @@ package counter
 import "sync"
 
 // Counter is a goroutine-safe int.
-// TODO: add a sync.Mutex field and guard n.
+// TODO: guard n with mu in Add and Value (Lock/Unlock).
 type Counter struct {
 	mu sync.Mutex
 	n  int
