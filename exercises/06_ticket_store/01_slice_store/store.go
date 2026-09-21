@@ -14,13 +14,19 @@ type Store struct {
 }
 
 // Add appends a ticket and returns its id.
-// TODO: use append, assign s.nextID then increment it.
 func (s *Store) Add(title string) int {
-	return 0
+	id := s.nextID
+	s.tickets = append(s.tickets, Ticket{ID: id, Title: title})
+	s.nextID++
+	return id
 }
 
 // Get finds a ticket by id.
-// TODO: range over s.tickets.
 func (s *Store) Get(id int) (Ticket, bool) {
+	for _, t := range s.tickets {
+		if t.ID == id {
+			return t, true
+		}
+	}
 	return Ticket{}, false
 }

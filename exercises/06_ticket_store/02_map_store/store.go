@@ -14,13 +14,18 @@ type Store struct {
 }
 
 // Add inserts a ticket and returns its id.
-// TODO: lazily make(s.tickets) when nil, then store and bump nextID.
 func (s *Store) Add(title string) int {
-	return 0
+	if s.tickets == nil {
+		s.tickets = make(map[int]Ticket)
+	}
+	id := s.nextID
+	s.tickets[id] = Ticket{ID: id, Title: title}
+	s.nextID++
+	return id
 }
 
 // Get finds a ticket by id using the comma-ok idiom.
-// TODO: look up s.tickets[id].
 func (s *Store) Get(id int) (Ticket, bool) {
-	return Ticket{}, false
+	t, ok := s.tickets[id]
+	return t, ok
 }
