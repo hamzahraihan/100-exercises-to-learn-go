@@ -23,14 +23,13 @@ type Bucket struct {
 }
 
 // Write stores s.
-// TODO: assign b.data = s.
 func (b *Bucket) Write(s string) {
+	b.data = s
 }
 
 // Read returns stored data.
-// TODO: return b.data.
 func (b *Bucket) Read() string {
-	return ""
+	return b.data
 }
 
 var _ ReadWriter = (*Bucket)(nil)

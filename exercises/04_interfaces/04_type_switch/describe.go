@@ -1,8 +1,16 @@
 // Package kind teaches type switches.
 package kind
 
+import "fmt"
+
 // Describe names supported dynamic types.
-// TODO: switch v := v.(type) for int and string cases.
 func Describe(v any) string {
-	return "unknown"
+	switch v := v.(type) {
+	case int:
+		return fmt.Sprintf("int: %d", v)
+	case string:
+		return fmt.Sprintf("string: %s", v)
+	default:
+		return "unknown"
+	}
 }

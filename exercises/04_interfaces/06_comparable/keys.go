@@ -2,7 +2,10 @@
 package keys
 
 // Keys returns all map keys. K must be comparable (usable as a map key).
-// TODO: range over m and append each k.
 func Keys[K comparable, V any](m map[K]V) []K {
-	return nil
+	ks := make([]K, 0, len(m))
+	for k := range m {
+		ks = append(ks, k)
+	}
+	return ks
 }
