@@ -919,6 +919,10 @@ func Sum[T int64 | float64](vals []T) T {
 }
 ```
 
+README (human ruling 2026-09-21: elide the loop — show signature + `// ...`
+placeholder only, never the full accumulation loop, so the lesson doesn't
+hand out the answer).
+
 - [ ] **Step 3: Verify and commit**
 
 Run: `go vet ./... && go build ./...`
