@@ -15,7 +15,12 @@ func NewTicket(title, description string) Ticket {
 }
 
 // Validate checks the ticket.
-// TODO: return an error when Title is empty or Description is shorter than 10 chars.
 func (t Ticket) Validate() error {
-	return errors.New("TODO")
+	if t.Title == "" {
+		return errors.New("title must not be empty")
+	}
+	if len(t.Description) < 10 {
+		return errors.New("description must be at least 10 characters")
+	}
+	return nil
 }
