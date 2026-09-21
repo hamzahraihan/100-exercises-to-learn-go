@@ -9,6 +9,6 @@ type Ticket struct {
 
 // SetTitle changes the title. A pointer receiver mutates the caller's copy;
 // a value receiver would mutate a throwaway copy.
-// TODO: assign t.Title = title.
 func (t *Ticket) SetTitle(title string) {
+	t.Title = title
 }

@@ -7,7 +7,6 @@ type Meta struct {
 }
 
 // Ticket embeds Meta: ID is promoted, so tk.ID works directly.
-// TODO: return Ticket{Meta: Meta{ID: id}, Title: title}.
 type Ticket struct {
 	Meta
 	Title string
@@ -15,5 +14,5 @@ type Ticket struct {
 
 // NewTicketWithID builds a Ticket with an id.
 func NewTicketWithID(id int, title string) Ticket {
-	return Ticket{}
+	return Ticket{Meta: Meta{ID: id}, Title: title}
 }

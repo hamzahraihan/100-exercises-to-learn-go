@@ -8,7 +8,6 @@ type Ticket struct {
 }
 
 // IsZero reports whether t is the zero value.
-// TODO: return t.Title == "" && t.Description == "".
 func (t Ticket) IsZero() bool {
-	return false
+	return t.Title == "" && t.Description == ""
 }

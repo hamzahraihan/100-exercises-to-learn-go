@@ -11,7 +11,12 @@ type Ticket struct {
 
 // NewTicket builds a validated Ticket: non-empty title, description of at
 // least 10 characters.
-// TODO: return Ticket{...}, nil when valid, else a descriptive error.
 func NewTicket(title, description string) (Ticket, error) {
-	return Ticket{}, errors.New("TODO")
+	if title == "" {
+		return Ticket{}, errors.New("title must not be empty")
+	}
+	if len(description) < 10 {
+		return Ticket{}, errors.New("description must be at least 10 characters")
+	}
+	return Ticket{Title: title, Description: description}, nil
 }

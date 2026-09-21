@@ -8,7 +8,7 @@ type Ticket struct {
 }
 
 // Renamed returns a copy of t with a new title, leaving t untouched.
-// TODO: set t.Title and return t.
 func (t Ticket) Renamed(newTitle string) Ticket {
-	return Ticket{}
+	t.Title = newTitle
+	return t
 }
