@@ -1,6 +1,11 @@
 // Package store teaches sorting and filtering slices.
 package store
 
+import (
+	"cmp"
+	"slices"
+)
+
 // Ticket is a stored item.
 type Ticket struct {
 	ID     int
@@ -9,13 +14,19 @@ type Ticket struct {
 }
 
 // SortedByID returns tickets ordered by ID ascending.
-// TODO: sort a copy (hint: slices.SortFunc or sort.Slice).
 func SortedByID(ts []Ticket) []Ticket {
-	return nil
+	out := slices.Clone(ts)
+	slices.SortFunc(out, func(a, b Ticket) int { return cmp.Compare(a.ID, b.ID) })
+	return out
 }
 
 // OpenOnly keeps tickets that are not closed.
-// TODO: append matches into a fresh slice.
 func OpenOnly(ts []Ticket) []Ticket {
-	return nil
+	var out []Ticket
+	for _, t := range ts {
+		if !t.Closed {
+			out = append(out, t)
+		}
+	}
+	return out
 }
