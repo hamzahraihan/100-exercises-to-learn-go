@@ -11,7 +11,13 @@ var (
 )
 
 // ValidateAll checks title and description, reporting every problem.
-// TODO: collect per-field errors and combine with errors.Join (nil when valid).
 func ValidateAll(title, desc string) error {
-	return errors.New("TODO")
+	var errs []error
+	if title == "" {
+		errs = append(errs, ErrBadTitle)
+	}
+	if len(desc) < 10 {
+		errs = append(errs, ErrBadDesc)
+	}
+	return errors.Join(errs...)
 }

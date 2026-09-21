@@ -1,13 +1,20 @@
 // Package ticket teaches wrapping errors with %w.
 package ticket
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // ErrNotFound is returned when an id is absent.
 var ErrNotFound = errors.New("not found")
 
 // FindTicket returns the index of id, or a wrapped ErrNotFound.
-// TODO: loop; on miss return -1 and fmt.Errorf("ticket %d: %w", id, ErrNotFound).
 func FindTicket(ids []int, id int) (int, error) {
-	return -1, errors.New("TODO")
+	for i, v := range ids {
+		if v == id {
+			return i, nil
+		}
+	}
+	return -1, fmt.Errorf("ticket %d: %w", id, ErrNotFound)
 }
