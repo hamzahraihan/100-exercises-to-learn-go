@@ -2,7 +2,15 @@
 package grade
 
 // Grade maps a score to A/B/C/F.
-// TODO: if/else chain on 90/80/70 cutoffs.
 func Grade(score int) string {
-	return ""
+	if score >= 90 {
+		return "A"
+	}
+	if score >= 80 {
+		return "B"
+	}
+	if score >= 70 {
+		return "C"
+	}
+	return "F"
 }

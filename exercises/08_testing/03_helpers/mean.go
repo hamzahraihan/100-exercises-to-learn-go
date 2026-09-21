@@ -2,7 +2,13 @@
 package mean
 
 // Mean averages xs (0 for empty).
-// TODO: sum and divide; guard len(xs) == 0.
 func Mean(xs []float64) float64 {
-	return 0
+	if len(xs) == 0 {
+		return 0
+	}
+	var sum float64
+	for _, x := range xs {
+		sum += x
+	}
+	return sum / float64(len(xs))
 }

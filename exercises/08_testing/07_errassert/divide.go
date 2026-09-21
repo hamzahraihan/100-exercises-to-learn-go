@@ -7,7 +7,9 @@ import "errors"
 var ErrZeroDivisor = errors.New("division by zero")
 
 // Divide returns a/b, or ErrZeroDivisor when b is 0.
-// TODO: branch on b == 0.
 func Divide(a, b int) (int, error) {
-	return 0, nil
+	if b == 0 {
+		return 0, ErrZeroDivisor
+	}
+	return a / b, nil
 }

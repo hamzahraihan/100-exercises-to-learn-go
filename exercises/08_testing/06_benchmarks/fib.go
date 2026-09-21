@@ -2,7 +2,10 @@
 package fib
 
 // Fib returns the n-th Fibonacci number (Fib(0) == 0, Fib(1) == 1).
-// TODO: loop accumulating a, b (or recurse — slower, still correct).
 func Fib(n int) int {
-	return 0
+	a, b := 0, 1
+	for i := 0; i < n; i++ {
+		a, b = b, a+b
+	}
+	return a
 }
