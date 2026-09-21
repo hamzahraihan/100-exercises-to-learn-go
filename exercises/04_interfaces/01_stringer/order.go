@@ -1,6 +1,8 @@
 // Package order teaches implicit interfaces via fmt.Stringer.
 package order
 
+import "fmt"
+
 // Order is a purchase.
 type Order struct {
 	ID   int
@@ -9,7 +11,6 @@ type Order struct {
 
 // String implements fmt.Stringer. Go interfaces are implicit:
 // no "implements" keyword (unlike Rust trait impls).
-// TODO: return a string containing the id and item, e.g. fmt.Sprintf("Order %d: %s", o.ID, o.Item).
 func (o Order) String() string {
-	return ""
+	return fmt.Sprintf("Order %d: %s", o.ID, o.Item)
 }
