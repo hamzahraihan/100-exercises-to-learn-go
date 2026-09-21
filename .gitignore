@@ -1,0 +1,7 @@
+# Binaries
+*.exe
+*.out
+/bin/
+
+# Go build cache / test cache are outside the repo by default; keep this minimal
+.DS_Store
