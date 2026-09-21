@@ -9,7 +9,6 @@ import "time"
 var Now = time.Now
 
 // IsExpired reports whether expiry is in the past per Now().
-// TODO: return Now().After(expiry).
 func IsExpired(expiry time.Time) bool {
-	return false
+	return Now().After(expiry)
 }
