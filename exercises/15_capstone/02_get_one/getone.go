@@ -2,7 +2,9 @@
 package getone
 
 import (
+	"encoding/json"
 	"net/http"
+	"strconv"
 	"sync"
 )
 
@@ -93,8 +95,17 @@ func (s *Server) Handler() http.Handler { return s.mux }
 
 // handleGet answers 200 with the ticket as JSON, 400 for a malformed id,
 // 404 when missing.
-// TODO: r.PathValue("id") + strconv.Atoi (400 on error), store.Get
-// (404 when missing), set Content-Type, json.Encode (import encoding/json, strconv).
 func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "TODO", http.StatusNotImplemented)
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.Error(w, "bad id", http.StatusBadRequest)
+		return
+	}
+	t, ok := s.store.Get(id)
+	if !ok {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(t)
 }

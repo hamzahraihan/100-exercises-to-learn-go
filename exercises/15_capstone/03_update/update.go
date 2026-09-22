@@ -2,7 +2,9 @@
 package update
 
 import (
+	"encoding/json"
 	"net/http"
+	"strconv"
 	"sync"
 )
 
@@ -93,9 +95,30 @@ func (s *Server) Handler() http.Handler { return s.mux }
 
 // handleUpdate replaces the ticket: 200 with the stored ticket as JSON,
 // 400 for a malformed id or empty title, 404 when missing.
-// TODO: r.PathValue("id") + strconv.Atoi (400 on error), json.Decode the
-// body, reject an empty title with 400, store.Update (404 when missing),
-// set Content-Type, json.Encode (import encoding/json, strconv).
 func (s *Server) handleUpdate(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "TODO", http.StatusNotImplemented)
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.Error(w, "bad id", http.StatusBadRequest)
+		return
+	}
+	var t Ticket
+	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
+		http.Error(w, "bad body", http.StatusBadRequest)
+		return
+	}
+	if _, ok := s.store.Get(id); !ok {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	if t.Title == "" {
+		http.Error(w, "title required", http.StatusBadRequest)
+		return
+	}
+	updated, ok := s.store.Update(id, t)
+	if !ok {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(updated)
 }

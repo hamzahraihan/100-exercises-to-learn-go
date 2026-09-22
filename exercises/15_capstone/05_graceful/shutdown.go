@@ -2,13 +2,14 @@
 package shutdown
 
 import (
-	"errors"
+	"context"
 	"net/http"
 	"time"
 )
 
 // ShutdownGracefully stops srv, waiting up to timeout.
-// TODO: context.WithTimeout + srv.Shutdown (import context in the fix).
 func ShutdownGracefully(srv *http.Server, timeout time.Duration) error {
-	return errors.New("TODO")
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	return srv.Shutdown(ctx)
 }

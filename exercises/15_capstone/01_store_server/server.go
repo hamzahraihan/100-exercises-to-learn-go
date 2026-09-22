@@ -2,6 +2,7 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 	"sync"
 )
@@ -94,14 +95,23 @@ func (s *Server) Handler() http.Handler { return s.mux }
 
 // handleCreate decodes a ticket, validates it, and answers 201 with the
 // stored ticket as JSON (400 for bad input).
-// TODO: json.Decode the body, reject an empty title with 400,
-// store.Add, set Content-Type, WriteHeader 201, json.Encode (import encoding/json).
 func (s *Server) handleCreate(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "TODO", http.StatusNotImplemented)
+	var t Ticket
+	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
+		http.Error(w, "bad body", http.StatusBadRequest)
+		return
+	}
+	if t.Title == "" {
+		http.Error(w, "title required", http.StatusBadRequest)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(s.store.Add(t))
 }
 
 // handleList answers 200 with every stored ticket as JSON.
-// TODO: set Content-Type and json.Encode s.store.List (import encoding/json).
 func (s *Server) handleList(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "TODO", http.StatusNotImplemented)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(s.store.List())
 }

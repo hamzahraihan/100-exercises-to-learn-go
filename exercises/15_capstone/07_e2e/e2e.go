@@ -85,10 +85,14 @@ type Server struct {
 }
 
 // NewServer builds the server. Handlers and store already work.
-// TODO: register POST+GET /tickets and GET+PUT+DELETE /tickets/{id} on mux.
 func NewServer() *Server {
-	mux := http.NewServeMux()
-	return &Server{store: &Store{}, mux: mux}
+	s := &Server{store: &Store{}, mux: http.NewServeMux()}
+	s.mux.HandleFunc("POST /tickets", s.handleCreate)
+	s.mux.HandleFunc("GET /tickets", s.handleList)
+	s.mux.HandleFunc("GET /tickets/{id}", s.handleGet)
+	s.mux.HandleFunc("PUT /tickets/{id}", s.handleUpdate)
+	s.mux.HandleFunc("DELETE /tickets/{id}", s.handleDelete)
+	return s
 }
 
 // Handler exposes the routes.

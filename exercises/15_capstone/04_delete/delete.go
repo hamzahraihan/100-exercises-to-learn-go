@@ -113,9 +113,15 @@ func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
 
 // handleDelete removes the ticket: 204 on success, 400 for a malformed id,
 // 404 when missing. A 204 carries no body — write the header and stop.
-// TODO: r.PathValue("id") + strconv.Atoi (400 on error), store.Delete
-// (404 when missing), WriteHeader(http.StatusNoContent) (import strconv —
-// encoding/json already imported for handleGet).
 func (s *Server) handleDelete(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "TODO", http.StatusNotImplemented)
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.Error(w, "bad id", http.StatusBadRequest)
+		return
+	}
+	if !s.store.Delete(id) {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }
