@@ -1,0 +1,22 @@
+baseURL = "https://hamzahraihan.github.io/100-exercises-to-learn-go/"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+title = "100 Exercises to Learn Go"
+
+[languages.en]
+  locale = "en"
+  weight = 1
+
+[module]
+  [[module.imports]]
+    path = "github.com/McShelby/hugo-theme-relearn"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[markup.highlight]
+  style = "monokai"
+  lineNos = false
+
+[params]
+  description = "Learn Go by solving 100 exercises. Free for non-commercial use. Inspired by Mainmatter's 100 Exercises to Learn Rust (CC BY-NC 4.0) — all Go prose here is original."
