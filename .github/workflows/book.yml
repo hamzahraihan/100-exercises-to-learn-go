@@ -1,0 +1,53 @@
+name: book
+on:
+  push:
+    branches: [main]
+    paths: ["book/**", "exercises/**", "tools/bookgen/**", ".github/workflows/book.yml"]
+  pull_request:
+    paths: ["book/**", "exercises/**", "tools/bookgen/**", ".github/workflows/book.yml"]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - run: go vet ./tools/...
+      - run: go test ./tools/bookgen/ -v
+      - run: go run ./tools/bookgen
+      - name: No drift in generated content
+        run: git diff --exit-code -- book/content
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: latest
+          extended: true
+      - run: hugo --minify --source book
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: latest
+          extended: true
+      - run: go run ./tools/bookgen && hugo --minify --source book
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: book/public
+      - id: deployment
+        uses: actions/deploy-pages@v4
