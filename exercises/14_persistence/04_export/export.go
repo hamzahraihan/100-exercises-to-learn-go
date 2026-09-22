@@ -1,6 +1,11 @@
 // Package exporttk teaches JSON backup export.
 package exporttk
 
+import (
+	"encoding/json"
+	"os"
+)
+
 // Ticket is a stored support request.
 type Ticket struct {
 	ID    int    `json:"id"`
@@ -8,7 +13,10 @@ type Ticket struct {
 }
 
 // Export writes ts as a JSON array to path.
-// TODO: json.Marshal + os.WriteFile(path, out, 0o644) (import encoding/json, os).
 func Export(path string, ts []Ticket) error {
-	return nil
+	out, err := json.Marshal(ts)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(path, out, 0o644)
 }
