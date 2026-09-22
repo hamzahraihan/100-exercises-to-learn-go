@@ -9,10 +9,13 @@ title = "100 Exercises to Learn Go"
 
 [module]
   [[module.imports]]
-    path = "github.com/McShelby/hugo-theme-relearn"
+    path = "github.com/alex-shpak/hugo-book"
 
 [markup.goldmark.renderer]
   unsafe = true
+
+[markup.tableOfContents]
+  startLevel = 1
 
 [markup.highlight]
   style = "monokai"
@@ -20,3 +23,7 @@ title = "100 Exercises to Learn Go"
 
 [params]
   description = "Learn Go by solving 100 exercises. Free for non-commercial use. Inspired by Mainmatter's 100 Exercises to Learn Rust (CC BY-NC 4.0) — all Go prose here is original."
+  BookTheme = "light"
+  BookToC = true
+  BookSearch = true
+  BookSection = "*"
