@@ -1,0 +1,27 @@
+# Middleware
+
+Middleware is a function with the shape `func(http.Handler) http.Handler`:
+it takes the next handler, returns a new one that does some work (logging,
+headers, auth) and then calls `next.ServeHTTP(w, r)`. Handlers chain by
+wrapping — `WithHeader(logging(mux))` runs the header step first, the
+logging step second, and the mux last — so each layer must call `next` or
+the chain stops there.
+
+## Task
+
+Fill in `WithHeader` in `mw.go`:
+
+```go
+func WithHeader(next http.Handler) http.Handler {
+	// ...
+}
+```
+
+Set the `X-Course: go` response header before delegating to `next`. The stub
+delegates without setting it, so the test fails on the header.
+
+## Check
+
+```bash
+go test ./exercises/13_http/07_middleware/ -v
+```
