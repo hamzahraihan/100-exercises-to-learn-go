@@ -5,3 +5,8 @@
 
 # Go build cache / test cache are outside the repo by default; keep this minimal
 .DS_Store
+
+# Generated Hugo pages — single source is exercises/*/README.md.
+# Regenerate with `go run ./tools/bookgen` (CI does this before the Hugo build).
+book/content/*/*.md
+!book/content/*/_index.md
