@@ -36,3 +36,14 @@ go build ./...
 ## Solutions
 
 Solutions live on the `solutions` branch, same paths as `main`.
+
+## Book
+
+The Hugo site under `book/` renders directly from the exercise lessons —
+`exercises/*/README.md` is the single source. Before previewing or building
+the site locally, regenerate the pages:
+
+```bash
+go run ./tools/bookgen
+hugo --source book
+```
