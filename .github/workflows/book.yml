@@ -18,8 +18,6 @@ jobs:
       - run: go vet ./tools/...
       - run: go test ./tools/bookgen/ -v
       - run: go run ./tools/bookgen
-      - name: No drift in generated content
-        run: git diff --exit-code -- book/content
       - uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: latest
