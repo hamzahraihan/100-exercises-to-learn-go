@@ -1,20 +1,44 @@
 # Any
 
-`any` is an alias for `interface{}`: the empty interface that every type
-implements. A parameter of type `any` accepts a value of any type, which
-makes it handy for generic formatting, logging, or test helpers:
+Every function so far named the exact type it accepts. `SprintAny` refuses
+to — and that's the whole exercise. One parameter, every possible argument.
+
+## The box that holds anything
 
 ```go
 func SprintAny(v any) string {
-    // ... format v with the fmt package ...
+    return fmt.Sprint(v)
 }
 ```
 
-Use formatting verbs such as `%v` (or helpers like `fmt.Sprint`) to turn
-an unknown value into a string. Reach for `any` when you truly accept
-anything; prefer a concrete type or a narrower interface when you know
-more about what callers will pass, since `any` gives up compile-time
-checking.
+**`any`** is the alias for the empty interface, `interface{}`: the
+interface with no methods, which every type therefore satisfies. A
+parameter of type `any` accepts an `int`, a `string`, your `Ticket`, a
+`nil` — literally anything, with no conversion and no complaint.
+
+Inside, the value keeps its original identity. `any` doesn't erase the
+type; it *hides* it behind a static type that promises nothing. `fmt.Sprint`
+is built for exactly this: it inspects what arrived at runtime and formats
+accordingly, which is why the same call renders `42` as `"42"` and `"hi"`
+as `"hi"`.
+
+## Freedom with the receipt removed
+
+That freedom costs compile-time checking. With a concrete parameter, passing
+the wrong type fails the build. With `any`, *everything* compiles and
+mistakes surface at runtime — or worse, as silently odd output. The rule:
+
+- Reach for `any` when you truly accept anything: formatting, logging,
+  test helpers, serialization boundaries.
+- Prefer a concrete type or a narrower interface the moment you know more.
+  If callers pass temperatures, say `float64`. If they pass printable
+  things, say `fmt.Stringer`. Each precise signature is a mistake the
+  compiler catches for free.
+
+The test pins both representatives — number and string — through the same
+door. Your implementation doesn't branch (that's the *next* exercise's
+job); it delegates to `fmt` and lets the runtime sort it out. One line,
+total generality, eyes open about the price.
 
 ## Task
 
