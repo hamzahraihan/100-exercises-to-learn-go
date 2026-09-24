@@ -8,7 +8,7 @@ type Order struct {
 }
 
 // String implements fmt.Stringer. Go interfaces are implicit:
-// no "implements" keyword (unlike Rust trait impls).
+// defining the method is enough, no "implements" keyword.
 // TODO: return a string containing the id and item, e.g. fmt.Sprintf("Order %d: %s", o.ID, o.Item).
 func (o Order) String() string {
 	return ""
