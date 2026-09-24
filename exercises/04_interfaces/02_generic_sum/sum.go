@@ -1,4 +1,4 @@
-// Package gsum teaches generics (the Go answer to Rust trait bounds).
+// Package gsum teaches generics with type constraints.
 package gsum
 
 // Sum adds all values. The constraint permits int64 and float64.
