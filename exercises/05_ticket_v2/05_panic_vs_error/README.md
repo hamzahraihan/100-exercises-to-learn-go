@@ -1,21 +1,66 @@
 # Panic vs Error
 
-Go convention reserves `panic` for truly unrecoverable bugs; ordinary
-failures are returned as `error` values. A `Must` helper sits at the
-boundary: it calls code that may panic and converts the panic into a
-fallback value using `defer` plus `recover`:
+The panics lesson drew the line: panic for bugs, return errors for
+conditions. This exercise lives exactly on that line — a function that
+*receives* a panic from below and hands an *error-shaped answer* upward,
+so its own callers never know an explosion happened inside.
+
+## The boundary pattern
 
 ```go
+func parseOrPanic(s string) int {
+    if s == "" {
+        panic("empty input")
+    }
+    return len(s)
+}
+```
+
+`parseOrPanic` panics on empty input — by its own contract, callers must
+not pass `""`. But `MustParse` promises something friendlier: the length,
+or `-1` for empty, with *no panic escaping*. Somebody has to stand between
+those two contracts and translate. That somebody is `defer` plus `recover`:
+
+```go
+// Syntax: named return + deferred guard
 func MustParse(s string) (n int) {
-    // ... defer a func that recovers and sets n to a fallback ...
+    defer func() {
+        if recover() != nil {
+            n = -1
+        }
+    }()
     return parseOrPanic(s)
 }
 ```
 
-The deferred function runs even while a panic unwinds, `recover` stops the
-unwinding, and the named return lets the deferred function choose the value
-the caller sees — the Go equivalent of catching an unrecoverable failure at
-a safe boundary in the Rust course this section is adapted from.
+Three mechanisms interlock. The **named return** `(n int)` gives the
+deferred function a variable it can assign — plain `return len(s)` results
+couldn't be touched after the fact. The **deferred closure** runs during
+unwinding, while the panic is still in flight. And **`recover()`** stops
+the unwinding and reports what it caught; called without a panic in flight
+it returns `nil`, so the `if` distinguishes "explosion happened" from
+"normal return."
+
+Trace both paths. `"hi"`: `parseOrPanic` returns 2 into `n`, deferred func
+runs, `recover()` is `nil`, `n` stays 2. `""`: panic launches, unwinding
+reaches the deferred func, `recover()` catches `"empty input"`, `n` becomes
+-1, the function returns normally. The test's second assertion —
+`MustParse("") == -1`, "no panic must escape" — executes the explosion path
+and survives it.
+
+## When Must is right (and when it isn't)
+
+The standard library blesses this shape: `regexp.MustCompile`,
+`template.Must` — same name prefix, same promise of "panics converted at a
+safe boundary." Reach for it at initialization (parse the config once, fail
+fast if it's broken), in tests, and in adapters over panicking code you
+don't own.
+
+Don't reach for it to *hide* bugs in your own logic. A `Must` wrapper
+around code that panics from programmer error converts a loud, local crash
+into a quiet, distant `-1` — exactly the silencing panics exist to prevent.
+Translate panics at boundaries you chose deliberately: input edges, library
+seams, startup. Everywhere else, let the crash speak.
 
 ## Task
 
