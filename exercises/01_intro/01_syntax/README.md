@@ -1,13 +1,12 @@
 # Syntax
 
-Don't jump ahead!
-Complete the exercise for the previous section before you start this one.
-It's located in `exercises/01_intro/00_welcome`.
+Welcome back — and no skipping! The warm-up in `exercises/01_intro/00_welcome`
+should be green before you read on.
 
-The previous task barely qualified as an exercise, but it already exposed you
-to quite a bit of Go **syntax**. We won't cover every single detail used
-there. Instead, we'll cover *just enough* to keep going without getting stuck.
-One step at a time!
+It hardly felt like an exercise, did it? Yet those few lines smuggled in
+most of Go's **syntax**: packages, functions, parameters, return types.
+Rather than dissecting every detail now, we'll unpack *just enough* to keep
+you moving. The rest can wait until you actually need it.
 
 ## Comments
 
@@ -18,38 +17,41 @@ You can use `//` for single-line comments:
 // Followed by another single-line comment
 ```
 
+Comments are for humans; the compiler ignores them. You'll see them marking
+the exact line you need to change in each exercise's stub.
+
 ## Packages
 
-Every Go file starts with a `package` clause. All `.go` files in one folder
-must declare the same package name:
+Every Go file opens with a `package` clause:
 
 ```go
 package syntax
 ```
 
-The package name is what other code uses to refer to your code. Test files
-in the same folder share the package name so they can call your functions
-directly.
+Why must every file say it? Because Go compiles *packages*, not files. All
+`.go` files in one folder must declare the same package name — disagree and
+the build fails. Test files live in the same folder and share the name, which
+is how they can call your functions directly.
 
 ## Functions
 
-Functions are defined with the `func` keyword, followed by the function's
-name, its input parameters, and its return type. The body is enclosed in
-curly braces `{}`:
+Functions are declared with the `func` keyword:
 
 ```go
-// `func` <name> ( <input params> ) <return_type> { <body> }
+// Syntax: func <name>(<parameters>) <return type> { <body> }
 func Compute(a, b int) int {
     return a + b
 }
 ```
 
-`Compute` takes two inputs and returns one output, all of type `int`.
+`Compute` takes two inputs and produces one output, all of type `int`. The
+name starts with a capital letter, which — as you'll learn in the ticket
+section — makes it usable from other packages.
 
 ### Input parameters
 
-Each parameter is declared with its name followed by its type. Parameters
-with the same type can share it:
+Each parameter is a name plus a type. Adjacent parameters sharing a type can
+share the annotation:
 
 ```go
 // `a` and `b` are both `int`
@@ -58,10 +60,9 @@ func Compute(a, b int) int {
 }
 ```
 
-If the types differ, each parameter needs its own type:
+What if the types differ? Then each parameter carries its own:
 
 ```go
-//           👇            👇
 func Greet(name string, times int) string {
     if times <= 1 {
         return "Hello, " + name
@@ -70,12 +71,14 @@ func Greet(name string, times int) string {
 }
 ```
 
-Multiple parameters are separated with commas.
+Parameters are separated with commas. There is no limit, but if you find
+yourself threading five strings through every call, that's a struct begging
+to be born — you'll get there in the ticket section.
 
 ### Return type
 
-The return type comes after the parameter list. If the function returns
-nothing, the return type is omitted entirely:
+The return type sits after the parameter list. What if a function returns
+nothing at all? Then there is no annotation to write:
 
 ```go
 func Log(msg string) {
@@ -83,9 +86,9 @@ func Log(msg string) {
 }
 ```
 
-Functions can return more than one value by wrapping the results in
-parentheses. You will see this constantly — it is how Go functions report
-errors alongside their results:
+Go goes one further than most languages: a function can return *several*
+values at once by wrapping them in parentheses. You'll meet this shape
+constantly — it's how Go reports errors alongside results:
 
 ```go
 func DivMod(a, b int) (int, int) {
@@ -93,7 +96,8 @@ func DivMod(a, b int) (int, int) {
 }
 ```
 
-Results can also be named, which pre-declares them as variables:
+Results can also be named, which pre-declares them as variables inside the
+body:
 
 ```go
 func DivModNamed(a, b int) (quot, rem int) {
@@ -105,39 +109,36 @@ func DivModNamed(a, b int) (quot, rem int) {
 
 ### Returning values
 
-Go returns values explicitly with the `return` keyword. Every code path in
-a function with a return type must hit a `return` with a value of that
-type — the compiler enforces this:
+Go returns values explicitly with `return` — there is no implicit "last
+expression counts" rule. And the compiler holds you to the signature: every
+path through a function that promises an `int` must `return` an `int`:
 
 ```go
 func Compute(a, b int) int {
-    // Notice: the value follows `return` on the same line.
+    // The value follows `return` on the same line.
     return a + b
 }
 ```
 
+Forget a path and the program doesn't build. Annoying today, beloved forever.
+
 ### Type annotations
 
-Go is a **statically typed language**. Every value has a type, and that type
-must be known to the compiler when the program is built.
+Go is a **statically typed language**. Every value has a type, and the
+compiler must know it when the program is built.
 
-You can think of a type as a **tag** the compiler attaches to every value.
-Depending on the tag, the compiler enforces different rules — you can't add
-a string to a number, but you can add two numbers together. Used well, types
-rule out whole classes of bugs before the program ever runs.
+Think of a type as a **tag** the compiler pins to every value. The tag
+decides the rules: you can add two numbers, but not a string to a number.
+Lean on this — precise parameter and return types push entire families of
+bugs from runtime (where users find them) to compile time (where you do).
 
-It is considered idiomatic to let types do this work for you: declare
-precise parameter and return types rather than accepting a loose type and
-checking at runtime.
+One tag-related strictness to internalize now: inside a function, `:=`
+declares a *new* variable while `=` assigns to an existing one, and a
+declared-but-unused variable is a compile error, not a warning:
 
-## Common mistakes
-
-- **Missing `return`:** a function declared to return `int` must return an
-  `int` on every path. The compiler rejects the program otherwise.
-- **Unused variables:** `x := 5` followed by never using `x` is a compile
-  error. Remove the variable while experimenting.
-- **`:=` vs `=`:** `:=` declares a *new* variable (`sum := a + b`), while
-  `=` assigns to an existing one. `:=` only works inside functions.
+```go
+sum := a + b // declared with `:=`, must be used below
+```
 
 ## Task
 
