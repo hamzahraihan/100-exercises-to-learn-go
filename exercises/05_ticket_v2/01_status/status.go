@@ -1,4 +1,4 @@
-// Package status teaches iota enums (Go's answer to simple Rust enums).
+// Package status teaches iota-based state types with a validity check.
 package status
 
 // Status is a ticket state.
