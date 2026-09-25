@@ -1,0 +1,50 @@
+<!-- Apply the stored (or OS-preferred) theme before first paint to avoid a flash. -->
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem("book-theme");
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) { /* private mode etc: keep server default */ }
+})();
+</script>
+<style>
+.book-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.6rem;
+  background: var(--gray-200);
+  color: var(--body-font-color);
+  border: 0;
+  border-radius: 0.25rem;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.book-theme-toggle:hover {
+  filter: brightness(0.95);
+}
+.book-theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+/* Light background: soft off-white instead of pure white. */
+:root,
+:root[data-theme="light"],
+:root[data-theme="auto"] {
+  --body-background: #fafafa;
+}
+/* Dark background: near-black instead of the theme's Nord gray. */
+:root[data-theme="dark"] {
+  --body-background: #1d1e20;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --body-background: #1d1e20;
+  }
+}
+</style>
