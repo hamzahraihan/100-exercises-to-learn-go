@@ -37,6 +37,12 @@ go build ./...
 
 Solutions live on the `solutions` branch, same paths as `main`.
 
+## Appendix
+
+Beyond the core 100 exercises, six bonus lessons live in
+`exercises/16_appendix/`: variable shadowing, ordered merging, custom JSON
+decoding, buffered writing, fuzz testing, and `strings.Cut`.
+
 ## Book
 
 The Hugo site under `book/` renders directly from the exercise lessons —
