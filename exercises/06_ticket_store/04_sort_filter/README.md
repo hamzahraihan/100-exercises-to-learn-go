@@ -18,12 +18,14 @@ func SortedByID(ts []Ticket) []Ticket {
 ```
 
 `slices.SortFunc` orders with your comparator: negative when `a` goes
-first, zero when tied, positive when `b` does. (`a.ID - b.ID` ascends;
-swap the operands and it descends.) But sorting rearranges *in place* —
-run it on `ts` directly and the caller's order is destroyed as a side
-effect. The name promises a sorted *result*, so the function clones first
-and sorts the clone. Clone-then-sort is the whole discipline: never reorder
-what you don't own.
+first, zero when tied, positive when `b` does. Reach for `cmp.Compare`
+from the standard `cmp` package rather than subtracting — `a.ID - b.ID`
+overflows for extreme values, while `cmp.Compare(a.ID, b.ID)` ascends
+safely (swap the arguments and it descends). But sorting rearranges
+*in place* — run it on `ts` directly and the caller's order is destroyed
+as a side effect. The name promises a sorted *result*, so the function
+clones first and sorts the clone. Clone-then-sort is the whole discipline:
+never reorder what you don't own.
 
 The test feeds `{3, 1, 2}` and expects `{1, 2, 3}` — via `reflect.DeepEqual`,
 order-sensitive this time. Sorting is one of the few operations where

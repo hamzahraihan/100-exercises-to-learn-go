@@ -9,7 +9,7 @@ type Ticket struct {
 }
 
 // SortedByID returns tickets ordered by ID ascending.
-// TODO: sort a copy (hint: slices.SortFunc or sort.Slice).
+// TODO: sort a copy (hint: slices.SortFunc with cmp.Compare).
 func SortedByID(ts []Ticket) []Ticket {
 	return nil
 }
