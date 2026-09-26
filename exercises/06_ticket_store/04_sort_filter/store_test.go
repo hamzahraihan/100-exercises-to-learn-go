@@ -11,6 +11,9 @@ func TestSortedByID(t *testing.T) {
 	if got := SortedByID(in); !reflect.DeepEqual(got, want) {
 		t.Fatalf("SortedByID = %v, want %v", got, want)
 	}
+	if !reflect.DeepEqual(in, []Ticket{{ID: 3}, {ID: 1}, {ID: 2}}) {
+		t.Fatalf("SortedByID mutated its input: %v", in)
+	}
 }
 
 func TestOpenOnly(t *testing.T) {
