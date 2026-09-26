@@ -1,12 +1,65 @@
 # Loading State at Boot
 
-Servers usually reload their state from disk when they start, but on the
-very first run there is no file yet — and that is normal, not a crash. The
-convention is to treat a missing file as empty state: return `(nil, nil)`
-and let the caller start fresh. Any other error (permissions, a directory
-in the way) is still a real error. Go reports a missing file through
-`os.IsNotExist`, which recognizes the "not exist" error even when it is
-wrapped.
+Servers restart. On every boot after the first, the state file waits on
+disk, ready to reload. But the *first* boot has no file — nothing was ever
+saved — and that absence is the normal case, not a disaster. Code that
+treats it as an error crashes fresh installs on day one. This exercise
+teaches the loader to welcome the void.
+
+## Absence is not failure
+
+```go
+func Load(path string) ([]byte, error) {
+    data, err := os.ReadFile(path)
+    if err != nil {
+        if os.IsNotExist(err) {
+            return nil, nil // first boot: empty state, no error
+        }
+        return nil, err
+    }
+    return data, nil
+}
+```
+
+Three outcomes, three answers. File present: contents, nil error.
+File missing: `(nil, nil)` — empty state, success. Anything else
+(permissions, a directory in the way, I/O faults): the real error,
+propagated untouched. Callers start fresh on `(nil, nil)` and abort on
+anything else, and the distinction lives in exactly one place instead of
+every call site re-deriving it.
+
+## Recognizing "not exist" through wrapping
+
+```go
+os.IsNotExist(err) // true even when the error wears wrappers
+```
+
+Filesystem errors travel wrapped — path context attached at every layer,
+the corrupt-file lesson's `%w` chains in the wild. Comparing with `==`
+against a sentinel would miss them all. `os.IsNotExist` (equivalently,
+`errors.Is(err, fs.ErrNotExist)`) descends the chain asking each layer
+"are you, underneath, a missing file?" Use the predicate, never the
+comparison: identity through wrapping is the entire `errors.Is` doctrine,
+and boot loaders are where it pays rent most visibly.
+
+But reach for it narrowly. Mapping *every* error to empty state would
+swallow permission failures and disk faults into silent fresh starts —
+data loss wearing a clean boot's face. Only "not exist" converts; the rest
+propagate. Absence is normal. Everything else is news.
+
+## The test's two doors
+
+```go
+Load(path)                            // existing file → ("hi", nil)
+Load(filepath.Join(dir, "missing.json")) // absent file → (nil, nil)
+```
+
+Present and missing, asserted side by side — the two-branch habit from the
+error-assertion lesson, now with the subtle branch: success carrying
+*nothing*. `(nil, nil)` looks like a non-answer, but it's the most
+informative return in the function: "nothing saved yet, proceed
+accordingly." Callers that can't distinguish it from failure will crash
+day-one installs; callers that can will boot anywhere.
 
 ## Task
 
@@ -14,7 +67,7 @@ Fill in `Load` in `load.go`:
 
 ```go
 func Load(path string) ([]byte, error) {
-	// ...
+    // ...
 }
 ```
 
