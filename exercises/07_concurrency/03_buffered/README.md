@@ -77,5 +77,8 @@ func Collect(n int) []int {
 ## Check
 
 ```bash
-go test ./exercises/07_concurrency/03_buffered/ -v
+go test -race ./exercises/07_concurrency/03_buffered/ -v
 ```
+
+The `-race` flag is required here: `n` goroutines writing through one
+channel is exactly the shape the detector was built to verify.
