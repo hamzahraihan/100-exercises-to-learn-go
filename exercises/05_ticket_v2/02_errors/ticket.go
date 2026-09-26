@@ -1,4 +1,4 @@
-// Package ticket teaches sentinel + wrapped errors (errors.Is/As).
+// Package ticket teaches sentinel + wrapped errors (errors.Is).
 package ticket
 
 import "errors"
