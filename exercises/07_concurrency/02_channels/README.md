@@ -82,5 +82,8 @@ goroutine and a channel, results land in input order, and the test passes.
 ## Check
 
 ```bash
-go test ./exercises/07_concurrency/02_channels/ -v
+go test -race ./exercises/07_concurrency/02_channels/ -v
 ```
+
+The `-race` flag is required here: goroutines share nothing by design, and
+the detector proves it instead of scheduling luck.
