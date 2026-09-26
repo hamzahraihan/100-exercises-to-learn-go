@@ -74,5 +74,5 @@ on status, content type, and body.
 ## Check
 
 ```bash
-go test ./exercises/13_http/05_json_api/ -v
+go test ./exercises/13_http/06_json_api/ -v
 ```

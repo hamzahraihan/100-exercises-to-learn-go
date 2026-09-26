@@ -38,8 +38,8 @@ The recorder is lenient where the network is strict: it captures multiple
 times out, disconnects, or half-closes. That leniency is exactly right for
 unit tests — deterministic, fast, focused on *your* logic — and exactly why
 integration tests with real servers still exist elsewhere. Know which game
-you're playing: recorder for handler logic, `httptest.NewServer` (the
-client lesson, next) for full-stack behavior.
+you're playing: recorder for handler logic, `httptest.NewServer` (which the
+client lesson introduces) for full-stack behavior.
 
 `Ping` itself is one line — write `"pong"` — because this exercise grades
 fluency with the ritual, not creativity with handlers. Liveness probes
@@ -61,5 +61,5 @@ body.
 ## Check
 
 ```bash
-go test ./exercises/13_http/06_httptest/ -v
+go test ./exercises/13_http/05_httptest/ -v
 ```

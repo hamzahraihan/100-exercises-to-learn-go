@@ -41,7 +41,7 @@ The test asserts all three facets — status, content type, message presence —
 because a structured error *is* three promises: the right code, the
 parseable type, the human text. Miss any one and some consumer, machine or
 human, stumbles. This mirrors the JSON-creation test's triple assertion
-two lessons back: same discipline, failure-flavored.
+from the JSON API lesson: same discipline, failure-flavored.
 
 ## Task
 
