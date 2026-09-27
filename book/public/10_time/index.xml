@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Time on 100 Exercises to Learn Go</title>
+		<link>http://localhost:1313/100-exercises-to-learn-go/10_time/</link>
+		<description>Recent content in Time on 100 Exercises to Learn Go</description>
+		<generator>Hugo</generator>
+		<language>en</language>
+		
+		
+		
+		
+			<atom:link href="http://localhost:1313/100-exercises-to-learn-go/10_time/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Formatting Time</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/10_time/format/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/10_time/format/</guid>
+				<description>&lt;h1 id=&#34;formatting-time&#34;&gt;Formatting Time&lt;a class=&#34;anchor&#34; href=&#34;#formatting-time&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Go formats times with a reference-time layout instead of format codes: you&#xA;write out the exact moment &lt;code&gt;Mon Jan 2 15:04:05 MST 2006&lt;/code&gt; in the shape you&#xA;want, and Go maps each part (month, day, hour, and so on) to the real value.&#xA;For machine-readable timestamps the &lt;code&gt;time&lt;/code&gt; package also ships constants like&#xA;&lt;code&gt;time.RFC3339&lt;/code&gt;. The stub returns &lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt; for everything, so the test fails on&#xA;the assertion.&lt;/p&gt;&#xA;&lt;h2 id=&#34;task&#34;&gt;Task&lt;a class=&#34;anchor&#34; href=&#34;#task&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Fill in &lt;code&gt;FormatDay&lt;/code&gt; in &lt;code&gt;day.go&lt;/code&gt;:&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Parsing Time</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/10_time/parse/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/10_time/parse/</guid>
+				<description>&lt;h1 id=&#34;parsing-time&#34;&gt;Parsing Time&lt;a class=&#34;anchor&#34; href=&#34;#parsing-time&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Parsing is formatting in reverse: the layout you pass must describe the&#xA;input&amp;rsquo;s exact shape, or &lt;code&gt;time.Parse&lt;/code&gt; returns an error instead of a time.&#xA;That strictness is a feature — a mismatched layout fails loudly rather than&#xA;guessing. The stub returns the zero time and a nil error, so both halves of&#xA;the test fail on assertions.&lt;/p&gt;&#xA;&lt;h2 id=&#34;task&#34;&gt;Task&lt;a class=&#34;anchor&#34; href=&#34;#task&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Fill in &lt;code&gt;ParseDay&lt;/code&gt; in &lt;code&gt;day.go&lt;/code&gt;:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ParseDay&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;s&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;) (&lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Time&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#x9;&lt;span style=&#34;color:#75715e&#34;&gt;// ...&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Use &lt;code&gt;time.Parse&lt;/code&gt; with the &lt;code&gt;2006-01-02&lt;/code&gt; layout; return the parse error&#xA;unchanged on bad input.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Durations</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/10_time/duration/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/10_time/duration/</guid>
+				<description>&lt;h1 id=&#34;durations&#34;&gt;Durations&lt;a class=&#34;anchor&#34; href=&#34;#durations&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Subtracting two times with &lt;code&gt;Sub&lt;/code&gt; gives a &lt;code&gt;time.Duration&lt;/code&gt; — an &lt;code&gt;int64&lt;/code&gt; count&#xA;of nanoseconds with friendly helpers. &lt;code&gt;Hours()&lt;/code&gt; converts to fractional&#xA;hours, and constants like &lt;code&gt;time.Hour&lt;/code&gt; let you build or scale durations&#xA;without magic numbers. The stub returns &lt;code&gt;0&lt;/code&gt; for everything, so the&#xA;fractional case fails on the assertion.&lt;/p&gt;&#xA;&lt;h2 id=&#34;task&#34;&gt;Task&lt;a class=&#34;anchor&#34; href=&#34;#task&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Fill in &lt;code&gt;HoursBetween&lt;/code&gt; in &lt;code&gt;hours.go&lt;/code&gt;:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HoursBetween&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;a&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Time&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;float64&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#x9;&lt;span style=&#34;color:#75715e&#34;&gt;// ...&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Subtract with &lt;code&gt;b.Sub(a)&lt;/code&gt; and convert the result with &lt;code&gt;Hours()&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;h2 id=&#34;check&#34;&gt;Check&lt;a class=&#34;anchor&#34; href=&#34;#check&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go test ./exercises/10_time/03_duration/ -v&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;&#xA;&lt;p&gt;&lt;em&gt;Source: &lt;code&gt;exercises/10_time/03_duration/README.md&lt;/code&gt; · Inspired by &lt;a href=&#34;https://github.com/mainmatter/100-exercises-to-learn-rust&#34;&gt;Mainmatter&amp;rsquo;s 100 Exercises to Learn Rust&lt;/a&gt; (&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34;&gt;CC BY-NC 4.0&lt;/a&gt;) — all Go prose here is original, free for non-commercial use.&lt;/em&gt;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Testable Time</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/10_time/compare/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/10_time/compare/</guid>
+				<description>&lt;h1 id=&#34;testable-time&#34;&gt;Testable Time&lt;a class=&#34;anchor&#34; href=&#34;#testable-time&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Code that calls &lt;code&gt;time.Now&lt;/code&gt; directly cannot be tested deterministically: the&#xA;answer changes every run. The fix is a fake clock — a package-level &lt;code&gt;Now&lt;/code&gt;&#xA;variable holding a function. Production leaves it as &lt;code&gt;time.Now&lt;/code&gt;; tests swap&#xA;in a function returning a fixed &lt;code&gt;time.Date&lt;/code&gt; fixture and restore the original&#xA;with &lt;code&gt;defer&lt;/code&gt;. The stub returns &lt;code&gt;false&lt;/code&gt; for everything, so the past-expiry&#xA;case fails on the assertion.&lt;/p&gt;&#xA;&lt;h2 id=&#34;task&#34;&gt;Task&lt;a class=&#34;anchor&#34; href=&#34;#task&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Fill in &lt;code&gt;IsExpired&lt;/code&gt; in &lt;code&gt;expiry.go&lt;/code&gt; (keep the &lt;code&gt;Now&lt;/code&gt; variable as the clock):&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

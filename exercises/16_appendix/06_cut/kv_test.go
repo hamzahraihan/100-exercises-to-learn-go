@@ -4,9 +4,9 @@ import "testing"
 
 func TestSplitKV(t *testing.T) {
 	tests := []struct {
-		in         string
-		key, val  string
-		ok        bool
+		in       string
+		key, val string
+		ok       bool
 	}{
 		{"a=1", "a", "1", true},
 		{"novalue", "", "", false},

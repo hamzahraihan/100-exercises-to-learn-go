@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head><script src="/100-exercises-to-learn-go/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=100-exercises-to-learn-go/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The test workflow The previous two exercises handed you tests to run. This one makes you read one. Open add_test.go before touching add.go — for the rest of this course, the test file is the specification and the stub is just the blank to fill in.
+Anatomy of a table test func TestAdd(t *testing.T) { tests := []struct { a, b, want int }{ {1, 2, 3}, {-1, 1, 0}, {0, 0, 0}, } for _, tt := range tests { if got := Add(tt.a, tt.b); got != tt.want { t.Errorf(&#34;Add(%d, %d) = %d, want %d&#34;, tt.a, tt.b, got, tt.want) } } }Three ideas packed into eighteen lines. Let’s take them apart.
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/100-exercises-to-learn-go/01_intro/test_workflow/">
+	<meta property="og:site_name" content="100 Exercises to Learn Go">
+	<meta property="og:title" content="The test workflow">
+	<meta property="og:description" content="The test workflow The previous two exercises handed you tests to run. This one makes you read one. Open add_test.go before touching add.go — for the rest of this course, the test file is the specification and the stub is just the blank to fill in.
+Anatomy of a table test func TestAdd(t *testing.T) { tests := []struct { a, b, want int }{ {1, 2, 3}, {-1, 1, 0}, {0, 0, 0}, } for _, tt := range tests { if got := Add(tt.a, tt.b); got != tt.want { t.Errorf(&#34;Add(%d, %d) = %d, want %d&#34;, tt.a, tt.b, got, tt.want) } } }Three ideas packed into eighteen lines. Let’s take them apart.">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="01_intro">
+
+
+	<meta itemprop="name" content="The test workflow">
+	<meta itemprop="description" content="The test workflow The previous two exercises handed you tests to run. This one makes you read one. Open add_test.go before touching add.go — for the rest of this course, the test file is the specification and the stub is just the blank to fill in.
+Anatomy of a table test func TestAdd(t *testing.T) { tests := []struct { a, b, want int }{ {1, 2, 3}, {-1, 1, 0}, {0, 0, 0}, } for _, tt := range tests { if got := Add(tt.a, tt.b); got != tt.want { t.Errorf(&#34;Add(%d, %d) = %d, want %d&#34;, tt.a, tt.b, got, tt.want) } } }Three ideas packed into eighteen lines. Let’s take them apart.">
+	<meta itemprop="wordCount" content="474">
+
+<title>The test workflow • 100 Exercises to Learn Go</title>
+<link rel="icon" href="/100-exercises-to-learn-go/favicon.png" >
+<link rel="manifest" href="/100-exercises-to-learn-go/manifest.json">
+<link rel="canonical" href="http://localhost:1313/100-exercises-to-learn-go/01_intro/test_workflow/">
+<link rel="stylesheet" href="/100-exercises-to-learn-go/book.min.a02ac497c6d6e5c0a81db7ed78d24326ef87e617cb865bebfbe4d1a1d6ee6573.css" integrity="sha256-oCrEl8bW5cCoHbfteNJDJu&#43;H5hfLhlvr&#43;&#43;TRodbuZXM=" crossorigin="anonymous">
+
+
+<script type="module" src="/100-exercises-to-learn-go/en.search.min.ea199a7d3adba7093b028220914cf0023c29e776fc8ad9cb234066e37adbe33b.js" integrity="sha256-6hmafTrbpwk7AoIgkUzwAjwp53b8itnLI0Bm43rb4zs=" crossorigin="anonymous"></script>
+  
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem("book-theme");
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {   }
+})();
+</script>
+<style>
+.book-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.6rem;
+  background: var(--gray-200);
+  color: var(--body-font-color);
+  border: 0;
+  border-radius: 0.25rem;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.book-theme-toggle:hover {
+  filter: brightness(0.95);
+}
+.book-theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+ 
+:root,
+:root[data-theme="light"],
+:root[data-theme="auto"] {
+  --body-background: #fafafa;
+}
+ 
+:root[data-theme="dark"] {
+  --body-background: #1d1e20;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --body-background: #1d1e20;
+  }
+}
+</style>
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-01_intro">
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/100-exercises-to-learn-go/"><span>100 Exercises to Learn Go</span>
+  </a>
+</h2>
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text"
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+<button id="book-theme-toggle" class="book-theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+  <svg id="book-theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg id="book-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <span id="book-theme-label">Dark mode</span>
+</button>
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById("book-theme-toggle");
+  var moon = document.getElementById("book-theme-icon-moon");
+  var sun = document.getElementById("book-theme-icon-sun");
+  var label = document.getElementById("book-theme-label");
+  if (!btn) return;
+  function render(theme) {
+    var dark = theme === "dark";
+    moon.hidden = dark;
+    sun.hidden = !dark;
+    label.textContent = dark ? "Light mode" : "Dark mode";
+    btn.setAttribute("aria-pressed", dark ? "true" : "false");
+  }
+  render(root.getAttribute("data-theme") || "light");
+  btn.addEventListener("click", function () {
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("book-theme", next); } catch (e) {}
+    render(next);
+  });
+})();
+</script>
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Intro</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/syntax/" class="">
+      Syntax</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/test_workflow/" class="active">
+      The test workflow</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/packages/" class="">
+      Packages and imports</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/tooling/" class="">
+      gofmt and go vet</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/welcome/" class="">
+      Welcome</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Calculator</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/integers/" class="">
+      Integers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/variables/" class="">
+      Variables</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/if_else/" class="">
+      If Else</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/panics/" class="">
+      Panics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/factorial/" class="">
+      Factorial</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/sum_to/" class="">
+      Sum To</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/sum_range/" class="">
+      Sum Range</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/overflow/" class="">
+      Overflow</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/saturating/" class="">
+      Saturating Add</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/conversions/" class="">
+      Conversions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/divmod/" class="">
+      Div Mod</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/floats/" class="">
+      Floats</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/runes/" class="">
+      Runes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/strings/" class="">
+      Strings</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/bitwise/" class="">
+      Bitwise operators</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket v1</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/struct/" class="">
+      Struct</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/validation/" class="">
+      Validation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/constructor/" class="">
+      Constructor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/setters/" class="">
+      Setters</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/receivers/" class="">
+      Value Receivers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/zero_value/" class="">
+      Zero Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/string/" class="">
+      String</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/embed/" class="">
+      Embedding</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Interfaces</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/stringer/" class="">
+      Stringer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/generic_sum/" class="">
+      Generic Sum</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/any/" class="">
+      Any</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/type_switch/" class="">
+      Type Switch</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/embed_iface/" class="">
+      Embedding Interfaces</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/comparable/" class="">
+      Comparable</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/min_generic/" class="">
+      Generic Min</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket v2</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/status/" class="">
+      Status</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/errors/" class="">
+      Ticket Errors</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/wrap/" class="">
+      Wrap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/join/" class="">
+      Join</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/panic_vs_error/" class="">
+      Panic vs Error</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket Store</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/slice_store/" class="">
+      Slice Store</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/map_store/" class="">
+      Map Store</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/slices_fn/" class="">
+      Slice Functions (Clone)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/sort_filter/" class="">
+      Sort and Filter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/pagination/" class="">
+      Pagination</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/map_idioms/" class="">
+      Map Idioms</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Concurrency</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/mutex/" class="">
+      Mutex Counter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/channels/" class="">
+      Channel Pipeline</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/buffered/" class="">
+      Buffered Collect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/select/" class="">
+      Select with Timeout</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Testing</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/table/" class="">
+      Table-Driven Tests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/subtests/" class="">
+      Subtests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/helpers/" class="">
+      Test Helpers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/testdata/" class="">
+      Testdata Fixtures</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/examples/" class="">
+      Example Tests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/benchmarks/" class="">
+      Benchmarks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/errassert/" class="">
+      Asserting Errors</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Strings</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/fields/" class="">
+      Splitting and Joining</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/trim/" class="">
+      Trimming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/contains/" class="">
+      Substring Checks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/replace/" class="">
+      Replacement</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/builder/" class="">
+      Building Strings Efficiently</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/strconv/" class="">
+      String/Number Conversion</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Time</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/format/" class="">
+      Formatting Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/parse/" class="">
+      Parsing Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/duration/" class="">
+      Durations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/compare/" class="">
+      Testable Time</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      JSON</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/marshal/" class="">
+      Marshaling Tickets</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/unmarshal/" class="">
+      Unmarshaling and Validating</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/tags/" class="">
+      Struct Tags: Hiding and Omitting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/strict/" class="">
+      Strict Decoding</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/custom/" class="">
+      Custom Marshalers</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      I/O</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/reader/" class="">
+      Reading Everything</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/writer/" class="">
+      Writing Lines</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/scanner/" class="">
+      Scanning Words</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/file/" class="">
+      Saving Tickets to Disk</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/copy/" class="">
+      Copying Streams</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/jsonlog/" class="">
+      Ticket Logs (JSON Lines)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      HTTP</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/handler/" class="">
+      Your First Handler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/status/" class="">
+      Status Codes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/query/" class="">
+      Query Parameters</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/routing/" class="">
+      Routing with ServeMux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/json_api/" class="">
+      JSON In, JSON Out</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/httptest/" class="">
+      Testing Handlers with httptest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/middleware/" class="">
+      Middleware</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/context/" class="">
+      Contexts and Cancellation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/client/" class="">
+      Calling Other Servers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/error_response/" class="">
+      Structured Errors</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Persistence</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/save/" class="">
+      Crash-Safe Saves</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/load/" class="">
+      Loading State at Boot</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/corrupt/" class="">
+      Surviving Corrupt Files</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/export/" class="">
+      Exporting Backups</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/import/" class="">
+      Importing Backups Safely</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Capstone</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/store_server/" class="">
+      Create and List</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/get_one/" class="">
+      Get One Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/update/" class="">
+      Update a Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/delete/" class="">
+      Delete a Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/graceful/" class="">
+      Graceful Shutdown</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/config/" class="">
+      Config From the Environment</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/e2e/" class="">
+      End to End</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <input type="checkbox" class="toggle" id="menu-control" />
+  <label for="menu-control">
+    <img src="/100-exercises-to-learn-go/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>The test workflow</h3>
+
+  
+  <input type="checkbox" class="toggle" id="toc-control" />
+  <label for="toc-control">
+    <img src="/100-exercises-to-learn-go/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+  
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-test-workflow">The test workflow</a>
+      <ul>
+        <li><a href="#anatomy-of-a-table-test">Anatomy of a table test</a></li>
+        <li><a href="#errorf-vs-fatalf"><code>Errorf</code> vs <code>Fatalf</code></a></li>
+        <li><a href="#running-them">Running them</a></li>
+        <li><a href="#task">Task</a></li>
+        <li><a href="#check">Check</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="the-test-workflow">The test workflow<a class="anchor" href="#the-test-workflow"></a></h1>
+<p>The previous two exercises handed you tests to run. This one makes you
+<em>read</em> one. Open <code>add_test.go</code> before touching <code>add.go</code> — for the rest of
+this course, the test file is the specification and the stub is just the
+blank to fill in.</p>
+<h2 id="anatomy-of-a-table-test">Anatomy of a table test<a class="anchor" href="#anatomy-of-a-table-test"></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestAdd</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">tests</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">want</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>    }{
+</span></span><span style="display:flex;"><span>        {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>},
+</span></span><span style="display:flex;"><span>        {<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>},
+</span></span><span style="display:flex;"><span>        {<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>},
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tt</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tests</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">got</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Add</span>(<span style="color:#a6e22e">tt</span>.<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">tt</span>.<span style="color:#a6e22e">b</span>); <span style="color:#a6e22e">got</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">tt</span>.<span style="color:#a6e22e">want</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Add(%d, %d) = %d, want %d&#34;</span>, <span style="color:#a6e22e">tt</span>.<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">tt</span>.<span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">got</span>, <span style="color:#a6e22e">tt</span>.<span style="color:#a6e22e">want</span>)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Three ideas packed into eighteen lines. Let&rsquo;s take them apart.</p>
+<p><strong>A slice of cases, not three separate tests.</strong> The <code>tests</code> variable holds
+every input/output pair in one table. Adding a case means adding one line —
+<code>{2, 3, 5}</code> — instead of writing a whole new function. When a bug report
+arrives six months from now, it becomes a row in this table first, a fix
+second. That&rsquo;s the habit this shape teaches.</p>
+<p><strong>An anonymous struct as the row type.</strong> <code>struct { a, b, want int }</code> is
+declared inline, used once, never named. Go lets types appear exactly where
+they&rsquo;re needed — no ceremony of inventing a <code>TestCase</code> type for something
+with a three-line lifespan. You&rsquo;ll see this frugality everywhere: slices of
+anonymous structs for tables, anonymous functions for callbacks.</p>
+<p><strong>One loop that reports every failure.</strong> <code>for _, tt := range tests</code> walks
+the table; <code>_</code> discards the index nobody needs. Each mismatch calls
+<code>t.Errorf</code>, which marks the test failed <em>and keeps going</em>, so a single run
+shows all broken cases at once.</p>
+<h2 id="errorf-vs-fatalf"><code>Errorf</code> vs <code>Fatalf</code><a class="anchor" href="#errorf-vs-fatalf"></a></h2>
+<p>Two failure functions, different temperaments:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;...&#34;</span>) <span style="color:#75715e">// record failure, continue with the next case</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;...&#34;</span>) <span style="color:#75715e">// record failure, stop this test function now</span></span></span></code></pre></div><p><code>Errorf</code> suits tables — you want the full damage report. <code>Fatalf</code> suits
+setup — if the fixture didn&rsquo;t load, further assertions would only pile
+confusion onto confusion. The welcome exercise used <code>Fatalf</code> for a single
+irrefutable check; here <code>Errorf</code> collects all three verdicts. Match the
+function to the situation and your test output reads like a diagnosis
+instead of a riddle.</p>
+<h2 id="running-them">Running them<a class="anchor" href="#running-them"></a></h2>
+<p>One exercise, verbosely:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go test ./exercises/01_intro/02_test_workflow/ -v</span></span></code></pre></div><p>The <code>-v</code> flag names each test as it runs. Later, when a package holds a
+dozen tables, <code>-run TestAdd</code> filters to just the one you care about:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go test ./exercises/01_intro/02_test_workflow/ -run TestAdd -v</span></span></code></pre></div><p>From here on, this loop is the course: read the table, make every row
+green, move on. The tests are strict but fair — they check behavior, never
+implementation, so any <code>Add</code> returning the right sums passes.</p>
+<h2 id="task">Task<a class="anchor" href="#task"></a></h2>
+<p>Fix <code>Add</code> in <code>add.go</code>.</p>
+<h2 id="check">Check<a class="anchor" href="#check"></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go test ./exercises/01_intro/02_test_workflow/ -v</span></span></code></pre></div><hr>
+<p><em>Source: <code>exercises/01_intro/02_test_workflow/README.md</code> · Inspired by <a href="https://github.com/mainmatter/100-exercises-to-learn-rust">Mainmatter&rsquo;s 100 Exercises to Learn Rust</a> (<a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>) — all Go prose here is original, free for non-commercial use.</em></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/100-exercises-to-learn-go/01_intro/syntax/" class="flex align-center">
+        <img src="/100-exercises-to-learn-go/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Syntax</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/100-exercises-to-learn-go/01_intro/packages/" class="flex align-center">
+        <span>Packages and imports</span>
+        <img src="/100-exercises-to-learn-go/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay" aria-hidden="true"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-test-workflow">The test workflow</a>
+      <ul>
+        <li><a href="#anatomy-of-a-table-test">Anatomy of a table test</a></li>
+        <li><a href="#errorf-vs-fatalf"><code>Errorf</code> vs <code>Fatalf</code></a></li>
+        <li><a href="#running-them">Running them</a></li>
+        <li><a href="#task">Task</a></li>
+        <li><a href="#check">Check</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

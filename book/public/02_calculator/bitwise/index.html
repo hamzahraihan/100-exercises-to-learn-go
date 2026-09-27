@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head><script src="/100-exercises-to-learn-go/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=100-exercises-to-learn-go/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Bitwise operators Fourteen exercises of arithmetic, and numbers have behaved like quantities. Now they become switchboards: individual bits flipped, combined, and tested. The calculator section closes with the lowest-level arithmetic Go offers — and the strangest-looking constants you’ve met.
+Bits as flags A uint8 holds eight independent on/off switches. The operators manipulate them directly:
+a | b // OR: a switch is on if it&#39;s on in either side a &amp; b // AND: a switch is on only if it&#39;s on in both sides a ^ b // XOR: a switch is on if the sides disagree a &amp;^ b // AND NOT: switches on in a but off in b (Go&#39;s &#34;clear&#34; operator) a &lt;&lt; n // shift left n places (multiplies by 2ⁿ) a &gt;&gt; n // shift right n places (divides by 2ⁿ)&amp;^ deserves a stare — most languages spell it &amp; ~, but Go mints a dedicated operator so clearing bits reads as one thought. p &amp;^ Write means “permissions minus write,” no parentheses required.
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/100-exercises-to-learn-go/02_calculator/bitwise/">
+	<meta property="og:site_name" content="100 Exercises to Learn Go">
+	<meta property="og:title" content="Bitwise operators">
+	<meta property="og:description" content="Bitwise operators Fourteen exercises of arithmetic, and numbers have behaved like quantities. Now they become switchboards: individual bits flipped, combined, and tested. The calculator section closes with the lowest-level arithmetic Go offers — and the strangest-looking constants you’ve met.
+Bits as flags A uint8 holds eight independent on/off switches. The operators manipulate them directly:
+a | b // OR: a switch is on if it&#39;s on in either side a &amp; b // AND: a switch is on only if it&#39;s on in both sides a ^ b // XOR: a switch is on if the sides disagree a &amp;^ b // AND NOT: switches on in a but off in b (Go&#39;s &#34;clear&#34; operator) a &lt;&lt; n // shift left n places (multiplies by 2ⁿ) a &gt;&gt; n // shift right n places (divides by 2ⁿ)&amp;^ deserves a stare — most languages spell it &amp; ~, but Go mints a dedicated operator so clearing bits reads as one thought. p &amp;^ Write means “permissions minus write,” no parentheses required.">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="02_calculator">
+
+
+	<meta itemprop="name" content="Bitwise operators">
+	<meta itemprop="description" content="Bitwise operators Fourteen exercises of arithmetic, and numbers have behaved like quantities. Now they become switchboards: individual bits flipped, combined, and tested. The calculator section closes with the lowest-level arithmetic Go offers — and the strangest-looking constants you’ve met.
+Bits as flags A uint8 holds eight independent on/off switches. The operators manipulate them directly:
+a | b // OR: a switch is on if it&#39;s on in either side a &amp; b // AND: a switch is on only if it&#39;s on in both sides a ^ b // XOR: a switch is on if the sides disagree a &amp;^ b // AND NOT: switches on in a but off in b (Go&#39;s &#34;clear&#34; operator) a &lt;&lt; n // shift left n places (multiplies by 2ⁿ) a &gt;&gt; n // shift right n places (divides by 2ⁿ)&amp;^ deserves a stare — most languages spell it &amp; ~, but Go mints a dedicated operator so clearing bits reads as one thought. p &amp;^ Write means “permissions minus write,” no parentheses required.">
+	<meta itemprop="wordCount" content="468">
+
+<title>Bitwise operators • 100 Exercises to Learn Go</title>
+<link rel="icon" href="/100-exercises-to-learn-go/favicon.png" >
+<link rel="manifest" href="/100-exercises-to-learn-go/manifest.json">
+<link rel="canonical" href="http://localhost:1313/100-exercises-to-learn-go/02_calculator/bitwise/">
+<link rel="stylesheet" href="/100-exercises-to-learn-go/book.min.a02ac497c6d6e5c0a81db7ed78d24326ef87e617cb865bebfbe4d1a1d6ee6573.css" integrity="sha256-oCrEl8bW5cCoHbfteNJDJu&#43;H5hfLhlvr&#43;&#43;TRodbuZXM=" crossorigin="anonymous">
+
+
+<script type="module" src="/100-exercises-to-learn-go/en.search.min.ea199a7d3adba7093b028220914cf0023c29e776fc8ad9cb234066e37adbe33b.js" integrity="sha256-6hmafTrbpwk7AoIgkUzwAjwp53b8itnLI0Bm43rb4zs=" crossorigin="anonymous"></script>
+  
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem("book-theme");
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {   }
+})();
+</script>
+<style>
+.book-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.6rem;
+  background: var(--gray-200);
+  color: var(--body-font-color);
+  border: 0;
+  border-radius: 0.25rem;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.book-theme-toggle:hover {
+  filter: brightness(0.95);
+}
+.book-theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+ 
+:root,
+:root[data-theme="light"],
+:root[data-theme="auto"] {
+  --body-background: #fafafa;
+}
+ 
+:root[data-theme="dark"] {
+  --body-background: #1d1e20;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --body-background: #1d1e20;
+  }
+}
+</style>
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-02_calculator">
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/100-exercises-to-learn-go/"><span>100 Exercises to Learn Go</span>
+  </a>
+</h2>
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text"
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+<button id="book-theme-toggle" class="book-theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+  <svg id="book-theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg id="book-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <span id="book-theme-label">Dark mode</span>
+</button>
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById("book-theme-toggle");
+  var moon = document.getElementById("book-theme-icon-moon");
+  var sun = document.getElementById("book-theme-icon-sun");
+  var label = document.getElementById("book-theme-label");
+  if (!btn) return;
+  function render(theme) {
+    var dark = theme === "dark";
+    moon.hidden = dark;
+    sun.hidden = !dark;
+    label.textContent = dark ? "Light mode" : "Dark mode";
+    btn.setAttribute("aria-pressed", dark ? "true" : "false");
+  }
+  render(root.getAttribute("data-theme") || "light");
+  btn.addEventListener("click", function () {
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("book-theme", next); } catch (e) {}
+    render(next);
+  });
+})();
+</script>
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Intro</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/syntax/" class="">
+      Syntax</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/test_workflow/" class="">
+      The test workflow</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/packages/" class="">
+      Packages and imports</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/tooling/" class="">
+      gofmt and go vet</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/welcome/" class="">
+      Welcome</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Calculator</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/integers/" class="">
+      Integers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/variables/" class="">
+      Variables</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/if_else/" class="">
+      If Else</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/panics/" class="">
+      Panics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/factorial/" class="">
+      Factorial</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/sum_to/" class="">
+      Sum To</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/sum_range/" class="">
+      Sum Range</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/overflow/" class="">
+      Overflow</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/saturating/" class="">
+      Saturating Add</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/conversions/" class="">
+      Conversions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/divmod/" class="">
+      Div Mod</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/floats/" class="">
+      Floats</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/runes/" class="">
+      Runes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/strings/" class="">
+      Strings</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/bitwise/" class="active">
+      Bitwise operators</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket v1</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/struct/" class="">
+      Struct</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/validation/" class="">
+      Validation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/constructor/" class="">
+      Constructor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/setters/" class="">
+      Setters</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/receivers/" class="">
+      Value Receivers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/zero_value/" class="">
+      Zero Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/string/" class="">
+      String</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/embed/" class="">
+      Embedding</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Interfaces</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/stringer/" class="">
+      Stringer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/generic_sum/" class="">
+      Generic Sum</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/any/" class="">
+      Any</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/type_switch/" class="">
+      Type Switch</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/embed_iface/" class="">
+      Embedding Interfaces</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/comparable/" class="">
+      Comparable</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/min_generic/" class="">
+      Generic Min</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket v2</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/status/" class="">
+      Status</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/errors/" class="">
+      Ticket Errors</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/wrap/" class="">
+      Wrap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/join/" class="">
+      Join</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/panic_vs_error/" class="">
+      Panic vs Error</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket Store</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/slice_store/" class="">
+      Slice Store</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/map_store/" class="">
+      Map Store</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/slices_fn/" class="">
+      Slice Functions (Clone)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/sort_filter/" class="">
+      Sort and Filter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/pagination/" class="">
+      Pagination</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/map_idioms/" class="">
+      Map Idioms</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Concurrency</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/mutex/" class="">
+      Mutex Counter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/channels/" class="">
+      Channel Pipeline</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/buffered/" class="">
+      Buffered Collect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/select/" class="">
+      Select with Timeout</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Testing</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/table/" class="">
+      Table-Driven Tests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/subtests/" class="">
+      Subtests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/helpers/" class="">
+      Test Helpers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/testdata/" class="">
+      Testdata Fixtures</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/examples/" class="">
+      Example Tests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/benchmarks/" class="">
+      Benchmarks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/errassert/" class="">
+      Asserting Errors</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Strings</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/fields/" class="">
+      Splitting and Joining</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/trim/" class="">
+      Trimming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/contains/" class="">
+      Substring Checks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/replace/" class="">
+      Replacement</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/builder/" class="">
+      Building Strings Efficiently</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/strconv/" class="">
+      String/Number Conversion</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Time</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/format/" class="">
+      Formatting Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/parse/" class="">
+      Parsing Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/duration/" class="">
+      Durations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/compare/" class="">
+      Testable Time</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      JSON</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/marshal/" class="">
+      Marshaling Tickets</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/unmarshal/" class="">
+      Unmarshaling and Validating</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/tags/" class="">
+      Struct Tags: Hiding and Omitting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/strict/" class="">
+      Strict Decoding</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/custom/" class="">
+      Custom Marshalers</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      I/O</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/reader/" class="">
+      Reading Everything</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/writer/" class="">
+      Writing Lines</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/scanner/" class="">
+      Scanning Words</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/file/" class="">
+      Saving Tickets to Disk</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/copy/" class="">
+      Copying Streams</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/jsonlog/" class="">
+      Ticket Logs (JSON Lines)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      HTTP</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/handler/" class="">
+      Your First Handler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/status/" class="">
+      Status Codes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/query/" class="">
+      Query Parameters</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/routing/" class="">
+      Routing with ServeMux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/json_api/" class="">
+      JSON In, JSON Out</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/httptest/" class="">
+      Testing Handlers with httptest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/middleware/" class="">
+      Middleware</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/context/" class="">
+      Contexts and Cancellation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/client/" class="">
+      Calling Other Servers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/error_response/" class="">
+      Structured Errors</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Persistence</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/save/" class="">
+      Crash-Safe Saves</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/load/" class="">
+      Loading State at Boot</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/corrupt/" class="">
+      Surviving Corrupt Files</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/export/" class="">
+      Exporting Backups</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/import/" class="">
+      Importing Backups Safely</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Capstone</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/store_server/" class="">
+      Create and List</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/get_one/" class="">
+      Get One Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/update/" class="">
+      Update a Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/delete/" class="">
+      Delete a Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/graceful/" class="">
+      Graceful Shutdown</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/config/" class="">
+      Config From the Environment</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/e2e/" class="">
+      End to End</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <input type="checkbox" class="toggle" id="menu-control" />
+  <label for="menu-control">
+    <img src="/100-exercises-to-learn-go/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Bitwise operators</h3>
+
+  
+  <input type="checkbox" class="toggle" id="toc-control" />
+  <label for="toc-control">
+    <img src="/100-exercises-to-learn-go/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+  
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#bitwise-operators">Bitwise operators</a>
+      <ul>
+        <li><a href="#bits-as-flags">Bits as flags</a></li>
+        <li><a href="#constants-that-count-themselves">Constants that count themselves</a></li>
+        <li><a href="#testing-a-single-bit">Testing a single bit</a></li>
+        <li><a href="#task">Task</a></li>
+        <li><a href="#check">Check</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="bitwise-operators">Bitwise operators<a class="anchor" href="#bitwise-operators"></a></h1>
+<p>Fourteen exercises of arithmetic, and numbers have behaved like quantities.
+Now they become <em>switchboards</em>: individual bits flipped, combined, and
+tested. The calculator section closes with the lowest-level arithmetic Go
+offers — and the strangest-looking constants you&rsquo;ve met.</p>
+<h2 id="bits-as-flags">Bits as flags<a class="anchor" href="#bits-as-flags"></a></h2>
+<p>A <code>uint8</code> holds eight independent on/off switches. The operators manipulate
+them directly:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">a</span> | <span style="color:#a6e22e">b</span>  <span style="color:#75715e">// OR:  a switch is on if it&#39;s on in either side</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">a</span> <span style="color:#f92672">&amp;</span> <span style="color:#a6e22e">b</span>  <span style="color:#75715e">// AND: a switch is on only if it&#39;s on in both sides</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">a</span> ^ <span style="color:#a6e22e">b</span>  <span style="color:#75715e">// XOR: a switch is on if the sides disagree</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">a</span> <span style="color:#f92672">&amp;^</span> <span style="color:#a6e22e">b</span> <span style="color:#75715e">// AND NOT: switches on in a but off in b (Go&#39;s &#34;clear&#34; operator)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">a</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#a6e22e">n</span> <span style="color:#75715e">// shift left n places (multiplies by 2ⁿ)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">a</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">n</span> <span style="color:#75715e">// shift right n places (divides by 2ⁿ)</span></span></span></code></pre></div><p><code>&amp;^</code> deserves a stare — most languages spell it <code>&amp; ~</code>, but Go mints a
+dedicated operator so clearing bits reads as one thought. <code>p &amp;^ Write</code>
+means &ldquo;permissions minus write,&rdquo; no parentheses required.</p>
+<h2 id="constants-that-count-themselves">Constants that count themselves<a class="anchor" href="#constants-that-count-themselves"></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Perm</span> <span style="color:#66d9ef">uint8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Read</span> <span style="color:#a6e22e">Perm</span> = <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#66d9ef">iota</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Write</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Execute</span>
+</span></span><span style="display:flex;"><span>)</span></span></code></pre></div><p><strong><code>iota</code></strong> is the counter of <code>const</code> blocks: 0 in the first line, 1 in the
+second, and so on. Each line repeats the <em>expression</em> <code>1 &lt;&lt; iota</code> with its
+own value, so the block unfolds to:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">Read</span>    <span style="color:#a6e22e">Perm</span> = <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e">// 001 == 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Write</span>   <span style="color:#a6e22e">Perm</span> = <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">1</span> <span style="color:#75715e">// 010 == 2</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Execute</span> <span style="color:#a6e22e">Perm</span> = <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e">// 100 == 4</span></span></span></code></pre></div><p>One bit each, no overlap — three flags coexisting in a single byte. Adding
+a fourth (<code>Delete</code>) is a one-line change that can&rsquo;t disturb the others,
+which is precisely why flags beat booleans once options multiply. Combining
+uses OR (<code>Read|Write</code> is <code>011</code>), and the named <code>Perm</code> type keeps these
+distinct from bare numbers everywhere they travel.</p>
+<h2 id="testing-a-single-bit">Testing a single bit<a class="anchor" href="#testing-a-single-bit"></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// Syntax: &lt;set&gt; &amp; &lt;flag&gt; == &lt;flag&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Has</span>(<span style="color:#a6e22e">p</span>, <span style="color:#a6e22e">flag</span> <span style="color:#a6e22e">Perm</span>) <span style="color:#66d9ef">bool</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">p</span><span style="color:#f92672">&amp;</span><span style="color:#a6e22e">flag</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">flag</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Mask with AND, compare with the flag. <code>p&amp;flag</code> keeps only the bits the two
+share; if the result equals the flag, every requested bit was set. For
+single-bit flags <code>!= 0</code> would also work — but <code>== flag</code> stays correct when
+someone passes a <em>combined</em> flag like <code>Read|Write</code>, demanding both. Write
+the general form now and the multi-flag case never breaks later.</p>
+<p>Read the test once more with bit-goggles on: <code>Has(Read|Write, Write)</code> masks
+<code>011</code> with <code>010</code>, gets <code>010</code>, equals the flag — true. <code>Has(Read, Write)</code>
+masks <code>001</code> with <code>010</code>, gets <code>000</code> — false. Every assertion is just shared
+bits surviving the mask.</p>
+<h2 id="task">Task<a class="anchor" href="#task"></a></h2>
+<p>Fix <code>Has</code> in <code>calc.go</code> using <code>&amp;</code>.</p>
+<h2 id="check">Check<a class="anchor" href="#check"></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go test ./exercises/02_calculator/15_bitwise/ -v</span></span></code></pre></div><hr>
+<p><em>Source: <code>exercises/02_calculator/15_bitwise/README.md</code> · Inspired by <a href="https://github.com/mainmatter/100-exercises-to-learn-rust">Mainmatter&rsquo;s 100 Exercises to Learn Rust</a> (<a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>) — all Go prose here is original, free for non-commercial use.</em></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/100-exercises-to-learn-go/02_calculator/strings/" class="flex align-center">
+        <img src="/100-exercises-to-learn-go/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Strings</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/100-exercises-to-learn-go/03_ticket_v1/struct/" class="flex align-center">
+        <span>Struct</span>
+        <img src="/100-exercises-to-learn-go/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay" aria-hidden="true"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#bitwise-operators">Bitwise operators</a>
+      <ul>
+        <li><a href="#bits-as-flags">Bits as flags</a></li>
+        <li><a href="#constants-that-count-themselves">Constants that count themselves</a></li>
+        <li><a href="#testing-a-single-bit">Testing a single bit</a></li>
+        <li><a href="#task">Task</a></li>
+        <li><a href="#check">Check</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

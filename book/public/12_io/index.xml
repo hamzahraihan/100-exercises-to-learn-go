@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>I/O on 100 Exercises to Learn Go</title>
+		<link>http://localhost:1313/100-exercises-to-learn-go/12_io/</link>
+		<description>Recent content in I/O on 100 Exercises to Learn Go</description>
+		<generator>Hugo</generator>
+		<language>en</language>
+		
+		
+		
+		
+			<atom:link href="http://localhost:1313/100-exercises-to-learn-go/12_io/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Reading Everything</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/12_io/reader/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/12_io/reader/</guid>
+				<description>&lt;h1 id=&#34;reading-everything&#34;&gt;Reading Everything&lt;a class=&#34;anchor&#34; href=&#34;#reading-everything&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;An &lt;code&gt;io.Reader&lt;/code&gt; is a stream you drain by reading until you hit &lt;code&gt;EOF&lt;/code&gt;: each&#xA;&lt;code&gt;Read&lt;/code&gt; call fills your buffer and reports how many bytes it took, and the&#xA;final call reports &lt;code&gt;io.EOF&lt;/code&gt; to say the stream is done. The &lt;code&gt;io&lt;/code&gt; package&#xA;ships a helper that runs that loop for you. In tests, a &lt;code&gt;strings.Reader&lt;/code&gt;&#xA;(or a &lt;code&gt;bytes.Buffer&lt;/code&gt;) stands in for files and network connections, so you&#xA;can exercise reader code without touching disk. The stub returns &lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt; for&#xA;everything, so the test fails on the assertion.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Writing Lines</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/12_io/writer/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/12_io/writer/</guid>
+				<description>&lt;h1 id=&#34;writing-lines&#34;&gt;Writing Lines&lt;a class=&#34;anchor&#34; href=&#34;#writing-lines&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;An &lt;code&gt;io.Writer&lt;/code&gt; is the mirror of a reader: you hand it bytes and it reports&#xA;how many it accepted, returning an error if something went wrong. Writers&#xA;compose well — the same code works against a file, a network connection,&#xA;or a &lt;code&gt;bytes.Buffer&lt;/code&gt; in a test. Real programs often wrap writers in a&#xA;buffered layer and flush once at the end instead of paying for many small&#xA;writes. The stub writes nothing, so the test fails comparing the buffer.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Scanning Words</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/12_io/scanner/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/12_io/scanner/</guid>
+				<description>&lt;h1 id=&#34;scanning-words&#34;&gt;Scanning Words&lt;a class=&#34;anchor&#34; href=&#34;#scanning-words&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Reading line-by-line (or word-by-word) by hand means managing buffers and&#xA;partial tokens yourself. &lt;code&gt;bufio.Scanner&lt;/code&gt; hides that bookkeeping: you pick a&#xA;split function such as &lt;code&gt;ScanWords&lt;/code&gt;, call &lt;code&gt;Scan&lt;/code&gt; until it returns false, and&#xA;read each token out. When the loop ends, &lt;code&gt;scanner.Err()&lt;/code&gt; tells you whether&#xA;it stopped at a clean &lt;code&gt;EOF&lt;/code&gt; or on a real failure — always check it. The&#xA;stub counts nothing, so the test fails on the assertion.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Saving Tickets to Disk</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/12_io/file/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/12_io/file/</guid>
+				<description>&lt;h1 id=&#34;saving-tickets-to-disk&#34;&gt;Saving Tickets to Disk&lt;a class=&#34;anchor&#34; href=&#34;#saving-tickets-to-disk&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;The &lt;code&gt;os&lt;/code&gt; package reads and writes whole files in one call: &lt;code&gt;os.WriteFile&lt;/code&gt;&#xA;takes a path, bytes, and permission bits (like &lt;code&gt;0o644&lt;/code&gt;, owner-writable and&#xA;world-readable), while &lt;code&gt;os.ReadFile&lt;/code&gt; loads a path back into memory. Tests&#xA;that touch the filesystem must never write into the repo — &lt;code&gt;t.TempDir()&lt;/code&gt;&#xA;gives you a fresh scratch directory that Go cleans up afterwards. Here&#xA;&lt;code&gt;LoadTicket&lt;/code&gt; already works, but &lt;code&gt;SaveTicket&lt;/code&gt; writes nothing, so the test&#xA;fails when the load finds no file.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Copying Streams</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/12_io/copy/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/12_io/copy/</guid>
+				<description>&lt;h1 id=&#34;copying-streams&#34;&gt;Copying Streams&lt;a class=&#34;anchor&#34; href=&#34;#copying-streams&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Copying between a reader and a writer never needs the whole payload in&#xA;memory: &lt;code&gt;io.Copy&lt;/code&gt; streams chunks from source to destination until &lt;code&gt;EOF&lt;/code&gt;,&#xA;and &lt;code&gt;io.CopyN&lt;/code&gt; stops after exactly &lt;code&gt;n&lt;/code&gt; bytes, reporting how many it moved.&#xA;That keeps memory flat no matter how large the input is. The stub copies&#xA;nothing, so the test fails on the byte count and buffer contents.&lt;/p&gt;&#xA;&lt;h2 id=&#34;task&#34;&gt;Task&lt;a class=&#34;anchor&#34; href=&#34;#task&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Fill in &lt;code&gt;CopyN&lt;/code&gt; in &lt;code&gt;copyn.go&lt;/code&gt;:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;CopyN&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;dst&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;io&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Writer&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;io&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Reader&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;n&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;) (&lt;span style=&#34;color:#66d9ef&#34;&gt;int64&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#x9;&lt;span style=&#34;color:#75715e&#34;&gt;// ...&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Use &lt;code&gt;io.CopyN&lt;/code&gt; to stream exactly &lt;code&gt;n&lt;/code&gt; bytes from &lt;code&gt;src&lt;/code&gt; to &lt;code&gt;dst&lt;/code&gt;.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Ticket Logs (JSON Lines)</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/12_io/jsonlog/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/12_io/jsonlog/</guid>
+				<description>&lt;h1 id=&#34;ticket-logs-json-lines&#34;&gt;Ticket Logs (JSON Lines)&lt;a class=&#34;anchor&#34; href=&#34;#ticket-logs-json-lines&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;A JSON-lines log stores one JSON object per line, so writers can append&#xA;without rewriting the file and readers can decode it incrementally. The&#xA;append side opens the file with &lt;code&gt;O_APPEND|O_CREATE|O_WRONLY&lt;/code&gt; and encodes&#xA;each &lt;code&gt;Ticket&lt;/code&gt; (&lt;code&gt;{ID int \&lt;/code&gt;json:&amp;ldquo;id&amp;rdquo;`, Title string `json:&amp;ldquo;title&amp;rdquo;`}&lt;code&gt;) as a single line; the read side scans line by line and decodes each one in order. Here &lt;/code&gt;ReadLog&lt;code&gt;already works, but&lt;/code&gt;AppendLog` writes nothing, so the&#xA;test fails when the read finds no file.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

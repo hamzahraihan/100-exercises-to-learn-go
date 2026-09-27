@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head><script src="/100-exercises-to-learn-go/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=100-exercises-to-learn-go/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Overflow Your calculator has been suspiciously well-behaved: every sum fit, every test told the truth. Time to break that streak — on purpose.
+The exercise in exercises/02_calculator/08_overflow asks an uncomfortable question: what happens when the answer doesn’t fit the type? The full integer model could fill a chapter on its own. You’ll get the slice that matters — spotting the wrap and picking a fix — and leave the rest for the day you meet it in the wild.
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/100-exercises-to-learn-go/02_calculator/overflow/">
+	<meta property="og:site_name" content="100 Exercises to Learn Go">
+	<meta property="og:title" content="Overflow">
+	<meta property="og:description" content="Overflow Your calculator has been suspiciously well-behaved: every sum fit, every test told the truth. Time to break that streak — on purpose.
+The exercise in exercises/02_calculator/08_overflow asks an uncomfortable question: what happens when the answer doesn’t fit the type? The full integer model could fill a chapter on its own. You’ll get the slice that matters — spotting the wrap and picking a fix — and leave the rest for the day you meet it in the wild.">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="02_calculator">
+
+
+	<meta itemprop="name" content="Overflow">
+	<meta itemprop="description" content="Overflow Your calculator has been suspiciously well-behaved: every sum fit, every test told the truth. Time to break that streak — on purpose.
+The exercise in exercises/02_calculator/08_overflow asks an uncomfortable question: what happens when the answer doesn’t fit the type? The full integer model could fill a chapter on its own. You’ll get the slice that matters — spotting the wrap and picking a fix — and leave the rest for the day you meet it in the wild.">
+	<meta itemprop="wordCount" content="781">
+
+<title>Overflow • 100 Exercises to Learn Go</title>
+<link rel="icon" href="/100-exercises-to-learn-go/favicon.png" >
+<link rel="manifest" href="/100-exercises-to-learn-go/manifest.json">
+<link rel="canonical" href="http://localhost:1313/100-exercises-to-learn-go/02_calculator/overflow/">
+<link rel="stylesheet" href="/100-exercises-to-learn-go/book.min.a02ac497c6d6e5c0a81db7ed78d24326ef87e617cb865bebfbe4d1a1d6ee6573.css" integrity="sha256-oCrEl8bW5cCoHbfteNJDJu&#43;H5hfLhlvr&#43;&#43;TRodbuZXM=" crossorigin="anonymous">
+
+
+<script type="module" src="/100-exercises-to-learn-go/en.search.min.ea199a7d3adba7093b028220914cf0023c29e776fc8ad9cb234066e37adbe33b.js" integrity="sha256-6hmafTrbpwk7AoIgkUzwAjwp53b8itnLI0Bm43rb4zs=" crossorigin="anonymous"></script>
+  
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem("book-theme");
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {   }
+})();
+</script>
+<style>
+.book-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.6rem;
+  background: var(--gray-200);
+  color: var(--body-font-color);
+  border: 0;
+  border-radius: 0.25rem;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.book-theme-toggle:hover {
+  filter: brightness(0.95);
+}
+.book-theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+ 
+:root,
+:root[data-theme="light"],
+:root[data-theme="auto"] {
+  --body-background: #fafafa;
+}
+ 
+:root[data-theme="dark"] {
+  --body-background: #1d1e20;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --body-background: #1d1e20;
+  }
+}
+</style>
+
+</head>
+<body dir="ltr" class="book-kind-page book-type-02_calculator">
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/100-exercises-to-learn-go/"><span>100 Exercises to Learn Go</span>
+  </a>
+</h2>
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text"
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+<button id="book-theme-toggle" class="book-theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+  <svg id="book-theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg id="book-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <span id="book-theme-label">Dark mode</span>
+</button>
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById("book-theme-toggle");
+  var moon = document.getElementById("book-theme-icon-moon");
+  var sun = document.getElementById("book-theme-icon-sun");
+  var label = document.getElementById("book-theme-label");
+  if (!btn) return;
+  function render(theme) {
+    var dark = theme === "dark";
+    moon.hidden = dark;
+    sun.hidden = !dark;
+    label.textContent = dark ? "Light mode" : "Dark mode";
+    btn.setAttribute("aria-pressed", dark ? "true" : "false");
+  }
+  render(root.getAttribute("data-theme") || "light");
+  btn.addEventListener("click", function () {
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("book-theme", next); } catch (e) {}
+    render(next);
+  });
+})();
+</script>
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Intro</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/syntax/" class="">
+      Syntax</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/test_workflow/" class="">
+      The test workflow</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/packages/" class="">
+      Packages and imports</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/tooling/" class="">
+      gofmt and go vet</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/01_intro/welcome/" class="">
+      Welcome</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Calculator</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/integers/" class="">
+      Integers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/variables/" class="">
+      Variables</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/if_else/" class="">
+      If Else</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/panics/" class="">
+      Panics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/factorial/" class="">
+      Factorial</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/sum_to/" class="">
+      Sum To</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/sum_range/" class="">
+      Sum Range</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/overflow/" class="active">
+      Overflow</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/saturating/" class="">
+      Saturating Add</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/conversions/" class="">
+      Conversions</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/divmod/" class="">
+      Div Mod</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/floats/" class="">
+      Floats</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/runes/" class="">
+      Runes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/strings/" class="">
+      Strings</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/02_calculator/bitwise/" class="">
+      Bitwise operators</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket v1</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/struct/" class="">
+      Struct</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/validation/" class="">
+      Validation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/constructor/" class="">
+      Constructor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/setters/" class="">
+      Setters</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/receivers/" class="">
+      Value Receivers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/zero_value/" class="">
+      Zero Value</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/string/" class="">
+      String</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/03_ticket_v1/embed/" class="">
+      Embedding</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Interfaces</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/stringer/" class="">
+      Stringer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/generic_sum/" class="">
+      Generic Sum</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/any/" class="">
+      Any</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/type_switch/" class="">
+      Type Switch</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/embed_iface/" class="">
+      Embedding Interfaces</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/comparable/" class="">
+      Comparable</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/04_interfaces/min_generic/" class="">
+      Generic Min</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket v2</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/status/" class="">
+      Status</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/errors/" class="">
+      Ticket Errors</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/wrap/" class="">
+      Wrap</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/join/" class="">
+      Join</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/05_ticket_v2/panic_vs_error/" class="">
+      Panic vs Error</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Ticket Store</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/slice_store/" class="">
+      Slice Store</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/map_store/" class="">
+      Map Store</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/slices_fn/" class="">
+      Slice Functions (Clone)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/sort_filter/" class="">
+      Sort and Filter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/pagination/" class="">
+      Pagination</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/06_ticket_store/map_idioms/" class="">
+      Map Idioms</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Concurrency</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/mutex/" class="">
+      Mutex Counter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/channels/" class="">
+      Channel Pipeline</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/buffered/" class="">
+      Buffered Collect</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/07_concurrency/select/" class="">
+      Select with Timeout</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Testing</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/table/" class="">
+      Table-Driven Tests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/subtests/" class="">
+      Subtests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/helpers/" class="">
+      Test Helpers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/testdata/" class="">
+      Testdata Fixtures</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/examples/" class="">
+      Example Tests</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/benchmarks/" class="">
+      Benchmarks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/08_testing/errassert/" class="">
+      Asserting Errors</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Strings</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/fields/" class="">
+      Splitting and Joining</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/trim/" class="">
+      Trimming</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/contains/" class="">
+      Substring Checks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/replace/" class="">
+      Replacement</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/builder/" class="">
+      Building Strings Efficiently</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/09_strings/strconv/" class="">
+      String/Number Conversion</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Time</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/format/" class="">
+      Formatting Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/parse/" class="">
+      Parsing Time</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/duration/" class="">
+      Durations</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/10_time/compare/" class="">
+      Testable Time</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      JSON</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/marshal/" class="">
+      Marshaling Tickets</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/unmarshal/" class="">
+      Unmarshaling and Validating</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/tags/" class="">
+      Struct Tags: Hiding and Omitting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/strict/" class="">
+      Strict Decoding</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/11_json/custom/" class="">
+      Custom Marshalers</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      I/O</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/reader/" class="">
+      Reading Everything</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/writer/" class="">
+      Writing Lines</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/scanner/" class="">
+      Scanning Words</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/file/" class="">
+      Saving Tickets to Disk</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/copy/" class="">
+      Copying Streams</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/12_io/jsonlog/" class="">
+      Ticket Logs (JSON Lines)</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      HTTP</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/handler/" class="">
+      Your First Handler</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/status/" class="">
+      Status Codes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/query/" class="">
+      Query Parameters</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/routing/" class="">
+      Routing with ServeMux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/json_api/" class="">
+      JSON In, JSON Out</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/httptest/" class="">
+      Testing Handlers with httptest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/middleware/" class="">
+      Middleware</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/context/" class="">
+      Contexts and Cancellation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/client/" class="">
+      Calling Other Servers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/13_http/error_response/" class="">
+      Structured Errors</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Persistence</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/save/" class="">
+      Crash-Safe Saves</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/load/" class="">
+      Loading State at Boot</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/corrupt/" class="">
+      Surviving Corrupt Files</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/export/" class="">
+      Exporting Backups</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/14_persistence/import/" class="">
+      Importing Backups Safely</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a>
+      Capstone</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/store_server/" class="">
+      Create and List</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/get_one/" class="">
+      Get One Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/update/" class="">
+      Update a Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/delete/" class="">
+      Delete a Ticket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/graceful/" class="">
+      Graceful Shutdown</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/config/" class="">
+      Config From the Environment</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/100-exercises-to-learn-go/15_capstone/e2e/" class="">
+      End to End</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <input type="checkbox" class="toggle" id="menu-control" />
+  <label for="menu-control">
+    <img src="/100-exercises-to-learn-go/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Overflow</h3>
+
+  
+  <input type="checkbox" class="toggle" id="toc-control" />
+  <label for="toc-control">
+    <img src="/100-exercises-to-learn-go/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+  
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#overflow">Overflow</a>
+      <ul>
+        <li><a href="#a-number-that-doesnt-fit">A number that doesn&rsquo;t fit</a></li>
+        <li><a href="#the-broken-contract">The broken contract</a></li>
+        <li><a href="#why-not-just-use-a-bigger-type">Why not just use a bigger type?</a></li>
+        <li><a href="#two-ways-out">Two ways out</a>
+          <ul>
+            <li><a href="#detect-it">Detect it</a></li>
+            <li><a href="#sidestep-it">Sidestep it</a></li>
+          </ul>
+        </li>
+        <li><a href="#task">Task</a></li>
+        <li><a href="#check">Check</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="overflow">Overflow<a class="anchor" href="#overflow"></a></h1>
+<p>Your calculator has been suspiciously well-behaved: every sum fit, every test
+told the truth. Time to break that streak — on purpose.</p>
+<p>The exercise in <code>exercises/02_calculator/08_overflow</code> asks an uncomfortable
+question: what happens when the answer doesn&rsquo;t fit the type? The full
+integer model could fill a chapter on its own. You&rsquo;ll get the slice that
+matters — spotting the wrap and picking a fix — and leave the rest for the
+day you meet it in the wild.</p>
+<h2 id="a-number-that-doesnt-fit">A number that doesn&rsquo;t fit<a class="anchor" href="#a-number-that-doesnt-fit"></a></h2>
+<p>A <code>uint8</code> holds 8 bits, so it represents the values 0 to 255. Now add:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">uint8</span> = <span style="color:#ae81ff">200</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">uint8</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span> <span style="color:#75715e">// 44?!</span></span></span></code></pre></div><p>200 + 100 is 300, and 300 is not a <code>uint8</code>. Go doesn&rsquo;t stop your program
+over this. It wraps around modulo 256 and carries on: <code>(200 + 100) % 256</code>
+is 44. No error, no warning — just a wrong number wearing a correct type.</p>
+<h2 id="the-broken-contract">The broken contract<a class="anchor" href="#the-broken-contract"></a></h2>
+<p>This is what <strong>integer overflow</strong> means: the mathematically correct result
+of an operation doesn&rsquo;t fit the type it&rsquo;s supposed to come back in. Addition
+promises &ldquo;two <code>uint8</code> values in, one <code>uint8</code> out&rdquo; — and 300 breaks the deal.</p>
+<p>Overflows bite because everything <em>looks</em> fine. Lengths, counters, and
+indexes computed this way go wrong quietly, far from the line that caused
+it. That&rsquo;s why every narrow unsigned addition deserves a second thought.</p>
+<blockquote class='book-hint '>
+<p>Subtraction wraps too: <code>uint8(0) - 1</code> is 255, not -1. That event is
+called <strong>underflow</strong>. Everything below applies to it as well, but we&rsquo;ll
+talk only about addition — it&rsquo;s what this exercise tests.</p>
+</blockquote><h2 id="why-not-just-use-a-bigger-type">Why not just use a bigger type?<a class="anchor" href="#why-not-just-use-a-bigger-type"></a></h2>
+<p>One tempting fix: let the language promote the result automatically. <code>a + b</code>
+overflows <code>uint8</code>, so why not quietly hand back a <code>uint16</code>?</p>
+<p>Because Go refuses to guess about width. The type of <code>a + b</code> where both are
+<code>uint8</code> is <code>uint8</code> — always, with no exceptions. Widening is your explicit
+decision to make, visible in the code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> uint16(<span style="color:#a6e22e">a</span>) <span style="color:#f92672">+</span> uint16(<span style="color:#a6e22e">b</span>) <span style="color:#75715e">// 300, honestly held</span></span></span></code></pre></div><p>No hidden costs, no surprise types flowing downstream. If you want room,
+say so up front.</p>
+<h2 id="two-ways-out">Two ways out<a class="anchor" href="#two-ways-out"></a></h2>
+<p>Since promotion won&rsquo;t save us, what can we do when a sum might overflow?
+It boils down to two approaches:</p>
+<ul>
+<li><strong>Detect it</strong> — compute in the narrow type, notice the wrap, and tell
+the caller via a flag.</li>
+<li><strong>Sidestep it</strong> — compute in a wider type and check the range yourself.</li>
+</ul>
+<h3 id="detect-it">Detect it<a class="anchor" href="#detect-it"></a></h3>
+<p>Without wrapping, <code>a + b</code> is at least as big as <code>a</code>. With wrapping, 256 is
+subtracted behind your back, so the result comes out <em>smaller</em> than <code>a</code>.
+That single comparison is the whole detector:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// Syntax: compute, then compare against an input</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">AddUint8</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">uint8</span>) (<span style="color:#a6e22e">sum</span> <span style="color:#66d9ef">uint8</span>, <span style="color:#a6e22e">overflow</span> <span style="color:#66d9ef">bool</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sum</span> = <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">overflow</span> = <span style="color:#a6e22e">sum</span> &lt; <span style="color:#a6e22e">a</span> <span style="color:#75715e">// wrapped if and only if the result shrank</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sum</span>, <span style="color:#a6e22e">overflow</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Run the test cases through it by hand:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">AddUint8</span>(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">100</span>) <span style="color:#75715e">// (200, false) — 200 fits, 200 &lt; 100 is false</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">AddUint8</span>(<span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">100</span>) <span style="color:#75715e">// (44, true)   — wrapped, 44 &lt; 200 is true</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">AddUint8</span>(<span style="color:#ae81ff">255</span>, <span style="color:#ae81ff">1</span>)   <span style="color:#75715e">// (0, true)    — the classic edge, 0 &lt; 255 is true</span></span></span></code></pre></div><p>Returning the value <em>and</em> a flag — <code>(sum, overflow)</code> — is the idiomatic Go
+shape for &ldquo;here&rsquo;s the answer, and here&rsquo;s whether to trust it.&rdquo; You&rsquo;ll meet
+its cousins soon: map lookups return <code>(value, ok)</code>, type assertions return
+<code>(value, ok)</code>. Same rhythm every time.</p>
+<h3 id="sidestep-it">Sidestep it<a class="anchor" href="#sidestep-it"></a></h3>
+<p>When you need the true total rather than a yes/no flag, widen first and
+compare against the boundary:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">AddUint8Wide</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">uint8</span>) (<span style="color:#66d9ef">uint8</span>, <span style="color:#66d9ef">bool</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> uint16(<span style="color:#a6e22e">a</span>) <span style="color:#f92672">+</span> uint16(<span style="color:#a6e22e">b</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">w</span> &gt; <span style="color:#ae81ff">255</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> uint8(<span style="color:#a6e22e">w</span>), <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> uint8(<span style="color:#a6e22e">w</span>), <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div><p>Order matters: convert <em>before</em> adding. <code>uint8(x + y)</code> computed from two
+<code>uint8</code> values wraps before the conversion ever runs — the damage is done
+upstream of your check.</p>
+<p>For machine-word arithmetic the standard library helps: <code>math/bits</code> offers
+<code>Add</code> for <code>uint</code> plus <code>Add32</code> and <code>Add64</code> sized variants, each returning a
+sum and a carry flag. There is no 8-bit variant, which is exactly why the
+one-line comparison above is the usual choice for <code>uint8</code>.</p>
+<p>Which approach should you reach for? If the caller can proceed with a flag
+— retry, clamp, report — detect. If the caller needs the real number,
+widen. Either way, never return a quiet wrong answer when a loud signal
+was one comparison away.</p>
+<h2 id="task">Task<a class="anchor" href="#task"></a></h2>
+<p>Fix <code>AddUint8</code> in <code>calc.go</code> to report wraparound via the <code>overflow</code> flag.</p>
+<h2 id="check">Check<a class="anchor" href="#check"></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go test ./exercises/02_calculator/08_overflow/ -v</span></span></code></pre></div><hr>
+<p><em>Source: <code>exercises/02_calculator/08_overflow/README.md</code> · Inspired by <a href="https://github.com/mainmatter/100-exercises-to-learn-rust">Mainmatter&rsquo;s 100 Exercises to Learn Rust</a> (<a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>) — all Go prose here is original, free for non-commercial use.</em></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+<div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/100-exercises-to-learn-go/02_calculator/sum_range/" class="flex align-center">
+        <img src="/100-exercises-to-learn-go/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Sum Range</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/100-exercises-to-learn-go/02_calculator/saturating/" class="flex align-center">
+        <span>Saturating Add</span>
+        <img src="/100-exercises-to-learn-go/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay" aria-hidden="true"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#overflow">Overflow</a>
+      <ul>
+        <li><a href="#a-number-that-doesnt-fit">A number that doesn&rsquo;t fit</a></li>
+        <li><a href="#the-broken-contract">The broken contract</a></li>
+        <li><a href="#why-not-just-use-a-bigger-type">Why not just use a bigger type?</a></li>
+        <li><a href="#two-ways-out">Two ways out</a>
+          <ul>
+            <li><a href="#detect-it">Detect it</a></li>
+            <li><a href="#sidestep-it">Sidestep it</a></li>
+          </ul>
+        </li>
+        <li><a href="#task">Task</a></li>
+        <li><a href="#check">Check</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

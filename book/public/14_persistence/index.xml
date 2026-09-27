@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Persistence on 100 Exercises to Learn Go</title>
+		<link>http://localhost:1313/100-exercises-to-learn-go/14_persistence/</link>
+		<description>Recent content in Persistence on 100 Exercises to Learn Go</description>
+		<generator>Hugo</generator>
+		<language>en</language>
+		
+		
+		
+		
+			<atom:link href="http://localhost:1313/100-exercises-to-learn-go/14_persistence/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Crash-Safe Saves</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/14_persistence/save/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/14_persistence/save/</guid>
+				<description>&lt;h1 id=&#34;crash-safe-saves&#34;&gt;Crash-Safe Saves&lt;a class=&#34;anchor&#34; href=&#34;#crash-safe-saves&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Writing straight to the final path is risky: if the process crashes&#xA;mid-write, the file is left half-written and the old data is gone. The fix&#xA;is to write to a temporary file first and then rename it over the target.&#xA;On most filesystems a rename within the same directory is atomic — readers&#xA;see either the complete old file or the complete new file, never a mix.&#xA;The temp file must live in the same directory as the target, because only&#xA;same-directory renames are guaranteed atomic (a cross-directory rename may&#xA;silently become a slow, non-atomic copy).&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Loading State at Boot</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/14_persistence/load/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/14_persistence/load/</guid>
+				<description>&lt;h1 id=&#34;loading-state-at-boot&#34;&gt;Loading State at Boot&lt;a class=&#34;anchor&#34; href=&#34;#loading-state-at-boot&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Servers usually reload their state from disk when they start, but on the&#xA;very first run there is no file yet — and that is normal, not a crash. The&#xA;convention is to treat a missing file as empty state: return &lt;code&gt;(nil, nil)&lt;/code&gt;&#xA;and let the caller start fresh. Any other error (permissions, a directory&#xA;in the way) is still a real error. Go reports a missing file through&#xA;&lt;code&gt;os.IsNotExist&lt;/code&gt;, which recognizes the &amp;ldquo;not exist&amp;rdquo; error even when it is&#xA;wrapped.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Surviving Corrupt Files</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/14_persistence/corrupt/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/14_persistence/corrupt/</guid>
+				<description>&lt;h1 id=&#34;surviving-corrupt-files&#34;&gt;Surviving Corrupt Files&lt;a class=&#34;anchor&#34; href=&#34;#surviving-corrupt-files&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Disk contents are untrusted input: users hand-edit files, disks glitch, and&#xA;half-written JSON happens. A loader must therefore never panic on bad data&#xA;— it returns a descriptive error instead. Good errors carry context: wrap&#xA;the underlying failure with &lt;code&gt;%w&lt;/code&gt; (so callers can still unwrap it) and&#xA;include the file path, so the operator knows which file to fix. A message&#xA;without the path forces a hunt; a message with it points straight at the&#xA;problem.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Exporting Backups</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/14_persistence/export/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/14_persistence/export/</guid>
+				<description>&lt;h1 id=&#34;exporting-backups&#34;&gt;Exporting Backups&lt;a class=&#34;anchor&#34; href=&#34;#exporting-backups&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;A backup is just your data serialized in a documented format so it can be&#xA;moved or restored later. Here the format is a JSON array of tickets — the&#xA;same shape the rest of the course uses. You can write it compact (one line,&#xA;smallest bytes) or pretty (indented, human-readable); both decode to the&#xA;same tickets, so pick compact for machine-made backups and pretty when a&#xA;human will read the file. Either passes, as long as it is a valid JSON&#xA;array.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Importing Backups Safely</title>
+				<link>http://localhost:1313/100-exercises-to-learn-go/14_persistence/import/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/100-exercises-to-learn-go/14_persistence/import/</guid>
+				<description>&lt;h1 id=&#34;importing-backups-safely&#34;&gt;Importing Backups Safely&lt;a class=&#34;anchor&#34; href=&#34;#importing-backups-safely&#34;&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;Import is where bad data tries to get back in: a backup may be truncated,&#xA;hand-edited, or from an older version. So every import validates before it&#xA;trusts — here, each ticket must have a non-empty title, and the whole&#xA;import fails if any ticket does not. When validation passes, this course&#xA;uses replace semantics: the imported tickets become the entire state,&#xA;rather than merging with whatever is already loaded. Replace is simpler to&#xA;reason about (no duplicate or ordering questions); merge is a later,&#xA;deliberate feature.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>
