@@ -6,4 +6,4 @@
   <div class="book-progress-track"><div id="book-progress-fill"></div></div>
   <button id="book-progress-reset" type="button">Reset progress</button>
 </div>
-<script type="application/json" id="book-progress-pages">{{ $urls | jsonify }}</script>
+<script type="application/json" id="book-progress-pages">{{ $urls | jsonify | safeJS }}</script>
