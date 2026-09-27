@@ -1,0 +1,9 @@
+{{ $pages := .Site.RegularPages }}
+{{ $urls := slice }}
+{{ range $pages }}{{ $urls = $urls | append .RelPermalink }}{{ end }}
+<div class="book-progress">
+  <div class="book-progress-label"><span id="book-progress-count">0 / {{ len $pages }}</span> lessons</div>
+  <div class="book-progress-track"><div id="book-progress-fill"></div></div>
+  <button id="book-progress-reset" type="button">Reset progress</button>
+</div>
+<script type="application/json" id="book-progress-pages">{{ $urls | jsonify }}</script>

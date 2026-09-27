@@ -1,0 +1,38 @@
+{{ if .IsPage }}
+<label class="book-progress-check">
+  <input type="checkbox" id="book-progress-checkbox" />
+  <span>Mark as complete</span>
+</label>
+{{ end }}
+<script>
+(function () {
+  var KEY = "book-progress-v1";
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+  var page = {{ .RelPermalink | jsonify }};
+  var listEl = document.getElementById("book-progress-pages");
+  var pages = [];
+  try { pages = listEl ? JSON.parse(listEl.textContent) : []; } catch (e) { pages = []; }
+  var total = pages.length;
+  var box = document.getElementById("book-progress-checkbox");
+  var count = document.getElementById("book-progress-count");
+  var fill = document.getElementById("book-progress-fill");
+  var reset = document.getElementById("book-progress-reset");
+  function paint() {
+    var done = load();
+    var n = 0;
+    for (var i = 0; i < pages.length; i++) { if (done[pages[i]]) n++; }
+    if (count) count.textContent = n + " / " + total;
+    if (fill) fill.style.width = (total ? (100 * n / total) : 0) + "%";
+    if (box) box.checked = !!done[page];
+  }
+  if (box) box.addEventListener("change", function () {
+    var done = load();
+    if (box.checked) done[page] = true; else delete done[page];
+    save(done);
+    paint();
+  });
+  if (reset) reset.addEventListener("click", function () { save({}); paint(); });
+  paint();
+})();
+</script>

@@ -32,6 +32,40 @@
   height: 1rem;
   flex: none;
 }
+/* Lesson progress: per-page checkbox plus sidebar bar. */
+.book-progress-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.book-progress {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+}
+.book-progress-track {
+  height: 0.4rem;
+  background: var(--gray-200);
+  border-radius: 0.25rem;
+  overflow: hidden;
+  margin: 0.35rem 0;
+}
+#book-progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--color-accent-tip);
+}
+#book-progress-reset {
+  background: none;
+  border: 0;
+  color: var(--color-link);
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
 /* Light background: soft off-white instead of pure white. */
 :root,
 :root[data-theme="light"],
