@@ -56,6 +56,14 @@ keeps the index truthful even if `b` repeats an id within itself (last
 occurrence wins, consistently). Invariants maintained at every step beat
 invariants restored at the end.
 
+<details>
+<summary>Hint</summary>
+
+Index `a` by id into a map, then walk `b`: known ids overwrite in place,
+newcomers append. One pass per input, order preserved throughout.
+
+</details>
+
 ## Task
 
 Fill in `Merge` in `merge.go` so same-ID tickets come from `b`, order

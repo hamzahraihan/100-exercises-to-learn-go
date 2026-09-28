@@ -46,6 +46,14 @@ that swallows its own ending lies about completion. `defer`ed flushes
 can't easily return errors, which is why explicit flush-before-return is
 the idiom: finish loudly, in order, on purpose.
 
+<details>
+<summary>Hint</summary>
+
+Wrap the writer with `bufio.NewWriter`, `WriteString` each line with its
+newline, then return `Flush()`. Without the flush, success-shaped silence.
+
+</details>
+
 ## Task
 
 Fill in `WriteLines` in `bufwriter.go` so lines accumulate in a buffer and

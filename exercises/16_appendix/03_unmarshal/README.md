@@ -53,6 +53,15 @@ together is the habit. Two methods, one vocabulary, zero drift — the
 encoder and decoder now speak the same language because they share the
 same switch, conceptually if not literally.
 
+<details>
+<summary>Hint</summary>
+
+Unmarshal `data` into a plain string first, then switch: `"open"` and
+`"closed"` assign through `*s`, anything else returns an error. Pointer
+receiver — decoding must mutate.
+
+</details>
+
 ## Task
 
 Fill in `UnmarshalJSON` in `status.go` so `"open"`/`"closed"` decode and

@@ -58,6 +58,14 @@ original), give them different names so future readers never wonder which
 declare the accumulator once at the top and assign everywhere below: one
 variable, one name, zero shadows.
 
+<details>
+<summary>Hint</summary>
+
+Add with `+=` inside the `if` — assignment updates the parameter, while a
+declaring `:=` there would shadow it and return the total unchanged.
+
+</details>
+
 ## Task
 
 Fill in `ApplyBonus` in `shadow.go` so a positive `bonus` is added to

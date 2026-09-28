@@ -85,6 +85,15 @@ Scoping is part of specifying — a property without a domain is a wish.
 When your own fuzz runs find "failures" in territory you never promised,
 reach for `Skip` before reaching for excuses.
 
+<details>
+<summary>Hint</summary>
+
+Decode to `[]rune` first — bytes shatter multibyte characters — then swap
+symmetrically from both ends and convert back. The table pins exact
+outputs; the properties guard everything else.
+
+</details>
+
 ## Task
 
 Fill in `Reverse` in `reverse.go` so it flips rune order (multibyte-safe):

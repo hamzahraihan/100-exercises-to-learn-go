@@ -68,6 +68,15 @@ with the same found-flag honesty (replacing `TrimPrefix` guesswork about
 whether anything was cut), and `Cut` itself generalizes to any separator.
 Reach for the family whenever a split has exactly two interesting sides.
 
+<details>
+<summary>Hint</summary>
+
+Destructure `strings.Cut(s, "=")` — found means returning its before and
+after, absent means `("", "", false)`. Never let a missing separator echo
+as data.
+
+</details>
+
 ## Task
 
 Fill in `SplitKV` in `kv.go` so `"a=1"` splits and bare words report
