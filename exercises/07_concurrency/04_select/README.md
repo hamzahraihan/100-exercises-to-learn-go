@@ -59,6 +59,15 @@ value, nobody listening). Production code with heavy timeout traffic
 graduates to `time.NewTimer` with explicit `Stop`. For learning the shape,
 `After` is exactly right.
 
+<details>
+<summary>Hint</summary>
+
+`select` on two timers: `time.After(d)` returning `"data"`, and
+`time.After(200 * time.Millisecond)` returning the timeout error.
+Whichever fires first wins.
+
+</details>
+
 ## Task
 
 Complete `Fetch` in `fetch.go` so a simulated fetch taking `d` succeeds on

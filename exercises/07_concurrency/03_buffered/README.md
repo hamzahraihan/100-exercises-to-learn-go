@@ -74,6 +74,15 @@ sequenceDiagram
     C->>C: place by index into ordered output
 {{< /mermaid >}}
 
+<details>
+<summary>Hint</summary>
+
+Size the buffer to the worker count — `make(chan result, n)` — so no send
+ever blocks. Then receive exactly `n` times, placing each by its index
+tag.
+
+</details>
+
 ## Task
 
 Complete `Collect` in `collect.go` so `n` goroutines each send one doubled

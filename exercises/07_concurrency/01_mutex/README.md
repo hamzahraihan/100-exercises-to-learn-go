@@ -88,6 +88,14 @@ cruel reason: without it, the racy stub *sometimes passes*. Scheduling luck
 masks the bug; the detector doesn't gamble. Run `-race` on concurrent code
 as reflexively as `gofmt` on new code — luck is not a test strategy.
 
+<details>
+<summary>Hint</summary>
+
+`Lock` at the top of `Add` and `Value`, with `defer Unlock()` beside it.
+Lock the reader too — unsynchronized reads race just like writes.
+
+</details>
+
 ## Task
 
 Guard `n` in `counter.go` with the existing `mu` field so 100 concurrent

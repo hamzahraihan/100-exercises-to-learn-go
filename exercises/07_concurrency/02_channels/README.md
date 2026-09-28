@@ -74,6 +74,15 @@ Modern Go (this course requires 1.23+) binds fresh variables per iteration
 — the closure above is safe as written. If you ever backport concurrent
 loops to older Go, `i := i` inside the loop is the inoculation.
 
+<details>
+<summary>Hint</summary>
+
+Launch one goroutine per index sending an index-tagged result, then
+receive them all and place by tag into `out`. The collector is the only
+writer — no lock needed.
+
+</details>
+
 ## Task
 
 Complete `DoubleAll` in `pipeline.go` so each input is doubled via a
