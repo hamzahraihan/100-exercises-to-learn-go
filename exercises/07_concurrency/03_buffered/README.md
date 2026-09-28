@@ -63,6 +63,17 @@ scheduler chaos, `out[r.i]` restores input order. Same trick, new reason
 to need it — buffered collection scrambles even harder, since nothing
 paces the workers at all.
 
+{{< mermaid >}}
+sequenceDiagram
+    participant W as Workers x n
+    participant B as Buffer cap n
+    participant C as Collector
+    W->>B: send indexed results
+    Note over W,B: no worker ever blocks - a slot always waits
+    C->>B: drain n receives
+    C->>C: place by index into ordered output
+{{< /mermaid >}}
+
 ## Task
 
 Complete `Collect` in `collect.go` so `n` goroutines each send one doubled
