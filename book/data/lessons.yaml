@@ -1,0 +1,320 @@
+# Lesson metadata: difficulty (1 Beginner, 2 Intermediate, 3 Advanced)
+# and estimated minutes. Rendered as pills by the book layout.
+"01_intro/welcome":
+  difficulty: 1
+  minutes: 5
+"01_intro/syntax":
+  difficulty: 1
+  minutes: 10
+"01_intro/test_workflow":
+  difficulty: 1
+  minutes: 10
+"01_intro/packages":
+  difficulty: 1
+  minutes: 10
+"01_intro/tooling":
+  difficulty: 1
+  minutes: 10
+"02_calculator/integers":
+  difficulty: 1
+  minutes: 10
+"02_calculator/variables":
+  difficulty: 1
+  minutes: 5
+"02_calculator/if_else":
+  difficulty: 1
+  minutes: 10
+"02_calculator/panics":
+  difficulty: 2
+  minutes: 10
+"02_calculator/factorial":
+  difficulty: 1
+  minutes: 10
+"02_calculator/sum_to":
+  difficulty: 1
+  minutes: 10
+"02_calculator/sum_range":
+  difficulty: 1
+  minutes: 10
+"02_calculator/overflow":
+  difficulty: 2
+  minutes: 15
+"02_calculator/saturating":
+  difficulty: 2
+  minutes: 10
+"02_calculator/conversions":
+  difficulty: 1
+  minutes: 10
+"02_calculator/divmod":
+  difficulty: 1
+  minutes: 10
+"02_calculator/floats":
+  difficulty: 2
+  minutes: 10
+"02_calculator/runes":
+  difficulty: 2
+  minutes: 15
+"02_calculator/strings":
+  difficulty: 2
+  minutes: 10
+"02_calculator/bitwise":
+  difficulty: 2
+  minutes: 15
+"03_ticket_v1/struct":
+  difficulty: 1
+  minutes: 10
+"03_ticket_v1/validation":
+  difficulty: 2
+  minutes: 15
+"03_ticket_v1/constructor":
+  difficulty: 2
+  minutes: 15
+"03_ticket_v1/setters":
+  difficulty: 2
+  minutes: 10
+"03_ticket_v1/receivers":
+  difficulty: 2
+  minutes: 10
+"03_ticket_v1/zero_value":
+  difficulty: 1
+  minutes: 10
+"03_ticket_v1/string":
+  difficulty: 2
+  minutes: 10
+"03_ticket_v1/embed":
+  difficulty: 2
+  minutes: 15
+"04_interfaces/stringer":
+  difficulty: 1
+  minutes: 10
+"04_interfaces/generic_sum":
+  difficulty: 2
+  minutes: 15
+"04_interfaces/any":
+  difficulty: 2
+  minutes: 10
+"04_interfaces/type_switch":
+  difficulty: 2
+  minutes: 15
+"04_interfaces/embed_iface":
+  difficulty: 2
+  minutes: 15
+"04_interfaces/comparable":
+  difficulty: 3
+  minutes: 15
+"04_interfaces/min_generic":
+  difficulty: 2
+  minutes: 10
+"05_ticket_v2/status":
+  difficulty: 2
+  minutes: 10
+"05_ticket_v2/errors":
+  difficulty: 2
+  minutes: 15
+"05_ticket_v2/wrap":
+  difficulty: 2
+  minutes: 15
+"05_ticket_v2/join":
+  difficulty: 3
+  minutes: 15
+"05_ticket_v2/panic_vs_error":
+  difficulty: 3
+  minutes: 15
+"06_ticket_store/slice_store":
+  difficulty: 2
+  minutes: 15
+"06_ticket_store/map_store":
+  difficulty: 2
+  minutes: 15
+"06_ticket_store/slices_fn":
+  difficulty: 2
+  minutes: 10
+"06_ticket_store/sort_filter":
+  difficulty: 2
+  minutes: 15
+"06_ticket_store/pagination":
+  difficulty: 2
+  minutes: 15
+"06_ticket_store/map_idioms":
+  difficulty: 2
+  minutes: 10
+"07_concurrency/mutex":
+  difficulty: 2
+  minutes: 15
+"07_concurrency/channels":
+  difficulty: 3
+  minutes: 20
+"07_concurrency/buffered":
+  difficulty: 3
+  minutes: 15
+"07_concurrency/select":
+  difficulty: 2
+  minutes: 15
+"08_testing/table":
+  difficulty: 1
+  minutes: 10
+"08_testing/subtests":
+  difficulty: 1
+  minutes: 10
+"08_testing/helpers":
+  difficulty: 2
+  minutes: 10
+"08_testing/testdata":
+  difficulty: 2
+  minutes: 10
+"08_testing/examples":
+  difficulty: 1
+  minutes: 10
+"08_testing/benchmarks":
+  difficulty: 2
+  minutes: 15
+"08_testing/errassert":
+  difficulty: 2
+  minutes: 10
+"09_strings/fields":
+  difficulty: 1
+  minutes: 10
+"09_strings/trim":
+  difficulty: 1
+  minutes: 10
+"09_strings/contains":
+  difficulty: 1
+  minutes: 10
+"09_strings/replace":
+  difficulty: 1
+  minutes: 10
+"09_strings/builder":
+  difficulty: 2
+  minutes: 10
+"09_strings/strconv":
+  difficulty: 2
+  minutes: 10
+"10_time/format":
+  difficulty: 1
+  minutes: 10
+"10_time/parse":
+  difficulty: 2
+  minutes: 10
+"10_time/duration":
+  difficulty: 1
+  minutes: 10
+"10_time/compare":
+  difficulty: 2
+  minutes: 15
+"11_json/marshal":
+  difficulty: 1
+  minutes: 10
+"11_json/unmarshal":
+  difficulty: 2
+  minutes: 10
+"11_json/tags":
+  difficulty: 2
+  minutes: 10
+"11_json/strict":
+  difficulty: 2
+  minutes: 15
+"11_json/custom":
+  difficulty: 3
+  minutes: 15
+"12_io/reader":
+  difficulty: 1
+  minutes: 10
+"12_io/writer":
+  difficulty: 2
+  minutes: 10
+"12_io/scanner":
+  difficulty: 2
+  minutes: 10
+"12_io/file":
+  difficulty: 1
+  minutes: 10
+"12_io/copy":
+  difficulty: 2
+  minutes: 10
+"12_io/jsonlog":
+  difficulty: 3
+  minutes: 20
+"13_http/handler":
+  difficulty: 1
+  minutes: 10
+"13_http/status":
+  difficulty: 1
+  minutes: 10
+"13_http/query":
+  difficulty: 1
+  minutes: 10
+"13_http/routing":
+  difficulty: 2
+  minutes: 15
+"13_http/httptest":
+  difficulty: 1
+  minutes: 10
+"13_http/json_api":
+  difficulty: 3
+  minutes: 20
+"13_http/middleware":
+  difficulty: 2
+  minutes: 15
+"13_http/context":
+  difficulty: 3
+  minutes: 15
+"13_http/client":
+  difficulty: 2
+  minutes: 15
+"13_http/error_response":
+  difficulty: 2
+  minutes: 15
+"14_persistence/save":
+  difficulty: 2
+  minutes: 15
+"14_persistence/load":
+  difficulty: 2
+  minutes: 10
+"14_persistence/corrupt":
+  difficulty: 2
+  minutes: 15
+"14_persistence/export":
+  difficulty: 1
+  minutes: 10
+"14_persistence/import":
+  difficulty: 3
+  minutes: 15
+"15_capstone/store_server":
+  difficulty: 3
+  minutes: 25
+"15_capstone/get_one":
+  difficulty: 2
+  minutes: 15
+"15_capstone/update":
+  difficulty: 3
+  minutes: 20
+"15_capstone/delete":
+  difficulty: 2
+  minutes: 15
+"15_capstone/graceful":
+  difficulty: 2
+  minutes: 15
+"15_capstone/config":
+  difficulty: 2
+  minutes: 10
+"15_capstone/e2e":
+  difficulty: 3
+  minutes: 25
+"16_appendix/shadow":
+  difficulty: 2
+  minutes: 10
+"16_appendix/merge":
+  difficulty: 3
+  minutes: 15
+"16_appendix/unmarshal":
+  difficulty: 2
+  minutes: 15
+"16_appendix/bufwriter":
+  difficulty: 2
+  minutes: 10
+"16_appendix/fuzz":
+  difficulty: 3
+  minutes: 20
+"16_appendix/cut":
+  difficulty: 1
+  minutes: 10

@@ -66,6 +66,37 @@
   font-size: 0.8rem;
   cursor: pointer;
 }
+/* Lesson badges: difficulty pill plus time estimate. */
+.book-lesson-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+}
+.book-badge {
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--gray-200);
+  color: var(--body-font-color);
+  font-weight: 600;
+}
+.book-badge[data-level="1"] {
+  background: var(--color-accent-tip);
+  color: white;
+}
+.book-badge[data-level="2"] {
+  background: var(--color-accent-warning);
+  color: white;
+}
+.book-badge[data-level="3"] {
+  background: var(--color-accent-caution);
+  color: white;
+}
+.book-eta {
+  color: var(--body-font-color);
+  opacity: 0.75;
+}
 /* Light background: soft off-white instead of pure white. */
 :root,
 :root[data-theme="light"],

@@ -1,0 +1,10 @@
+{{ if .IsPage }}
+{{ $key := printf "%s/%s" .Section .File.BaseFileName }}
+{{ with index .Site.Data.lessons $key }}
+{{ $labels := dict "1" "Beginner" "2" "Intermediate" "3" "Advanced" }}
+<div class="book-lesson-meta">
+  <span class="book-badge" data-level="{{ .difficulty }}">{{ index $labels (string .difficulty) }}</span>
+  <span class="book-eta">~{{ .minutes }} min</span>
+</div>
+{{ end }}
+{{ end }}
