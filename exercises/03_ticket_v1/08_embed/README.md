@@ -64,6 +64,14 @@ whole method sets, and the interfaces section puts that to work. For now,
 one struct inside another, promoted fields, explicit construction — Go's
 entire answer to reuse, with no hierarchy attached.
 
+<details>
+<summary>Hint</summary>
+
+Build the literal through the nesting: `Ticket{Meta: Meta{ID: id}, ...}`.
+Promotion works for reading, but construction names every level.
+
+</details>
+
 ## Task
 
 Implement `NewTicketWithID` in `ticket.go` so it returns a `Ticket` with the

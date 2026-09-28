@@ -57,6 +57,15 @@ if _, err := NewTicket("", "long enough description"); err == nil {
 gets interrogated. Ignoring requires the blank identifier's explicit
 consent; there's no accidental way to drop a value in Go.
 
+<details>
+<summary>Hint</summary>
+
+Validate exactly like the previous exercise, but return `(Ticket{}, err)`
+on failure and `(Ticket{...}, nil)` on success. The caller checks `err`
+before touching the ticket.
+
+</details>
+
 ## Task
 
 Implement `NewTicket` in `ticket.go`: accept a non-empty title and a

@@ -64,6 +64,14 @@ every user through the constructor under threat.
 `NewTicket` guards the front door. `IsZero` labels the back room. Between
 them, no ticket state goes unnamed.
 
+<details>
+<summary>Hint</summary>
+
+Both fields empty means zero — join the two comparisons with `&&`. A
+half-filled ticket must report false, so neither check alone suffices.
+
+</details>
+
 ## Task
 
 Implement `IsZero` in `ticket.go` so it reports whether the ticket is the

@@ -157,6 +157,14 @@ t.Fatalf("got %+v", tk)
 but never assigned its parameters to the fields. If the values are swapped,
 you'll see that too. Read the struct, don't guess.
 
+<details>
+<summary>Hint</summary>
+
+Return a struct literal with named fields, one per parameter. Positional
+literals compile too, but names survive future reordering.
+
+</details>
+
 ## Task
 
 Populate `NewTicket` in `ticket.go` to return the struct with the given

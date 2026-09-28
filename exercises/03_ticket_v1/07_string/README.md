@@ -63,6 +63,14 @@ Infinite recursion — `fmt` sees the `String` method, calls it, which calls
 `fmt`, forever. Format the *fields* (`t.Title`), never the whole value.
 One day this will save you from a stack overflow wearing a friendly face.
 
+<details>
+<summary>Hint</summary>
+
+Format the *fields*, not the ticket: `fmt.Sprintf` with `t.Title` inside.
+Formatting `t` itself would recurse forever. Add the `fmt` import first.
+
+</details>
+
 ## Task
 
 Implement `String` in `ticket.go` so the printed form includes the ticket's

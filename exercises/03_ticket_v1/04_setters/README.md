@@ -57,6 +57,14 @@ func (t *Ticket) SetTitle(title string) {
 
 One character of syntax, and the mirror becomes a window.
 
+<details>
+<summary>Hint</summary>
+
+The receiver needs a star: `func (t *Ticket)`. Then assign the field
+directly — one line, and the caller's ticket moves.
+
+</details>
+
 ## Task
 
 Implement `SetTitle` in `ticket.go` so it changes the ticket's title and

@@ -71,6 +71,15 @@ func (t Ticket) Validate() error {
 The shape should look familiar: it's the guard-clause habit from the
 calculator section, now returning explanations instead of zeros.
 
+<details>
+<summary>Hint</summary>
+
+One early return per rule: empty title first, short description second,
+`nil` at the end. Name the failing field in each message — the test reads
+them.
+
+</details>
+
 ## Task
 
 Implement `Validate` in `ticket.go`: return an error when `Title` is empty

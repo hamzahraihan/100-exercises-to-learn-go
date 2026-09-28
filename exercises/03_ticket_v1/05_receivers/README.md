@@ -52,6 +52,14 @@ Read the two lessons together and you hold the complete receiver doctrine:
 section will add the one remaining wrinkle — which receiver set a value
 actually implements.
 
+<details>
+<summary>Hint</summary>
+
+Set the title on `t` itself, then return `t` whole. Starting from the
+receiver (instead of building fresh) keeps the description intact.
+
+</details>
+
 ## Task
 
 Implement `Renamed` in `ticket.go` so it returns a copy of the ticket with
