@@ -8,3 +8,6 @@
 
 # Local book build outputs are never committed on this branch
 book/
+
+# Demo server state (created by `go run ./cmd/tickets`)
+tickets.json
