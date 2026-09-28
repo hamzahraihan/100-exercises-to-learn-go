@@ -59,6 +59,14 @@ without fixtures or cleanup. Any function taking `io.Reader` accepts these
 doubles unchanged: that's the payoff of the interface. Code against the
 narrow contract, and testing becomes construction instead of arrangement.
 
+<details>
+<summary>Hint</summary>
+
+One call drains the stream: `io.ReadAll(r)`. Check its error, then convert
+the bytes with `string(data)`.
+
+</details>
+
 ## Task
 
 Fill in `ReadAll` in `readall.go`:

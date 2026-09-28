@@ -57,6 +57,14 @@ logic and destination, flushing once at the end instead of paying per
 small write. Today's writes go direct — the buffering lesson arrives when
 flush discipline earns its own exercise.
 
+<details>
+<summary>Hint</summary>
+
+Range over the lines, formatting each with its trailing `"\n"` into the
+writer. Return the first error met — or `nil` when every write lands.
+
+</details>
+
 ## Task
 
 Fill in `WriteLines` in `writelines.go`:

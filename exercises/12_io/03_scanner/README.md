@@ -49,6 +49,15 @@ Note what's absent: no `io.EOF` handling by you. The scanner consumes the
 sentinel internally and reports through `Err()`. Layers doing their jobs —
 `Reader` signals, `Scanner` interprets, your code counts.
 
+<details>
+<summary>Hint</summary>
+
+Wrap the reader in a scanner, set the words split function, and count each
+`Scan()` that returns true. Return the count with `sc.Err()` — clean ends
+report `nil`.
+
+</details>
+
 ## Task
 
 Fill in `WordCount` in `wcount.go`:

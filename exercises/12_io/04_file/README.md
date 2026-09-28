@@ -54,6 +54,14 @@ The test closes the loop the only convincing way: save known bytes, load
 them back, demand byte equality. Round-trip assertions again — the
 marshaling lesson's shape, now with a filesystem in the middle.
 
+<details>
+<summary>Hint</summary>
+
+One call: `os.WriteFile` with the path, the data, and `0o644`. Return its
+error directly — the round-trip test reads back through `LoadTicket`.
+
+</details>
+
 ## Task
 
 Fill in `SaveTicket` in `ticketfile.go`:

@@ -43,6 +43,14 @@ progress plus the reason it stopped — the pattern from the writer lesson
 (`WriteLines` returning at the first failure) scaled to library grade.
 Check the error; trust the count only when it's nil.
 
+<details>
+<summary>Hint</summary>
+
+Delegate to `io.CopyN` with the destination, source, and count — and
+return exactly what it returns. Streaming needs no buffers of yours.
+
+</details>
+
 ## Task
 
 Fill in `CopyN` in `copyn.go`:

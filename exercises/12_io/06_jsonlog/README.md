@@ -58,6 +58,15 @@ hermetic — the scratch discipline from the file lesson, unchanged. The
 `.jsonl` extension advertises the format to future readers; conventions
 like this cost nothing and document everything.
 
+<details>
+<summary>Hint</summary>
+
+Open with `os.OpenFile` combining `O_APPEND`, `O_CREATE`, and `O_WRONLY`
+(plus `0o644`), defer the close, and `Encode` the ticket — the encoder
+appends the newline itself.
+
+</details>
+
 ## Task
 
 Fill in `AppendLog` in `ticketlog.go`:
