@@ -79,6 +79,15 @@ sequenceDiagram
     Note over T,F: atomic swap: readers see old OR new, never mixed
 {{< /mermaid >}}
 
+<details>
+<summary>Hint</summary>
+
+Create the temp with `os.CreateTemp` in the target's directory, write and
+close it, then `os.Rename` onto the path. Defer cleanup that removes the
+temp when an error occurred.
+
+</details>
+
 ## Task
 
 Fill in `Save` in `atomic.go`:

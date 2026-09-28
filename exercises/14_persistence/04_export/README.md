@@ -45,6 +45,14 @@ every extra byte at 3 AM. The test decodes rather than string-comparing
 (the round-trip habit once more), so either passes — pick by reader, and
 say which reader you picked in a comment.
 
+<details>
+<summary>Hint</summary>
+
+`json.Marshal` the slice, check the error, then `os.WriteFile` with
+`0o644`. Two known calls composed — the lesson is that they suffice.
+
+</details>
+
 ## Task
 
 Fill in `Export` in `export.go`:

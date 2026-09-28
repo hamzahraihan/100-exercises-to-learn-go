@@ -60,6 +60,15 @@ The good file still decodes cleanly through the same code: one ticket in,
 one ticket out, title intact. Hardening must never tax the honest case —
 validation gates the corrupt, the well-formed flows untouched.
 
+<details>
+<summary>Hint</summary>
+
+Read, then decode — wrapping each failure with the path via `%w` (`"read
+%s"` and `"decode %s"` tell the operator which stage broke). Never panic
+on file contents.
+
+</details>
+
 ## Task
 
 Fill in `LoadTickets` in `loadtickets.go`:

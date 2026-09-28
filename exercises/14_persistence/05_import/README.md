@@ -50,6 +50,15 @@ the offense; which ticket (`t.ID`) joins the message so operators fix the
 file instead of hunting it — errors that locate, the corrupt-file
 discipline, extended from files to records.
 
+<details>
+<summary>Hint</summary>
+
+Read, decode, then loop every ticket rejecting empty titles — one bad
+apple refuses the shipment with `(nil, err)`. Only fully valid imports
+come home.
+
+</details>
+
 ## Task
 
 Fill in `Import` in `importtk.go`:

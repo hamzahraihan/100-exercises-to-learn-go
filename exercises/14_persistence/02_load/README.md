@@ -61,6 +61,14 @@ informative return in the function: "nothing saved yet, proceed
 accordingly." Callers that can't distinguish it from failure will crash
 day-one installs; callers that can will boot anywhere.
 
+<details>
+<summary>Hint</summary>
+
+Read with `os.ReadFile`; when the error satisfies `os.IsNotExist`, return
+`(nil, nil)`. Every other error propagates untouched.
+
+</details>
+
 ## Task
 
 Fill in `Load` in `load.go`:
