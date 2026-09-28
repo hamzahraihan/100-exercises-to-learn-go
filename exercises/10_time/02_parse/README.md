@@ -60,6 +60,14 @@ presence with `_` discarding the meaningless time. Parse functions always
 have both branches worth pinning — valid input converts, junk complains —
 and the table here covers each exactly once.
 
+<details>
+<summary>Hint</summary>
+
+Return `time.Parse` with the same `"2006-01-02"` layout and the input.
+Pass its error through untouched — mismatches fail loudly by design.
+
+</details>
+
 ## Task
 
 Fill in `ParseDay` in `day.go`:

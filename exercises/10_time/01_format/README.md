@@ -47,6 +47,14 @@ Times carry their location with them (the test builds its input with
 without extra arguments. Data and presentation travel together; the layout
 only chooses the outfit.
 
+<details>
+<summary>Hint</summary>
+
+Return `t.Format` with the `"2006-01-02"` layout. Write the reference date
+in the shape you want — year where `2006` sits, month where `01` sits.
+
+</details>
+
 ## Task
 
 Fill in `FormatDay` in `day.go`:

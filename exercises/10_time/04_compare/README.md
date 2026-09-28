@@ -59,6 +59,14 @@ network boundaries too. Whenever a test would need to control the
 uncontrollable, look for the direct call and ask what a variable would buy.
 Usually: everything.
 
+<details>
+<summary>Hint</summary>
+
+Return `Now().After(expiry)` — through the variable, never `time.Now()`
+directly. The test swaps the clock; the function must read the seam.
+
+</details>
+
 ## Task
 
 Fill in `IsExpired` in `expiry.go` (keep the `Now` variable as the clock):

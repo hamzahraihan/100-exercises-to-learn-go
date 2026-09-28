@@ -44,6 +44,14 @@ clock time" disagree by an hour — `AddDate` handles calendar days, `Add`
 handles stopwatch time. Ninety-nine percent of durations never cross that
 line; knowing which function serves which master covers the remaining one.
 
+<details>
+<summary>Hint</summary>
+
+Return `b.Sub(a).Hours()` — direction first (later minus earlier), then
+the fractional-hours converter. Same instant yields exactly `0`.
+
+</details>
+
 ## Task
 
 Fill in `HoursBetween` in `hours.go`:
