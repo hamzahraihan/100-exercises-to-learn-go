@@ -46,6 +46,14 @@ front. When a future function needs equality instead of order, `comparable`
 from the previous lesson waits. Pick the weakest constraint the body needs;
 each one is a precise statement about what the code actually does.
 
+<details>
+<summary>Hint</summary>
+
+Compare with `<` and return the smaller side; otherwise return the other.
+The constraint guarantees the operator — write it as if `T` were `int`.
+
+</details>
+
 ## Task
 
 Complete `Min` in `min.go` so it returns the smaller of `a` and `b`

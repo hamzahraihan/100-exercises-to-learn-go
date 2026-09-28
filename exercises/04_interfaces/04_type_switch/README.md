@@ -61,6 +61,15 @@ abstract over behavior you *don't*. That judgment — switch versus
 interface — is one of Go's central design calls, and now you've practiced
 one side of it.
 
+<details>
+<summary>Hint</summary>
+
+Switch on `v.(type)` with a case per named type, formatting each with its
+label (`"int: 42"`). Let `default` return `"unknown"` — it catches floats,
+nil, and everything else.
+
+</details>
+
 ## Task
 
 Complete `Describe` in `describe.go` so `int` and `string` inputs are

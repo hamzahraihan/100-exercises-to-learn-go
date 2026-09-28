@@ -48,6 +48,14 @@ Same reason for `reflect.DeepEqual` on the result: slices don't support
 so deep comparison does the checking. The constraint you just learned
 explains the test you just read.
 
+<details>
+<summary>Hint</summary>
+
+Range over the map collecting keys — `for k := range m`, appending each.
+Pre-size with `make` if you like, but correctness only needs the loop.
+
+</details>
+
 ## Task
 
 Implement `Keys` in `keys.go` so it returns every key in `m` and the

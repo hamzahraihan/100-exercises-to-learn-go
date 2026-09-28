@@ -57,6 +57,14 @@ id *and* item — appear in it. A `String` that prints only the id would
 compile, satisfy the interface, and still fail: conformance is necessary,
 content is graded.
 
+<details>
+<summary>Hint</summary>
+
+Format both fields into one string with `fmt.Sprintf` — id and item must
+each appear in the output. The test checks content, not exact shape.
+
+</details>
+
 ## Task
 
 Implement `String` in `order.go` so the returned string contains both the

@@ -48,6 +48,15 @@ out to be, `total` starts as its zero — `0` here, `0.0` there — ready to
 accumulate. The variables lesson's rule never changed; it just learned a
 new letter.
 
+<details>
+<summary>Hint</summary>
+
+Range over `vals`, adding each element into `total` with `+=`. The
+constraint already permits the operation — write the loop as if `T` were
+concrete.
+
+</details>
+
 ## Task
 
 Complete `Sum` in `sum.go` by ranging over `vals` and accumulating into

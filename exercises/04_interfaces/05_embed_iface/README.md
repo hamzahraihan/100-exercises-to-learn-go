@@ -67,6 +67,14 @@ The test itself is a round trip — write `"hi"`, read `"hi"` back. Through
 the round trip it proves both halves of the embedded contract in four
 lines.
 
+<details>
+<summary>Hint</summary>
+
+`Write` assigns the parameter to `b.data`; `Read` returns `b.data`. Two
+one-liners — the interface is satisfied the moment both exist.
+
+</details>
+
 ## Task
 
 Implement `Write` and `Read` on `*Bucket` in `bucket.go` so the stored

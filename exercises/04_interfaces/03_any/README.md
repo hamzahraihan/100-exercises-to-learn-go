@@ -40,6 +40,14 @@ door. Your implementation doesn't branch (that's the *next* exercise's
 job); it delegates to `fmt` and lets the runtime sort it out. One line,
 total generality, eyes open about the price.
 
+<details>
+<summary>Hint</summary>
+
+One call does it: `fmt.Sprint(v)` formats any value. Add the `fmt` import
+— the function body is a single return.
+
+</details>
+
 ## Task
 
 Implement `SprintAny` in `any.go` so it returns the formatted value and
