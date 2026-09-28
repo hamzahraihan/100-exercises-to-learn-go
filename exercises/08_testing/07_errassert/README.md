@@ -52,6 +52,14 @@ caller decides, zero divisor is Tuesday. Same arithmetic, same name,
 different social contract — and choosing between them deliberately, per
 function, is a working Go programmer's daily bread.
 
+<details>
+<summary>Hint</summary>
+
+Guard `b == 0` first, returning `0` with the sentinel. Otherwise divide
+normally with a `nil` error — callers check the error before the value.
+
+</details>
+
 ## Task
 
 Fill in `Divide` in `divide.go` so it returns `a / b`, or the existing

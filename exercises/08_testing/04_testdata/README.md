@@ -60,6 +60,15 @@ The test asserts both halves of the `(string, error)` contract: no error
 values — because they are values, the errors-as-values lesson all over
 again, now wearing a file path.
 
+<details>
+<summary>Hint</summary>
+
+Read everything with `os.ReadFile` (returning its error untouched), then
+take element `[0]` of a `strings.SplitN` with `N = 2`. Propagate, don't
+decorate.
+
+</details>
+
 ## Task
 
 Fill in `FirstLine` in `poem.go` so it returns the first line of the file at

@@ -78,6 +78,15 @@ and asserts it actually iterated. Infrastructure testing itself: the same
 instinct as `t.Helper` marking, one level up. When your own suites grow
 benchmarks, steal this guard — an unmeasured benchmark is decoration.
 
+<details>
+<summary>Hint</summary>
+
+Walk two running values forward: `a, b = b, a+b` per step, `n` steps,
+return `a`. Trace `n = 0` (returns 0) and `n = 1` (returns 1) to confirm
+the edges.
+
+</details>
+
 ## Task
 
 Fill in `Fib` in `fib.go` so it returns the n-th Fibonacci number with

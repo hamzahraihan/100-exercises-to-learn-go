@@ -58,6 +58,15 @@ from the floats lesson — operands decide the operation, so the count
 converts before dividing. Same trap, new costume; the rule transfers
 unchanged.
 
+<details>
+<summary>Hint</summary>
+
+Return 0 when the slice is empty (guarding the divide-by-zero), otherwise
+sum the elements and divide by their count — converting the count to
+`float64` first.
+
+</details>
+
 ## Task
 
 Fill in `Mean` in `mean.go` so it averages the slice, returning 0 for empty

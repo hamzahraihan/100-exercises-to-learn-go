@@ -44,6 +44,14 @@ deliberately trivial — `return 2 * n` — because the exercise grades the
 comment is the cargo. When your own packages grow examples later, keep them
 this small: one behavior per example, output pinned, docs that cannot lie.
 
+<details>
+<summary>Hint</summary>
+
+Return `2 * n`. The function is trivial on purpose — the exercise grades
+the `Example` mechanism, and the `// Output: 4` line pins the math.
+
+</details>
+
 ## Task
 
 Fill in `Double` in `double.go` so it returns twice its input:

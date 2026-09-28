@@ -66,6 +66,14 @@ fails clearly. When you write your own tables later, add the fence-sitters
 — exactly 90, exactly 70 — because grading bugs live on boundaries, and
 rows are cheap.
 
+<details>
+<summary>Hint</summary>
+
+Chain downward: `>= 90` returns `"A"`, then `>= 80`, then `>= 70`, with
+`"F"` as the fallthrough. Each branch handles everything above its line.
+
+</details>
+
 ## Task
 
 Fill in `Grade` in `grade.go` so each score maps to its letter:

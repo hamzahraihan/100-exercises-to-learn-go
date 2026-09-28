@@ -67,6 +67,14 @@ name subtests after the *behavioral region* they cover, not the inputs
 they feed. Future readers learn the function's contract from the test
 names alone.
 
+<details>
+<summary>Hint</summary>
+
+Two guards: below `lo` returns `lo`, above `hi` returns `hi`, otherwise
+`n` itself. Three regions, three subtests — mirror them one to one.
+
+</details>
+
 ## Task
 
 Fill in `Clamp` in `clamp.go` so `n` is constrained to `[lo, hi]`:
