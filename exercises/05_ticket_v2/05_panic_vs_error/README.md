@@ -62,6 +62,14 @@ into a quiet, distant `-1` — exactly the silencing panics exist to prevent.
 Translate panics at boundaries you chose deliberately: input edges, library
 seams, startup. Everywhere else, let the crash speak.
 
+<details>
+<summary>Hint</summary>
+
+Defer a closure that calls `recover()`; when it returns non-nil, assign
+`-1` to the named return `n`. The normal path flows through untouched.
+
+</details>
+
 ## Task
 
 Complete `MustParse` in `must.go` so it returns `len(s)`, or `-1` when `s`

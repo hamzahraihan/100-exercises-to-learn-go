@@ -60,6 +60,14 @@ Order your constants accordingly. Whichever state a fresh value should
 represent goes first, at zero. Future readers will assume the zero is the
 default — make the assumption true.
 
+<details>
+<summary>Hint</summary>
+
+Switch on `s` with one case listing all three known statuses returning
+`true`, and let `default` return `false`. `Status(99)` must fall through.
+
+</details>
+
 ## Task
 
 Complete `Valid` in `status.go` so it returns true for `StatusOpen`,

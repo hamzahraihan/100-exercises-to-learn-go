@@ -60,6 +60,15 @@ ticket comes home with its status set, an unknown one arrives as an
 tickets escaping: the constructor discipline from the first ticket section,
 now speaking in identities instead of strings.
 
+<details>
+<summary>Hint</summary>
+
+Validate title and description as before, then check `status.Valid()`.
+Wrap `ErrUnknownStatus` with `%w` and a message naming the status — the
+test detects it with `errors.Is`.
+
+</details>
+
 ## Task
 
 Complete `NewTicketWithStatus` in `ticket.go` so unknown statuses wrap

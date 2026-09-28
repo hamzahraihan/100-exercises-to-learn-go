@@ -61,6 +61,14 @@ Partial failure must not hallucinate the other half. Independent appends
 give this for free — each sentinel appears if and only if its own rule
 fired.
 
+<details>
+<summary>Hint</summary>
+
+Append one sentinel per broken rule into a slice, then `errors.Join` the
+collection. No failures means an empty join — which is `nil` by itself.
+
+</details>
+
 ## Task
 
 Complete `ValidateAll` in `ticket.go` so empty titles report `ErrBadTitle`,

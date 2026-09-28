@@ -56,6 +56,15 @@ service: store: not found"`), and identity survives the whole descent.
 That property is what makes wrapping scale: add context freely at every
 boundary, secure that detection at the top still works.
 
+<details>
+<summary>Hint</summary>
+
+Loop with index; on a match return the index and `nil`. After the loop,
+return `-1` with `fmt.Errorf` using `%w` — never `%v` — so the sentinel
+survives.
+
+</details>
+
 ## Task
 
 Complete `FindTicket` in `ticket.go` so it returns the index of `id`, or a
