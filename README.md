@@ -43,6 +43,20 @@ Beyond the core 100 exercises, six bonus lessons live in
 `exercises/16_appendix/`: variable shadowing, ordered merging, custom JSON
 decoding, buffered writing, fuzz testing, and `strings.Cut`.
 
+## Demo server
+
+`cmd/tickets` runs the capstone as a real ticket API — self-contained, so
+it works whether or not the exercises are solved:
+
+```bash
+go run ./cmd/tickets
+curl -X POST localhost:8080/tickets -d '{"title":"Fix bug","status":"open"}'
+curl localhost:8080/tickets
+```
+
+`PORT` and `DATA_FILE` configure it; state persists across restarts, and
+`Ctrl-C` shuts it down gracefully.
+
 ## Book
 
 The Hugo site under `book/` renders directly from the exercise lessons —
