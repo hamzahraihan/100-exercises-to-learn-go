@@ -58,6 +58,15 @@ path. Environment-dependent code stays testable because the testing
 package controls the environment — the fake-clock lesson's seam, wearing
 operating-system clothes.
 
+<details>
+<summary>Hint</summary>
+
+Read each variable with `os.Getenv`, keep the default when empty, and
+convert the port with `strconv.Atoi` falling back on failure. Bad ports
+must not crash the server.
+
+</details>
+
 ## Task
 
 Fill in `ConfigFromEnv` in `config.go`:

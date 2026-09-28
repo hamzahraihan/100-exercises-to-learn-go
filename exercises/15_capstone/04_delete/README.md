@@ -51,6 +51,15 @@ codebases teach the same way: adjacent working code is the best
 documentation for the piece you're writing. Study the getter as your
 model, then write its mirror.
 
+<details>
+<summary>Hint</summary>
+
+Parse the id (`400` when malformed), delete (`404` when absent), then
+`WriteHeader(http.StatusNoContent)` with no body. Study the working
+getter next door as the model.
+
+</details>
+
 ## Task
 
 Fill in `handleDelete` in `delete.go`:

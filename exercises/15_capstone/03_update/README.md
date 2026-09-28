@@ -62,6 +62,14 @@ combination of *routable / decodable / valid / present* earns separate
 coverage, because each exercises a different branch — and untested
 branches are where replacement bugs hibernate.
 
+<details>
+<summary>Hint</summary>
+
+Parse, decode, validate — in that order, before `store.Update` ever runs.
+Then answer the stored ticket with `200`, or `404` when the id is absent.
+
+</details>
+
 ## Task
 
 Fill in `handleUpdate` in `update.go`:

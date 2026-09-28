@@ -70,6 +70,15 @@ The stubs answer `501 Not Implemented` — the honest placeholder for
 mux (`ServeHTTP` directly, recorder capturing), proving wiring *and*
 logic in one pass: POST returns 201, GET lists the created ticket.
 
+<details>
+<summary>Hint</summary>
+
+Create decodes, rejects empty titles with `400`, stores, then answers
+`201` with JSON (content type set first). List encodes the store's
+tickets with `200`.
+
+</details>
+
 ## Task
 
 Fill in `handleCreate` and `handleList` in `server.go`:

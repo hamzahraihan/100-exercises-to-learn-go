@@ -51,6 +51,15 @@ through the front), fetch `/tickets/1` for `200` plus title, fetch
 tests the handler in isolation from creation — each layer proved through
 the layer above, a pattern worth stealing for your own services.
 
+<details>
+<summary>Hint</summary>
+
+Convert `r.PathValue("id")` with `strconv.Atoi` (`400` on error), look the
+id up (`404` when absent), and encode the ticket with `200`. Three
+branches, three codes.
+
+</details>
+
 ## Task
 
 Fill in `handleGet` in `getone.go`:

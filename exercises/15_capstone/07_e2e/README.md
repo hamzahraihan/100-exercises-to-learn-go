@@ -83,6 +83,15 @@ else changes. The last exercise of the course asks for the least new
 knowledge — only the confidence that the pieces fit, because you watched
 each one being built.
 
+<details>
+<summary>Hint</summary>
+
+Five `HandleFunc` lines: `POST` and `GET` on `/tickets`, `GET`, `PUT`,
+and `DELETE` on `/tickets/{id}` — each to its existing handler method.
+Nothing else changes.
+
+</details>
+
 ## Task
 
 Register the routes in `NewServer` in `e2e.go`:

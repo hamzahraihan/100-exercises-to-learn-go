@@ -44,6 +44,15 @@ drain behavior gets exercised in integration, with live requests and
 measured timing; here the contract under test is narrower and exact: the
 function completes, returns nil, honors its signature.
 
+<details>
+<summary>Hint</summary>
+
+Derive with `context.WithTimeout(context.Background(), timeout)`, defer
+its cancel, and pass the context to `srv.Shutdown`. Bounded patience, one
+call.
+
+</details>
+
 ## Task
 
 Fill in `ShutdownGracefully` in `shutdown.go`:
