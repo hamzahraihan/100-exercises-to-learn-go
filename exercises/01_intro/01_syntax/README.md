@@ -140,6 +140,14 @@ declared-but-unused variable is a compile error, not a warning:
 sum := a + b // declared with `:=`, must be used below
 ```
 
+<details>
+<summary>Hint</summary>
+
+The body must produce an `int` from `a` and `b`. Which operator combines
+two numbers into their sum?
+
+</details>
+
 ## Task
 
 Fix `Compute` in `syntax.go` so the test passes.

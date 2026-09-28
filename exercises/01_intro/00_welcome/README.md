@@ -52,6 +52,14 @@ go build ./...
 If either breaks, you didn't break an exercise, you broke the build. Fix
 that first.
 
+<details>
+<summary>Hint</summary>
+
+Any non-empty string literal works — even a single word. The test only
+checks the result isn't empty.
+
+</details>
+
 ## Task
 
 Open `welcome.go` and make `Message` return a non-empty greeting.

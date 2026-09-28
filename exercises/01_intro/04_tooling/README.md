@@ -66,6 +66,15 @@ is wrong; vet or build going red means your program is broken. Different
 signals, different fixes — learn to tell them apart and debugging gets
 twice as fast.
 
+<details>
+<summary>Hint</summary>
+
+Build the result by concatenation: a quote character, then `s`, then a
+quote character. Afterwards, run `gofmt -w tooling.go` and watch the
+indentation fix itself.
+
+</details>
+
 ## Task
 
 Fix `Quote` in `tooling.go`, then run `gofmt -w tooling.go`,

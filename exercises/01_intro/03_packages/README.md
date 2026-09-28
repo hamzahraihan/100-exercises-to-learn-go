@@ -79,6 +79,14 @@ import (
 The test file has been doing this quietly all along — `testing` is itself
 just another package, borrowed the same way.
 
+<details>
+<summary>Hint</summary>
+
+The `strings` package converts case in both directions — check which one
+the test expects, then call exactly that on `s`.
+
+</details>
+
 ## Task
 
 Fix `Shout` in `greet.go` so the test passes.

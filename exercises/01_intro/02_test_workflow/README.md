@@ -78,6 +78,14 @@ From here on, this loop is the course: read the table, make every row
 green, move on. The tests are strict but fair — they check behavior, never
 implementation, so any `Add` returning the right sums passes.
 
+<details>
+<summary>Hint</summary>
+
+Declare a variable with `:=` holding twice `x`, then return it. The table
+already tells you the answer for 21 — work backward from 42.
+
+</details>
+
 ## Task
 
 Fix `Add` in `add.go`.
