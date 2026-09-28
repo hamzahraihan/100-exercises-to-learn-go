@@ -10,3 +10,6 @@
 # Regenerate with `go run ./tools/bookgen` (CI does this before the Hugo build).
 book/content/*/*.md
 !book/content/*/_index.md
+
+# Demo server state (created by `go run ./cmd/tickets`)
+tickets.json
