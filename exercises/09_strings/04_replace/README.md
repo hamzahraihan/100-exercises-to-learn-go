@@ -39,6 +39,15 @@ gracefully. The suite still fails overall (the first case demands the
 swap), which is exactly the red you want: one failing assertion pointing
 at one missing behavior.
 
+<details>
+<summary>Hint</summary>
+
+Return `strings.ReplaceAll` with the secret, the bracketed stand-in, and
+the input. No-match input passes through untouched — that case needs no
+code.
+
+</details>
+
 ## Task
 
 Fill in `Redact` in `redact.go`:

@@ -41,6 +41,15 @@ Both stubs fail at once (`nil` words, `""` join), so the suite starts
 fully red. Fix `Words` first — `JoinWords` has nothing sensible to join
 until splitting works — and watch the tests flip in dependency order.
 
+<details>
+<summary>Hint</summary>
+
+`Words` is one call: `strings.Fields(s)`. `JoinWords` is one call:
+`strings.Join` with a single-space separator. Human mess in, clean order
+out.
+
+</details>
+
 ## Task
 
 Fill in `Words` and `JoinWords` in `words.go`:

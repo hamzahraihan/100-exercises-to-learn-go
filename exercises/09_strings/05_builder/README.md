@@ -52,6 +52,14 @@ tool: wrap both versions in `BenchmarkXxx` and watch ns/op diverge as `n`
 grows. Performance claims without numbers are opinions; this codebase now
 equips you to convert them.
 
+<details>
+<summary>Hint</summary>
+
+Declare a `strings.Builder`, loop `n` times writing `s` into it, then
+return the built string. Zero iterations yields `""` with no special case.
+
+</details>
+
 ## Task
 
 Fill in `ConcatN` in `concat.go`:

@@ -40,6 +40,15 @@ deliberate, showing the blunt and precise cutters side by side so the
 *choice* between them becomes the lesson. Most string-cleaning bugs aren't
 wrong tools but imprecise ones — a cutset where a suffix belonged.
 
+<details>
+<summary>Hint</summary>
+
+`Clean` is `strings.TrimSpace(s)`; `TrimExt` is `strings.TrimSuffix` with
+the `".txt"` literal. Blunt cutter for padding, exact cutter for the
+extension.
+
+</details>
+
 ## Task
 
 Fill in `Clean` and `TrimExt` in `trim.go`:

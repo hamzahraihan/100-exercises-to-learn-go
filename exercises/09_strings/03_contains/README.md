@@ -44,6 +44,14 @@ The stub returns `false` for everything, so the table fails on its
 positive rows while `"nope"` passes vacuously — partial red, the signature
 of a boolean stub. One `Contains` call flips the whole table green.
 
+<details>
+<summary>Hint</summary>
+
+Return `strings.Contains(s, "@")` directly — the function body is one
+expression. Naivety is the spec here, not a shortcut.
+
+</details>
+
 ## Task
 
 Fill in `IsEmail` in `mail.go`:

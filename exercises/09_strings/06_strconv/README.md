@@ -55,6 +55,14 @@ conversion to a code point, not to digits. Every border crossing in Go
 means what it says; `Atoi`/`Itoa` mean digits, and digits are what this
 exercise trades in.
 
+<details>
+<summary>Hint</summary>
+
+Convert each input with `strconv.Atoi`, returning its error immediately on
+failure. Both clean means returning the sum with a `nil` error.
+
+</details>
+
 ## Task
 
 Fill in `SumStrings` in `parse.go`:
