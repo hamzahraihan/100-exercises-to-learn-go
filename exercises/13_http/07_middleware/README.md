@@ -48,6 +48,17 @@ final bytes. The test asserts both halves independently: the header exists
 obstructing. A middleware test always checks both directions — what it
 changed, and what it preserved.
 
+{{< mermaid >}}
+flowchart TD
+    R[Request] --> H[WithHeader: set X-Course]
+    H --> L[logging: pre-work]
+    L --> M[mux: route by pattern]
+    M --> H2[handler: write response]
+    H2 --> L2[logging: post-work]
+    L2 --> H3[WithHeader: post-work]
+    H3 --> Resp[Response]
+{{< /mermaid >}}
+
 ## Task
 
 Fill in `WithHeader` in `mw.go`:
