@@ -64,6 +64,15 @@ identity. Return `nil` for the degenerate cases and move on; callers
 ranging or measuring can't tell the difference, and no allocation is spent
 manufacturing an empty non-nil slice nobody can distinguish.
 
+<details>
+<summary>Hint</summary>
+
+Clamp first, slice second: pin negatives to zero, bounce hopeless cases
+to `nil`, trim the end to `len(ts)`. Only slice once every bound is proven
+inside range.
+
+</details>
+
 ## Task
 
 Complete `Page` in `store.go` so it returns up to `limit` tickets starting

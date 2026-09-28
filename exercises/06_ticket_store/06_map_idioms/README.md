@@ -62,6 +62,14 @@ Note the method set: pointer receivers throughout (`*Registry`), because
 `Put` mutates — the setters lesson, applied to containers without a second
 thought.
 
+<details>
+<summary>Hint</summary>
+
+`Put` lazily `make`s the map when `nil`, then stores under `t.Title`.
+`Lookup` is one comma-ok read — which also works fine on a `nil` map.
+
+</details>
+
 ## Task
 
 Complete `Put` and `Lookup` in `store.go` so stored tickets are retrievable

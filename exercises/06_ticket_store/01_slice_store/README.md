@@ -69,6 +69,15 @@ Honest about cost: this scan touches every element, so lookups slow as the
 store grows. That's not a flaw in the exercise — it's the motivation for
 the next one, where the same `Add`/`Get` shape gets a faster engine.
 
+<details>
+<summary>Hint</summary>
+
+`Add` assigns `s.nextID`, bumps it, and appends a ticket carrying that id
+— keeping the `append` result. `Get` ranges and returns the match with
+`true`, or a zero ticket with `false`.
+
+</details>
+
 ## Task
 
 Complete `Add` and `Get` in `store.go` so added tickets are retrievable by

@@ -65,6 +65,14 @@ array permanently. When your own functions take slices, decide the aliasing
 story up front and make the name tell it: `SortedByID` returns something
 new, and its body had better agree.
 
+<details>
+<summary>Hint</summary>
+
+Sort a *clone* with `slices.SortFunc` and `cmp.Compare` — never the
+caller's slice. Filter by appending matches into a fresh result slice.
+
+</details>
+
 ## Task
 
 Complete `SortedByID` and `OpenOnly` in `store.go` so one returns tickets

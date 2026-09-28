@@ -60,6 +60,14 @@ explains why), then mutate the clone and confirm the original stands
 unchanged. Equality checks content; the mutation checks sharing. Both
 assertions, or the clone isn't proven.
 
+<details>
+<summary>Hint</summary>
+
+`slices.Clone(ts)` does it in one call. By hand: append into an empty
+slice (or `copy` into a made one) so the result owns a fresh array.
+
+</details>
+
 ## Task
 
 Complete `CloneTickets` in `store.go` so the result equals the input but

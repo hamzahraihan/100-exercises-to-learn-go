@@ -69,6 +69,14 @@ Compare the two engines side by side. Slice `Get` scans and synthesizes
 signature, same tests, different physics — and the reason large stores
 index instead of scan.
 
+<details>
+<summary>Hint</summary>
+
+`Add` must `make` the map when it's `nil` before storing — writing to a
+nil map panics. `Get` is one comma-ok lookup: `tk, ok := s.tickets[id]`.
+
+</details>
+
 ## Task
 
 Complete `Add` and `Get` in `store.go` so added tickets are retrievable by
