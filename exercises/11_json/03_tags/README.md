@@ -59,6 +59,15 @@ Round-trip closes the test as before: decode, compare, confirm the title
 survived while the secret didn't. Tags shape both directions with one
 annotation — declare once, enforced everywhere.
 
+<details>
+<summary>Hint</summary>
+
+Plain `json.Marshal` is the whole fix — the `json:"-"` tag hides the
+secret by itself. Delete the hardcoded string; let the encoder enforce
+the annotations.
+
+</details>
+
 ## Task
 
 Fill in `MarshalTicket` in `ticket.go`:

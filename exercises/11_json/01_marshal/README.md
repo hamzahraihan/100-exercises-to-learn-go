@@ -54,6 +54,14 @@ fails with the offending output quoted for inspection), then equivalence.
 Round-trip assertions are the standard shape for serialization tests —
 steal it for every encoder you write, in either direction.
 
+<details>
+<summary>Hint</summary>
+
+Marshal `t`, check the error, and convert the bytes with `string(out)`.
+The tags on the struct do the naming — the function just encodes.
+
+</details>
+
 ## Task
 
 Fill in `MarshalTicket` in `ticket.go`:

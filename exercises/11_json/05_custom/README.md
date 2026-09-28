@@ -52,6 +52,16 @@ ticket, demand `"status":"open"` in the output. It doesn't call
 `MarshalJSON` directly — because callers never do either. The encoder is
 the only client, and the output is the only contract.
 
+<details>
+<summary>Hint</summary>
+
+Unquote into a plain string first, then switch: `"open"` assigns
+`StatusOpen` through `*s`, `"closed"` likewise, anything else errors.
+`MarshalTicket` stays a plain `json.Marshal` — the method is discovered,
+not called.
+
+</details>
+
 ## Task
 
 Fill in both functions in `ticket.go`:

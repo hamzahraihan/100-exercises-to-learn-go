@@ -51,6 +51,15 @@ policies (strictness costs nothing when input is clean), while
 `{"id":1,"title":"t","zzz":1}` — innocent to `Unmarshal` — errors under
 the decoder. One flag, and the typo becomes evidence instead of mystery.
 
+<details>
+<summary>Hint</summary>
+
+Build a decoder with `json.NewDecoder(strings.NewReader(data))`, call
+`DisallowUnknownFields()` on it, then `Decode` into the ticket. Same
+shape, stricter machine.
+
+</details>
+
 ## Task
 
 Fill in `UnmarshalStrict` in `ticket.go`:

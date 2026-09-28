@@ -50,6 +50,14 @@ decodes happily, `zzz` discarded. Whether that leniency stands is a policy
 decision — and the strict-decoding exercise two doors down exists to
 revisit exactly it.
 
+<details>
+<summary>Hint</summary>
+
+Decode into a `Ticket` (note the `&`), propagate any syntax error, then
+reject an empty title. Decode first, judge second — always in that order.
+
+</details>
+
 ## Task
 
 Fill in `UnmarshalTicket` in `ticket.go`:
