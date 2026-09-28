@@ -119,6 +119,14 @@ Which approach should you reach for? If the caller can proceed with a flag
 widen. Either way, never return a quiet wrong answer when a loud signal
 was one comparison away.
 
+<details>
+<summary>Hint</summary>
+
+Compute `sum = a + b` first, then ask whether it shrank: `overflow` is
+`sum < a`. Return both values together.
+
+</details>
+
 ## Task
 
 Fix `AddUint8` in `calc.go` to report wraparound via the `overflow` flag.

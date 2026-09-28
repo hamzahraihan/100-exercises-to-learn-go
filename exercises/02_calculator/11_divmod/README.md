@@ -47,6 +47,15 @@ contract *is* the contract. If this function ever needs to survive zero,
 its signature would grow an error return — a transformation the ticket
 exercises will rehearse until it's reflex.
 
+<details>
+<summary>Hint</summary>
+
+Return both expressions together: `a / b` for the quotient, `a % b` for
+the remainder. The named results are already declared — just return the
+pair.
+
+</details>
+
 ## Task
 
 Fix `DivMod` in `calc.go` to return `a / b` and `a % b`.

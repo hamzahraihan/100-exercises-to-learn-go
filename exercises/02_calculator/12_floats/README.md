@@ -48,6 +48,14 @@ intentions. Production float code compares within a tolerance or avoids
 equality entirely. The `math` package (`math.Pi`, `math.Sqrt`, `math.Abs`)
 covers the operations; judgment covers the comparisons.
 
+<details>
+<summary>Hint</summary>
+
+Convert before dividing: `float64(n) / 2`. The stub divides first and
+converts the truncated result — move the conversion to the operand.
+
+</details>
+
 ## Task
 
 Fix `Half` in `calc.go` so odd inputs keep their `.5`.

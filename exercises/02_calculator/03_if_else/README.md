@@ -51,6 +51,14 @@ which is precisely why tables list the boring cases alongside the obvious
 ones. When you write your own tests later, steal this habit: equal inputs,
 zero, negatives, in that order.
 
+<details>
+<summary>Hint</summary>
+
+Compare with `>=` and return `a` in that branch; everything else is `b`.
+The `{4, 4}` row decides the operator — pick the one that keeps ties.
+
+</details>
+
 ## Task
 
 Fix `Max` in `calc.go` to return the larger of `a` and `b` with an `if/else`.

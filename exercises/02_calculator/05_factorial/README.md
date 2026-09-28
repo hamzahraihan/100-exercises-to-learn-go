@@ -44,6 +44,15 @@ with this code returns 1 (loop never runs). Mathematically dubious, but the
 specification is silent — and tests, not philosophy, define done. Later
 exercises will show how to reject invalid input properly.
 
+<details>
+<summary>Hint</summary>
+
+Start the accumulator at 1, not 0 — then loop `i` from 1 through `n`
+inclusive, multiplying as you go. Check the boundary against
+`Factorial(5) == 120`.
+
+</details>
+
 ## Task
 
 Fix `Factorial` in `calc.go` to return `n!` using a `for` loop.

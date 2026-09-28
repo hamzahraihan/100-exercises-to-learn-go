@@ -47,6 +47,15 @@ Notice the structure: detect, then substitute. Saturating arithmetic is
 prescription. When the next exercise hands you a new policy for the same
 wrap, the detector won't change; only the `if` body will.
 
+<details>
+<summary>Hint</summary>
+
+Reuse the overflow check from two lessons ago: if the sum wrapped, return
+`math.MaxUint8` instead of the wrapped value. Same diagnosis, different
+prescription.
+
+</details>
+
 ## Task
 
 Fix `SaturatingAdd` in `calc.go` to return 255 when the sum overflows.

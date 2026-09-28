@@ -55,6 +55,14 @@ Turning numbers into digits is the `strconv` package's job, arriving with
 the strings section. If a conversion ever surprises you, suspect the
 *meaning* changed, not just the width.
 
+<details>
+<summary>Hint</summary>
+
+One conversion does it: wrap `x` as `int64(x)`. Widening preserves the
+value, so no range checks are needed this time.
+
+</details>
+
 ## Task
 
 Fix `ToInt64` in `calc.go` to convert `x` with `int64(x)`.

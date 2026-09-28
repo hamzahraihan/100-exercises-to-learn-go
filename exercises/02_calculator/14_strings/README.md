@@ -47,6 +47,14 @@ mid-character. Handling that correctly means decoding to runes first —
 `[]rune(s)` — which the strings section will drill properly. For today,
 the test speaks ASCII, and the guard-plus-slice pattern is the point.
 
+<details>
+<summary>Hint</summary>
+
+Guard the empty string first — slicing it panics — then uppercase `s[:1]`
+and append `s[1:]`. Build a new string; the original can't change.
+
+</details>
+
 ## Task
 
 Fix `ToUpperFirst` in `calc.go`. Keep `""` mapping to `""`.

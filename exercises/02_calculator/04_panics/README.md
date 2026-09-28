@@ -58,6 +58,14 @@ return value the test doesn't care about — the same `_` that skipped loop
 indexes in the workflow lesson. Discarding is deliberate; Go forbids
 silently ignoring values any other way.
 
+<details>
+<summary>Hint</summary>
+
+Guard with `if b == 0` first and panic with exactly the message the test
+names — then divide normally below the guard.
+
+</details>
+
 ## Task
 
 Fix `Divide` in `calc.go` to `panic("division by zero")` when `b == 0`,

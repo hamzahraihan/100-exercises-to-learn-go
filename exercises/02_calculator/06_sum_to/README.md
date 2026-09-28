@@ -61,6 +61,15 @@ unindented and unbothered. Go favors early returns over nested pyramids —
 you'll see the style harden into dogma by the HTTP section. The test's
 `SumTo(0)` row pins the behavior so the guard can't be "cleaned up" away.
 
+<details>
+<summary>Hint</summary>
+
+Bounce `n <= 0` with an early `return 0`, then count from 1 through `n`
+accumulating into a total that starts at 0. The seed answers the empty
+case — ask it first.
+
+</details>
+
 ## Task
 
 Fix `SumTo` in `calc.go` to return `1 + 2 + ... + n` (0 for `n <= 0`).

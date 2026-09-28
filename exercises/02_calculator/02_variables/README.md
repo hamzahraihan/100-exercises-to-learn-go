@@ -42,6 +42,14 @@ declarations (`var total int`), package-level variables (`:=` is banned
 there), or the rare case where inference would pick a narrower type than
 you want. Everywhere else, `:=` is idiomatic.
 
+<details>
+<summary>Hint</summary>
+
+Declare a variable with `:=` holding twice `x`, then return it. The table
+already tells you the answer for 21 — work backward from 42.
+
+</details>
+
 ## Task
 
 Fix `Double` in `calc.go` to return twice `x`, using `:=` to declare the result.

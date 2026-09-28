@@ -60,6 +60,15 @@ working type, *then* do arithmetic:
 return a + b*uint32(multiplier)
 ```
 
+<details>
+<summary>Hint</summary>
+
+The stub ignores `multiplier`. Convert it to the working type first, then
+multiply — the compiler rejects mixed-type arithmetic, so convert before
+you compute.
+
+</details>
+
 ## Task
 
 Use `multiplier` (a `uint8`) in the computation. Convert it to `uint32` first.

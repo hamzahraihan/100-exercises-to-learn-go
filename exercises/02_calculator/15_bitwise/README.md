@@ -71,6 +71,14 @@ Read the test once more with bit-goggles on: `Has(Read|Write, Write)` masks
 masks `001` with `010`, gets `000` — false. Every assertion is just shared
 bits surviving the mask.
 
+<details>
+<summary>Hint</summary>
+
+Mask with `&`: `p&flag` keeps only the bits both share. Compare the result
+against `flag` — equality means every requested bit was set.
+
+</details>
+
 ## Task
 
 Fix `Has` in `calc.go` using `&`.

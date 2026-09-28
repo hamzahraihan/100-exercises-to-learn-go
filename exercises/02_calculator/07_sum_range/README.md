@@ -42,6 +42,14 @@ version of this function needs `vals[i]`, a length, and a `<` that had
 better be right. `range` deletes all three concerns. Prefer it whenever you
 touch every element — which, honestly, is most loops.
 
+<details>
+<summary>Hint</summary>
+
+Range over `vals`, adding each element to a total that starts at 0. A `nil`
+slice needs no special case — ranging over it simply runs zero times.
+
+</details>
+
 ## Task
 
 Fix `SumRange` in `calc.go` to add all slice elements with `for ... range`.

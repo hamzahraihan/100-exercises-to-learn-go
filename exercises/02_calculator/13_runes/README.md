@@ -61,6 +61,15 @@ limits, "hello" counts — decode. Mismatching the two is an evergreen source
 of sliced-in-half accented characters; the strings section ahead will show
 the safe slicing patterns.
 
+<details>
+<summary>Hint</summary>
+
+`len` counts bytes, and `"é"` needs two. Reach for the `unicode/utf8`
+package's rune counter — or range over the string, which decodes as it
+goes.
+
+</details>
+
 ## Task
 
 Fix `CountRunes` in `calc.go` so multibyte characters count once.
