@@ -36,6 +36,22 @@ discovers state the way a client would. Update-then-delete-then-404 closes
 the loop the delete lesson opened: absence verified through the front
 door, over the wire.
 
+{{< mermaid >}}
+sequenceDiagram
+    participant T as Test
+    participant S as Server
+    T->>S: POST /tickets {title:A}
+    S-->>T: 201 + id in body
+    T->>S: GET /tickets/{id}
+    S-->>T: 200 + ticket
+    T->>S: PUT /tickets/{id} {title:B}
+    S-->>T: 200
+    T->>S: DELETE /tickets/{id}
+    S-->>T: 204
+    T->>S: GET /tickets/{id}
+    S-->>T: 404 - proven gone
+{{< /mermaid >}}
+
 ## The driver helper
 
 ```go
