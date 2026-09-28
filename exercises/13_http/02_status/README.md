@@ -51,6 +51,14 @@ so the recorder keeps its default `200` — and the assertion fails on the
 number alone, body untouched. Status is independently testable, and
 independently meaningful.
 
+<details>
+<summary>Hint</summary>
+
+One call: `w.WriteHeader(http.StatusCreated)`. No body needed — the test
+reads only the frozen status.
+
+</details>
+
 ## Task
 
 Fill in `Create` in `create.go`:

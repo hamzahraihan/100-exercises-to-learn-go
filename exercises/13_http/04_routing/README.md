@@ -50,6 +50,15 @@ the shared plumbing. Two requests, two bodies — `"list"` for the
 collection, `"one:7"` with the captured segment substituted. Routing
 assertions read the bodies; the mux did the choosing.
 
+<details>
+<summary>Hint</summary>
+
+Two `HandleFunc` calls on the mux: `"GET /tickets"` writing `"list"`,
+and `"GET /tickets/{id}"` writing `"one:"` plus `r.PathValue("id")`.
+Unmatched paths 404 on their own.
+
+</details>
+
 ## Task
 
 Fill in `NewMux` in `router.go`:

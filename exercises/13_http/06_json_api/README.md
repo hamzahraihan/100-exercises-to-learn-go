@@ -57,6 +57,15 @@ content type, body content); the sad test asserts the rejection code.
 Three moves in, three facets out: this is the complete JSON-handler
 shape, and every endpoint in the capstone will echo it.
 
+<details>
+<summary>Hint</summary>
+
+Decode into a ticket, reject empty titles with `400`, then set the JSON
+content type, write `201`, and encode. Header and status freeze before
+the body flows.
+
+</details>
+
 ## Task
 
 Fill in `CreateTicket` in `api.go`:

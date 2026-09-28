@@ -43,6 +43,15 @@ parseable type, the human text. Miss any one and some consumer, machine or
 human, stumbles. This mirrors the JSON-creation test's triple assertion
 from the JSON API lesson: same discipline, failure-flavored.
 
+<details>
+<summary>Hint</summary>
+
+Three steps in order: JSON content type, `WriteHeader(code)`, then encode
+a map holding `msg` under `"error"`. Reverse any two and something
+observable breaks.
+
+</details>
+
 ## Task
 
 Fill in `WriteError` in `errw.go`:

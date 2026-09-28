@@ -57,6 +57,15 @@ out the 10ms. Deterministic — no sleeps, no races, no flakiness. Testing
 cancellation means controlling time's arrow, and a pre-canceled context is
 the simplest time machine available.
 
+<details>
+<summary>Hint</summary>
+
+`select` the 10ms lookup against `ctx.Done()`: work wins returns the
+greeting, cancellation wins returns `ctx.Err()`. The pre-canceled test
+takes the second branch immediately.
+
+</details>
+
 ## Task
 
 Fill in `Greet` in `greet.go`:

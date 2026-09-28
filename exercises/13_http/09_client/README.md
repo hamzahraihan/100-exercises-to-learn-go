@@ -64,6 +64,14 @@ still no internet. `srv.URL` is the address; `defer srv.Close()` tears it
 down. Deterministic, hermetic, fast: client tests get a server Orson Welles
 would envy — real enough to believe, fake enough to control.
 
+<details>
+<summary>Hint</summary>
+
+`http.Get` the URL, check the error, `defer` the body close immediately,
+then `io.ReadAll` and convert. Close-first, before reading a single byte.
+
+</details>
+
 ## Task
 
 Fill in `GetBody` in `getbody.go`:

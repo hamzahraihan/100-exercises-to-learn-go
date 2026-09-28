@@ -59,6 +59,15 @@ flowchart TD
     H3 --> Resp[Response]
 {{< /mermaid >}}
 
+<details>
+<summary>Hint</summary>
+
+Set the header with `w.Header().Set` *before* calling
+`next.ServeHTTP(w, r)`. Both halves matter: the tag added, the chain
+continued.
+
+</details>
+
 ## Task
 
 Fill in `WithHeader` in `mw.go`:

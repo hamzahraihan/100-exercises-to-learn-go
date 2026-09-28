@@ -46,6 +46,14 @@ mind — unlike unused *variables*, unused *parameters* compile fine. (The
 stub's comment warns that imports are stricter: import `fmt` and never
 call it, and the build fails. Use what you import, starting now.)
 
+<details>
+<summary>Hint</summary>
+
+Write `"hello"` with `fmt.Fprint(w, ...)` — the writer takes it from
+there. The request parameter stays unused, and that's fine.
+
+</details>
+
 ## Task
 
 Fill in `Hello` in `hello.go`:

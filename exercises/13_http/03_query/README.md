@@ -45,6 +45,14 @@ pinned: present value passes through, missing value defaults. Query
 handling is pure string logic over a parsed map, and tests treat it that
 way — function in, string out.
 
+<details>
+<summary>Hint</summary>
+
+Read `r.URL.Query().Get("status")` — return it when non-empty,
+`"all"` otherwise. Missing and empty both land on the default.
+
+</details>
+
 ## Task
 
 Fill in `StatusParam` in `filter.go`:

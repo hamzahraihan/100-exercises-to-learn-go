@@ -45,6 +45,14 @@ client lesson introduces) for full-stack behavior.
 fluency with the ritual, not creativity with handlers. Liveness probes
 like this anchor real deployments; here it anchors your testing vocabulary.
 
+<details>
+<summary>Hint</summary>
+
+Write `"pong"` to `w` — one line. This exercise grades ritual fluency,
+and the ritual is: recorder, request, call, inspect.
+
+</details>
+
 ## Task
 
 Fill in `Ping` in `ping.go`:
