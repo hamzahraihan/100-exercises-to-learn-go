@@ -67,6 +67,18 @@ runs even on the success path (closing twice is harmless) — one deferred
 guard covering every exit, the `defer`-as-quarantine habit from the clock
 tests, now protecting a directory instead of a variable.
 
+{{< mermaid >}}
+sequenceDiagram
+    participant W as Writer
+    participant T as Temp file
+    participant F as data.json
+    W->>T: write full payload
+    Note over W,T: crash here harms only the temp
+    W->>T: close (flush buffers)
+    W->>F: rename tmp onto data.json
+    Note over T,F: atomic swap: readers see old OR new, never mixed
+{{< /mermaid >}}
+
 ## Task
 
 Fill in `Save` in `atomic.go`:
