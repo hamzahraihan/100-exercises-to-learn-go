@@ -71,16 +71,28 @@ func dumpManifest(root, dest string) error {
 
 func resolve(query string, list []entry) (entry, error) {
 	q := strings.ToLower(strings.TrimSpace(query))
+	var exact []entry
 	var hits []entry
 	for _, e := range list {
 		full := strings.ToLower(e.Section + "/" + e.Name)
 		name := strings.ToLower(e.Name)
 		if full == q || name == q {
-			return e, nil
+			exact = append(exact, e)
+			continue
 		}
 		if strings.Contains(full, q) || strings.Contains(name, q) {
 			hits = append(hits, e)
 		}
+	}
+	if len(exact) == 1 {
+		return exact[0], nil
+	}
+	if len(exact) > 1 {
+		var names []string
+		for _, h := range exact {
+			names = append(names, h.Section+"/"+h.Name)
+		}
+		return entry{}, fmt.Errorf("ambiguous %q: %s", query, strings.Join(names, ", "))
 	}
 	if len(hits) == 1 {
 		return hits[0], nil
@@ -133,7 +145,7 @@ func fetchRemote(client *http.Client, baseURL, branch string, e entry, outDir st
 		status := resp.StatusCode
 		resp.Body.Close()
 		if status != 200 {
-			return fmt.Errorf("GET %s: status %d (check --branch)", url, status)
+			return fmt.Errorf("GET %s: status %d (check --branch, try --local)", url, status)
 		}
 		if err != nil {
 			return err

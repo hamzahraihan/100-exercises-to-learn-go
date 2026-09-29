@@ -89,3 +89,33 @@ func TestFetchRemote(t *testing.T) {
 		t.Fatalf("unexpected body %q", data)
 	}
 }
+
+func TestResolveBareNameCollision(t *testing.T) {
+	list := []entry{
+		{Section: "01_intro", Name: "01_syntax"},
+		{Section: "02_other", Name: "01_syntax"},
+	}
+	_, err := resolve("01_syntax", list)
+	if err == nil || !strings.Contains(err.Error(), "ambiguous") {
+		t.Fatalf("expected ambiguous error, got %v", err)
+	}
+	if !strings.Contains(err.Error(), "01_intro/01_syntax") || !strings.Contains(err.Error(), "02_other/01_syntax") {
+		t.Fatalf("candidates missing in %v", err)
+	}
+}
+
+func TestFetchRemote404Hint(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.NotFound(w, r)
+	}))
+	defer srv.Close()
+	e := entry{Section: "01_intro", Name: "01_syntax", Files: []string{"README.md"}}
+	err := fetchRemote(srv.Client(), srv.URL, "main", e, filepath.Join(t.TempDir(), "out"))
+	if err == nil {
+		t.Fatal("expected 404 error")
+	}
+	msg := err.Error()
+	if !strings.Contains(msg, "main") || !strings.Contains(msg, "try --local") {
+		t.Fatalf("404 error missing branch/hint: %v", err)
+	}
+}
