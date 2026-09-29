@@ -1,8 +1,11 @@
 package main
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -65,5 +68,24 @@ func TestCopyAndGoMod(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(out, "go.mod")); err != nil {
 		t.Fatal("go.mod missing")
+	}
+}
+
+func TestFetchRemote(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("content:" + r.URL.Path))
+	})
+	srv := httptest.NewServer(mux)
+	defer srv.Close()
+	e := entry{Section: "01_intro", Name: "01_syntax", Files: []string{"README.md", "syntax.go", "syntax_test.go"}}
+	out := filepath.Join(t.TempDir(), "out")
+	os.MkdirAll(out, 0o755)
+	if err := fetchRemote(srv.Client(), srv.URL, "main", e, out); err != nil {
+		t.Fatal(err)
+	}
+	data, _ := os.ReadFile(filepath.Join(out, "syntax.go"))
+	if !strings.Contains(string(data), "content:") {
+		t.Fatalf("unexpected body %q", data)
 	}
 }

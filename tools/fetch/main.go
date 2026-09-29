@@ -4,6 +4,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -115,6 +117,34 @@ func writeGoMod(outDir, name string) error {
 	return os.WriteFile(filepath.Join(outDir, "go.mod"), []byte(content), 0o644)
 }
 
+const defaultBase = "https://raw.githubusercontent.com/hamzahraihan/100-exercises-to-learn-go"
+
+func fetchRemote(client *http.Client, baseURL, branch string, e entry, outDir string) error {
+	if err := os.MkdirAll(outDir, 0o755); err != nil {
+		return err
+	}
+	for _, f := range e.Files {
+		url := strings.TrimSuffix(baseURL, "/") + "/" + branch + "/exercises/" + e.Section + "/" + e.Name + "/" + f
+		resp, err := client.Get(url)
+		if err != nil {
+			return fmt.Errorf("GET %s: %w (try --local)", url, err)
+		}
+		body, err := io.ReadAll(resp.Body)
+		status := resp.StatusCode
+		resp.Body.Close()
+		if status != 200 {
+			return fmt.Errorf("GET %s: status %d (check --branch)", url, status)
+		}
+		if err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Join(outDir, f), body, 0o644); err != nil {
+			return err
+		}
+	}
+	return writeGoMod(outDir, e.Name)
+}
+
 func loadList() ([]entry, error) {
 	if _, err := os.Stat("exercises"); err == nil {
 		return scanExercises("exercises")
@@ -156,8 +186,9 @@ func main() {
 }
 
 func runLocal(args []string) error {
-	var query, out string
-	var force, listOnly bool
+	var query, out, branch string
+	var force, listOnly, wantRemote, wantLocal bool
+	branch = "main"
 	for i := 0; i < len(args); i++ {
 		a := args[i]
 		switch {
@@ -166,19 +197,19 @@ func runLocal(args []string) error {
 		case a == "--force":
 			force = true
 		case a == "--local":
-			// default; accepted for forward compat with remote mode
+			wantLocal = true
 		case a == "--remote":
-			return fmt.Errorf("remote mode not yet implemented (Task 3)")
+			wantRemote = true
 		case a == "--out" && i+1 < len(args):
 			i++
 			out = args[i]
 		case strings.HasPrefix(a, "--out="):
 			out = strings.TrimPrefix(a, "--out=")
-		case strings.HasPrefix(a, "--branch"):
-			// accepted in local mode, ignored until Task 3
-			if !strings.Contains(a, "=") && i+1 < len(args) {
-				i++
-			}
+		case a == "--branch" && i+1 < len(args):
+			i++
+			branch = args[i]
+		case strings.HasPrefix(a, "--branch="):
+			branch = strings.TrimPrefix(a, "--branch=")
 		case strings.HasPrefix(a, "--"):
 			return fmt.Errorf("unknown flag %q", a)
 		default:
@@ -189,7 +220,11 @@ func runLocal(args []string) error {
 			}
 		}
 	}
+	useRemote := wantRemote || (!wantLocal && isMissingDir("exercises"))
 	list, err := loadList()
+	if err != nil && useRemote {
+		list, err = fetchManifestRemote(http.DefaultClient, defaultBase, branch)
+	}
 	if err != nil {
 		return err
 	}
@@ -216,11 +251,36 @@ func runLocal(args []string) error {
 	if !empty && !force {
 		return fmt.Errorf("%s not empty (use --force)", out)
 	}
+	if useRemote {
+		return fetchRemote(http.DefaultClient, defaultBase, branch, e, out)
+	}
 	if _, err := os.Stat("exercises"); err != nil {
-		return fmt.Errorf("no ./exercises dir (remote mode lands in Task 3)")
+		return fmt.Errorf("no ./exercises dir (try --remote)")
 	}
 	if err := copyExercise("exercises", out, e); err != nil {
 		return err
 	}
 	return writeGoMod(out, e.Name)
+}
+
+func isMissingDir(p string) bool {
+	fi, err := os.Stat(p)
+	return err != nil || !fi.IsDir()
+}
+
+func fetchManifestRemote(client *http.Client, baseURL, branch string) ([]entry, error) {
+	url := strings.TrimSuffix(baseURL, "/") + "/" + branch + "/tools/fetch/manifest.json"
+	resp, err := client.Get(url)
+	if err != nil {
+		return nil, fmt.Errorf("GET %s: %w", url, err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("GET %s: status %d (check --branch)", url, resp.StatusCode)
+	}
+	var list []entry
+	if err := json.NewDecoder(resp.Body).Decode(&list); err != nil {
+		return nil, err
+	}
+	return list, nil
 }
