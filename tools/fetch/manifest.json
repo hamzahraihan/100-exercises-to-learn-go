@@ -1,0 +1,956 @@
+[
+  {
+    "section": "01_intro",
+    "name": "00_welcome",
+    "files": [
+      "README.md",
+      "welcome.go",
+      "welcome_test.go"
+    ]
+  },
+  {
+    "section": "01_intro",
+    "name": "01_syntax",
+    "files": [
+      "README.md",
+      "syntax.go",
+      "syntax_test.go"
+    ]
+  },
+  {
+    "section": "01_intro",
+    "name": "02_test_workflow",
+    "files": [
+      "README.md",
+      "add.go",
+      "add_test.go"
+    ]
+  },
+  {
+    "section": "01_intro",
+    "name": "03_packages",
+    "files": [
+      "README.md",
+      "greet.go",
+      "greet_test.go"
+    ]
+  },
+  {
+    "section": "01_intro",
+    "name": "04_tooling",
+    "files": [
+      "README.md",
+      "tooling.go",
+      "tooling_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "01_integers",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "02_variables",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "03_if_else",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "04_panics",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "05_factorial",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "06_sum_to",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "07_sum_range",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "08_overflow",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "09_saturating",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "10_conversions",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "11_divmod",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "12_floats",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "13_runes",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "14_strings",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "02_calculator",
+    "name": "15_bitwise",
+    "files": [
+      "README.md",
+      "calc.go",
+      "calc_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "01_struct",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "02_validation",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "03_constructor",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "04_setters",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "05_receivers",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "06_zero_value",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "07_string",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "03_ticket_v1",
+    "name": "08_embed",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "04_interfaces",
+    "name": "01_stringer",
+    "files": [
+      "README.md",
+      "order.go",
+      "order_test.go"
+    ]
+  },
+  {
+    "section": "04_interfaces",
+    "name": "02_generic_sum",
+    "files": [
+      "README.md",
+      "sum.go",
+      "sum_test.go"
+    ]
+  },
+  {
+    "section": "04_interfaces",
+    "name": "03_any",
+    "files": [
+      "README.md",
+      "any.go",
+      "any_test.go"
+    ]
+  },
+  {
+    "section": "04_interfaces",
+    "name": "04_type_switch",
+    "files": [
+      "README.md",
+      "describe.go",
+      "describe_test.go"
+    ]
+  },
+  {
+    "section": "04_interfaces",
+    "name": "05_embed_iface",
+    "files": [
+      "README.md",
+      "bucket.go",
+      "bucket_test.go"
+    ]
+  },
+  {
+    "section": "04_interfaces",
+    "name": "06_comparable",
+    "files": [
+      "README.md",
+      "keys.go",
+      "keys_test.go"
+    ]
+  },
+  {
+    "section": "04_interfaces",
+    "name": "07_min_generic",
+    "files": [
+      "README.md",
+      "min.go",
+      "min_test.go"
+    ]
+  },
+  {
+    "section": "05_ticket_v2",
+    "name": "01_status",
+    "files": [
+      "README.md",
+      "status.go",
+      "status_test.go"
+    ]
+  },
+  {
+    "section": "05_ticket_v2",
+    "name": "02_errors",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "05_ticket_v2",
+    "name": "03_wrap",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "05_ticket_v2",
+    "name": "04_join",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "05_ticket_v2",
+    "name": "05_panic_vs_error",
+    "files": [
+      "README.md",
+      "must.go",
+      "must_test.go"
+    ]
+  },
+  {
+    "section": "06_ticket_store",
+    "name": "01_slice_store",
+    "files": [
+      "README.md",
+      "store.go",
+      "store_test.go"
+    ]
+  },
+  {
+    "section": "06_ticket_store",
+    "name": "02_map_store",
+    "files": [
+      "README.md",
+      "store.go",
+      "store_test.go"
+    ]
+  },
+  {
+    "section": "06_ticket_store",
+    "name": "03_slices_fn",
+    "files": [
+      "README.md",
+      "store.go",
+      "store_test.go"
+    ]
+  },
+  {
+    "section": "06_ticket_store",
+    "name": "04_sort_filter",
+    "files": [
+      "README.md",
+      "store.go",
+      "store_test.go"
+    ]
+  },
+  {
+    "section": "06_ticket_store",
+    "name": "05_pagination",
+    "files": [
+      "README.md",
+      "store.go",
+      "store_test.go"
+    ]
+  },
+  {
+    "section": "06_ticket_store",
+    "name": "06_map_idioms",
+    "files": [
+      "README.md",
+      "store.go",
+      "store_test.go"
+    ]
+  },
+  {
+    "section": "07_concurrency",
+    "name": "01_mutex",
+    "files": [
+      "README.md",
+      "counter.go",
+      "counter_test.go"
+    ]
+  },
+  {
+    "section": "07_concurrency",
+    "name": "02_channels",
+    "files": [
+      "README.md",
+      "pipeline.go",
+      "pipeline_test.go"
+    ]
+  },
+  {
+    "section": "07_concurrency",
+    "name": "03_buffered",
+    "files": [
+      "README.md",
+      "collect.go",
+      "collect_test.go"
+    ]
+  },
+  {
+    "section": "07_concurrency",
+    "name": "04_select",
+    "files": [
+      "README.md",
+      "fetch.go",
+      "fetch_test.go"
+    ]
+  },
+  {
+    "section": "08_testing",
+    "name": "01_table",
+    "files": [
+      "README.md",
+      "grade.go",
+      "grade_test.go"
+    ]
+  },
+  {
+    "section": "08_testing",
+    "name": "02_subtests",
+    "files": [
+      "README.md",
+      "clamp.go",
+      "clamp_test.go"
+    ]
+  },
+  {
+    "section": "08_testing",
+    "name": "03_helpers",
+    "files": [
+      "README.md",
+      "mean.go",
+      "mean_test.go"
+    ]
+  },
+  {
+    "section": "08_testing",
+    "name": "04_testdata",
+    "files": [
+      "README.md",
+      "poem.go",
+      "poem_test.go"
+    ]
+  },
+  {
+    "section": "08_testing",
+    "name": "05_examples",
+    "files": [
+      "README.md",
+      "double.go",
+      "double_test.go"
+    ]
+  },
+  {
+    "section": "08_testing",
+    "name": "06_benchmarks",
+    "files": [
+      "README.md",
+      "fib.go",
+      "fib_test.go"
+    ]
+  },
+  {
+    "section": "08_testing",
+    "name": "07_errassert",
+    "files": [
+      "README.md",
+      "divide.go",
+      "divide_test.go"
+    ]
+  },
+  {
+    "section": "09_strings",
+    "name": "01_fields",
+    "files": [
+      "README.md",
+      "words.go",
+      "words_test.go"
+    ]
+  },
+  {
+    "section": "09_strings",
+    "name": "02_trim",
+    "files": [
+      "README.md",
+      "trim.go",
+      "trim_test.go"
+    ]
+  },
+  {
+    "section": "09_strings",
+    "name": "03_contains",
+    "files": [
+      "README.md",
+      "mail.go",
+      "mail_test.go"
+    ]
+  },
+  {
+    "section": "09_strings",
+    "name": "04_replace",
+    "files": [
+      "README.md",
+      "redact.go",
+      "redact_test.go"
+    ]
+  },
+  {
+    "section": "09_strings",
+    "name": "05_builder",
+    "files": [
+      "README.md",
+      "concat.go",
+      "concat_test.go"
+    ]
+  },
+  {
+    "section": "09_strings",
+    "name": "06_strconv",
+    "files": [
+      "README.md",
+      "parse.go",
+      "parse_test.go"
+    ]
+  },
+  {
+    "section": "10_time",
+    "name": "01_format",
+    "files": [
+      "README.md",
+      "day.go",
+      "day_test.go"
+    ]
+  },
+  {
+    "section": "10_time",
+    "name": "02_parse",
+    "files": [
+      "README.md",
+      "day.go",
+      "day_test.go"
+    ]
+  },
+  {
+    "section": "10_time",
+    "name": "03_duration",
+    "files": [
+      "README.md",
+      "hours.go",
+      "hours_test.go"
+    ]
+  },
+  {
+    "section": "10_time",
+    "name": "04_compare",
+    "files": [
+      "README.md",
+      "expiry.go",
+      "expiry_test.go"
+    ]
+  },
+  {
+    "section": "11_json",
+    "name": "01_marshal",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "11_json",
+    "name": "02_unmarshal",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "11_json",
+    "name": "03_tags",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "11_json",
+    "name": "04_strict",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "11_json",
+    "name": "05_custom",
+    "files": [
+      "README.md",
+      "ticket.go",
+      "ticket_test.go"
+    ]
+  },
+  {
+    "section": "12_io",
+    "name": "01_reader",
+    "files": [
+      "README.md",
+      "readall.go",
+      "readall_test.go"
+    ]
+  },
+  {
+    "section": "12_io",
+    "name": "02_writer",
+    "files": [
+      "README.md",
+      "writelines.go",
+      "writelines_test.go"
+    ]
+  },
+  {
+    "section": "12_io",
+    "name": "03_scanner",
+    "files": [
+      "README.md",
+      "wcount.go",
+      "wcount_test.go"
+    ]
+  },
+  {
+    "section": "12_io",
+    "name": "04_file",
+    "files": [
+      "README.md",
+      "ticketfile.go",
+      "ticketfile_test.go"
+    ]
+  },
+  {
+    "section": "12_io",
+    "name": "05_copy",
+    "files": [
+      "README.md",
+      "copyn.go",
+      "copyn_test.go"
+    ]
+  },
+  {
+    "section": "12_io",
+    "name": "06_jsonlog",
+    "files": [
+      "README.md",
+      "ticketlog.go",
+      "ticketlog_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "01_handler",
+    "files": [
+      "README.md",
+      "hello.go",
+      "hello_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "02_status",
+    "files": [
+      "README.md",
+      "create.go",
+      "create_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "03_query",
+    "files": [
+      "README.md",
+      "filter.go",
+      "filter_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "04_routing",
+    "files": [
+      "README.md",
+      "router.go",
+      "router_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "05_httptest",
+    "files": [
+      "README.md",
+      "ping.go",
+      "ping_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "06_json_api",
+    "files": [
+      "README.md",
+      "api.go",
+      "api_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "07_middleware",
+    "files": [
+      "README.md",
+      "mw.go",
+      "mw_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "08_context",
+    "files": [
+      "README.md",
+      "greet.go",
+      "greet_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "09_client",
+    "files": [
+      "README.md",
+      "getbody.go",
+      "getbody_test.go"
+    ]
+  },
+  {
+    "section": "13_http",
+    "name": "10_error_response",
+    "files": [
+      "README.md",
+      "errw.go",
+      "errw_test.go"
+    ]
+  },
+  {
+    "section": "14_persistence",
+    "name": "01_save",
+    "files": [
+      "README.md",
+      "atomic.go",
+      "atomic_test.go"
+    ]
+  },
+  {
+    "section": "14_persistence",
+    "name": "02_load",
+    "files": [
+      "README.md",
+      "load.go",
+      "load_test.go"
+    ]
+  },
+  {
+    "section": "14_persistence",
+    "name": "03_corrupt",
+    "files": [
+      "README.md",
+      "loadtickets.go",
+      "loadtickets_test.go"
+    ]
+  },
+  {
+    "section": "14_persistence",
+    "name": "04_export",
+    "files": [
+      "README.md",
+      "export.go",
+      "export_test.go"
+    ]
+  },
+  {
+    "section": "14_persistence",
+    "name": "05_import",
+    "files": [
+      "README.md",
+      "importtk.go",
+      "importtk_test.go"
+    ]
+  },
+  {
+    "section": "15_capstone",
+    "name": "01_store_server",
+    "files": [
+      "README.md",
+      "server.go",
+      "server_test.go"
+    ]
+  },
+  {
+    "section": "15_capstone",
+    "name": "02_get_one",
+    "files": [
+      "README.md",
+      "getone.go",
+      "getone_test.go"
+    ]
+  },
+  {
+    "section": "15_capstone",
+    "name": "03_update",
+    "files": [
+      "README.md",
+      "update.go",
+      "update_test.go"
+    ]
+  },
+  {
+    "section": "15_capstone",
+    "name": "04_delete",
+    "files": [
+      "README.md",
+      "delete.go",
+      "delete_test.go"
+    ]
+  },
+  {
+    "section": "15_capstone",
+    "name": "05_graceful",
+    "files": [
+      "README.md",
+      "shutdown.go",
+      "shutdown_test.go"
+    ]
+  },
+  {
+    "section": "15_capstone",
+    "name": "06_config",
+    "files": [
+      "README.md",
+      "config.go",
+      "config_test.go"
+    ]
+  },
+  {
+    "section": "15_capstone",
+    "name": "07_e2e",
+    "files": [
+      "README.md",
+      "e2e.go",
+      "e2e_test.go"
+    ]
+  },
+  {
+    "section": "16_appendix",
+    "name": "01_shadow",
+    "files": [
+      "README.md",
+      "shadow.go",
+      "shadow_test.go"
+    ]
+  },
+  {
+    "section": "16_appendix",
+    "name": "02_merge",
+    "files": [
+      "README.md",
+      "merge.go",
+      "merge_test.go"
+    ]
+  },
+  {
+    "section": "16_appendix",
+    "name": "03_unmarshal",
+    "files": [
+      "README.md",
+      "status.go",
+      "status_test.go"
+    ]
+  },
+  {
+    "section": "16_appendix",
+    "name": "04_bufwriter",
+    "files": [
+      "README.md",
+      "bufwriter.go",
+      "bufwriter_test.go"
+    ]
+  },
+  {
+    "section": "16_appendix",
+    "name": "05_fuzz",
+    "files": [
+      "README.md",
+      "reverse.go",
+      "reverse_test.go"
+    ]
+  },
+  {
+    "section": "16_appendix",
+    "name": "06_cut",
+    "files": [
+      "README.md",
+      "kv.go",
+      "kv_test.go"
+    ]
+  }
+]
