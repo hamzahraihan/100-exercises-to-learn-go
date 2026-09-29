@@ -33,6 +33,17 @@ go vet ./...
 go build ./...
 ```
 
+## Fetch one exercise
+
+```bash
+go run ./tools/fetch --list
+go run ./tools/fetch 01_syntax --out ./tmp/01_syntax
+go test ./tmp/01_syntax -v
+```
+
+Add `--branch solutions` for solved version, `--force` to overwrite (merges — stale files in `--out` are kept).
+Regenerate manifest after adding exercises: `go run ./tools/fetch --dump-manifest tools/fetch/manifest.json`.
+
 ## Solutions
 
 Solutions live on the `solutions` branch, same paths as `main`.
