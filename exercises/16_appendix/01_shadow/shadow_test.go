@@ -9,6 +9,9 @@ func TestApplyBonus(t *testing.T) {
 		{100, 20, 120},
 		{100, 0, 100},
 		{0, 5, 5},
+		{100, -20, 100},
+		{100, -5, 100},
+		{0, -1, 0},
 	}
 	for _, tt := range tests {
 		if got := ApplyBonus(tt.total, tt.bonus); got != tt.want {
