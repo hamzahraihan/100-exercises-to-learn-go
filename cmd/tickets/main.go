@@ -38,7 +38,7 @@ type Config struct {
 func ConfigFromEnv() Config {
 	port := 8080
 	if v := os.Getenv("PORT"); v != "" {
-		if n, err := strconv.Atoi(v); err == nil {
+		if n, err := strconv.Atoi(v); err == nil && n >= 1 && n <= 65535 {
 			port = n
 		}
 	}
@@ -57,16 +57,18 @@ type Ticket struct {
 	Status      string `json:"status"`
 }
 
-// Store is a concurrency-safe in-memory ticket list.
+// Store is a concurrency-safe durable ticket list: mutations hold the
+// write seam across in-memory change + file save, reads use RLock.
 type Store struct {
-	mu    sync.Mutex
+	mu    sync.RWMutex
 	items []Ticket
 	next  int
+	data  string // state file path; empty means in-memory only (tests)
 }
 
 // NewStore builds a Store preloaded with ts, continuing ids past the max.
-func NewStore(ts []Ticket) *Store {
-	s := &Store{}
+func NewStore(ts []Ticket, dataFile string) *Store {
+	s := &Store{data: dataFile}
 	for _, t := range ts {
 		if t.ID > s.next {
 			s.next = t.ID
@@ -76,20 +78,33 @@ func NewStore(ts []Ticket) *Store {
 	return s
 }
 
+// saveLocked persists current items; caller must hold write lock.
+func (s *Store) saveLocked() error {
+	if s.data == "" {
+		return nil
+	}
+	out := make([]Ticket, len(s.items))
+	copy(out, s.items)
+	return saveTickets(s.data, out)
+}
+
 // Add stores t with a fresh id.
-func (s *Store) Add(t Ticket) Ticket {
+func (s *Store) Add(t Ticket) (Ticket, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.next++
 	t.ID = s.next
 	s.items = append(s.items, t)
-	return t
+	if err := s.saveLocked(); err != nil {
+		return t, err
+	}
+	return t, nil
 }
 
 // Get finds a ticket by id.
 func (s *Store) Get(id int) (Ticket, bool) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 	for _, t := range s.items {
 		if t.ID == id {
 			return t, true
@@ -99,36 +114,42 @@ func (s *Store) Get(id int) (Ticket, bool) {
 }
 
 // Update replaces the ticket with id, preserving the path id.
-func (s *Store) Update(id int, t Ticket) (Ticket, bool) {
+func (s *Store) Update(id int, t Ticket) (Ticket, bool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	for i := range s.items {
 		if s.items[i].ID == id {
 			t.ID = id
 			s.items[i] = t
-			return t, true
+			if err := s.saveLocked(); err != nil {
+				return t, true, err
+			}
+			return t, true, nil
 		}
 	}
-	return Ticket{}, false
+	return Ticket{}, false, nil
 }
 
 // Delete removes the ticket with id.
-func (s *Store) Delete(id int) bool {
+func (s *Store) Delete(id int) (bool, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	for i := range s.items {
 		if s.items[i].ID == id {
 			s.items = append(s.items[:i], s.items[i+1:]...)
-			return true
+			if err := s.saveLocked(); err != nil {
+				return true, err
+			}
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }
 
 // List returns a copy of every stored ticket.
 func (s *Store) List() []Ticket {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 	out := make([]Ticket, len(s.items))
 	copy(out, s.items)
 	return out
@@ -146,18 +167,24 @@ func saveTickets(path string, ts []Ticket) error {
 		return err
 	}
 	tmpName := tmp.Name()
+	failed := true
 	defer func() {
-		tmp.Close()
-		if err != nil {
+		if failed {
 			os.Remove(tmpName)
 		}
 	}()
 	if _, err = tmp.Write(out); err != nil {
+		tmp.Close()
+		return err
+	}
+	if err = tmp.Sync(); err != nil {
+		tmp.Close()
 		return err
 	}
 	if err = tmp.Close(); err != nil {
 		return err
 	}
+	failed = false
 	return os.Rename(tmpName, path)
 }
 
@@ -178,16 +205,15 @@ func loadTickets(path string) ([]Ticket, error) {
 	return ts, nil
 }
 
-// Server serves tickets over HTTP, persisting every mutation.
+// Server serves tickets over HTTP; durability lives in Store.
 type Server struct {
 	store *Store
 	mux   *http.ServeMux
-	data  string // state file path
 }
 
 // NewServer wires routes to handlers sharing one store.
-func NewServer(store *Store, dataFile string) *Server {
-	s := &Server{store: store, data: dataFile, mux: http.NewServeMux()}
+func NewServer(store *Store) *Server {
+	s := &Server{store: store, mux: http.NewServeMux()}
 	s.mux.HandleFunc("POST /tickets", s.handleCreate)
 	s.mux.HandleFunc("GET /tickets", s.handleList)
 	s.mux.HandleFunc("GET /tickets/{id}", s.handleGet)
@@ -196,29 +222,34 @@ func NewServer(store *Store, dataFile string) *Server {
 	return s
 }
 
-// persist saves current state; mutating handlers answer 500 when it fails.
-func (s *Server) persist() error {
-	return saveTickets(s.data, s.store.List())
-}
-
 func writeJSON(w http.ResponseWriter, code int, v any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(v)
+	if err := json.NewEncoder(w).Encode(v); err != nil {
+		log.Printf("writeJSON: %v", err)
+	}
+}
+
+func decodeBody(w http.ResponseWriter, r *http.Request, v any) bool {
+	r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
+	if err := json.NewDecoder(r.Body).Decode(v); err != nil {
+		http.Error(w, "bad request", http.StatusBadRequest)
+		return false
+	}
+	return true
 }
 
 func (s *Server) handleCreate(w http.ResponseWriter, r *http.Request) {
 	var t Ticket
-	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
-		http.Error(w, "bad request", http.StatusBadRequest)
+	if !decodeBody(w, r, &t) {
 		return
 	}
 	if t.Title == "" {
 		http.Error(w, "title required", http.StatusBadRequest)
 		return
 	}
-	t = s.store.Add(t)
-	if err := s.persist(); err != nil {
+	t, err := s.store.Add(t)
+	if err != nil {
 		http.Error(w, "save failed", http.StatusInternalServerError)
 		return
 	}
@@ -254,21 +285,20 @@ func (s *Server) handleUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var t Ticket
-	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
-		http.Error(w, "bad request", http.StatusBadRequest)
+	if !decodeBody(w, r, &t) {
 		return
 	}
 	if t.Title == "" {
 		http.Error(w, "title required", http.StatusBadRequest)
 		return
 	}
-	updated, ok := s.store.Update(id, t)
-	if !ok {
-		http.Error(w, "not found", http.StatusNotFound)
+	updated, ok, err := s.store.Update(id, t)
+	if err != nil {
+		http.Error(w, "save failed", http.StatusInternalServerError)
 		return
 	}
-	if err := s.persist(); err != nil {
-		http.Error(w, "save failed", http.StatusInternalServerError)
+	if !ok {
+		http.Error(w, "not found", http.StatusNotFound)
 		return
 	}
 	writeJSON(w, http.StatusOK, updated)
@@ -280,15 +310,32 @@ func (s *Server) handleDelete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad id", http.StatusBadRequest)
 		return
 	}
-	if !s.store.Delete(id) {
-		http.Error(w, "not found", http.StatusNotFound)
-		return
-	}
-	if err := s.persist(); err != nil {
+	ok, err := s.store.Delete(id)
+	if err != nil {
 		http.Error(w, "save failed", http.StatusInternalServerError)
 		return
 	}
+	if !ok {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func newHTTPServer(cfg Config, srv *Server) *http.Server {
+	return &http.Server{
+		Addr:              ":" + strconv.Itoa(cfg.Port),
+		Handler:           srv.mux,
+		ReadHeaderTimeout: 5 * time.Second,
+	}
+}
+
+func waitAndShutdown(ctx context.Context, httpSrv *http.Server, timeout time.Duration) error {
+	<-ctx.Done()
+	log.Print("shutting down, draining in-flight requests")
+	shutCtx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	return httpSrv.Shutdown(shutCtx)
 }
 
 func main() {
@@ -298,13 +345,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("load %s: %v", cfg.DataFile, err)
 	}
-	srv := NewServer(NewStore(ts), cfg.DataFile)
-
-	httpSrv := &http.Server{
-		Addr:              ":" + strconv.Itoa(cfg.Port),
-		Handler:           srv.mux,
-		ReadHeaderTimeout: 5 * time.Second,
-	}
+	srv := NewServer(NewStore(ts, cfg.DataFile))
+	httpSrv := newHTTPServer(cfg, srv)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
@@ -316,11 +358,7 @@ func main() {
 		}
 	}()
 
-	<-ctx.Done()
-	log.Print("shutting down, draining in-flight requests")
-	shutCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	if err := httpSrv.Shutdown(shutCtx); err != nil {
+	if err := waitAndShutdown(ctx, httpSrv, 5*time.Second); err != nil {
 		log.Fatalf("shutdown: %v", err)
 	}
 	log.Print("stopped cleanly")

@@ -29,7 +29,10 @@ func TestExtractTitle(t *testing.T) {
 
 func TestEmitQuotesTitleAndFooter(t *testing.T) {
 	ex := exercise{Section: "01_intro", Name: "01_syntax", Title: `A "quoted": title`, Body: "# T\n\nBody.\r\n"}
-	page := emit(ex)
+	page, err := emit(ex)
+	if err != nil {
+		t.Fatalf("emit = %v", err)
+	}
 	if !strings.Contains(page, `title: "A \"quoted\": title"`) {
 		t.Fatalf("front-matter quoting missing:\n%s", page)
 	}
@@ -60,5 +63,31 @@ func TestWalkExercisesDuplicateWeight(t *testing.T) {
 	}
 	if _, err := walkExercises(root); err == nil {
 		t.Fatal("expected duplicate-weight error, got nil")
+	}
+}
+
+func TestSyncRemovesOrphanKeepsIndex(t *testing.T) {
+	exRoot := t.TempDir()
+	p := filepath.Join(exRoot, "01_sec", "01_a")
+	if err := os.MkdirAll(p, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	os.WriteFile(filepath.Join(p, "README.md"), []byte("# A\n"), 0o644)
+	outRoot := t.TempDir()
+	secDir := filepath.Join(outRoot, "01_sec")
+	os.MkdirAll(secDir, 0o755)
+	os.WriteFile(filepath.Join(secDir, "_index.md"), []byte("idx"), 0o644)
+	os.WriteFile(filepath.Join(secDir, "stale.md"), []byte("old"), 0o644)
+	if err := (bookEnv{exRoot: exRoot, outRoot: outRoot}.sync()); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(secDir, "a.md")); err != nil {
+		t.Fatalf("a.md missing: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(secDir, "stale.md")); !os.IsNotExist(err) {
+		t.Fatal("stale.md should be removed")
+	}
+	if _, err := os.Stat(filepath.Join(secDir, "_index.md")); err != nil {
+		t.Fatal("_index.md should be kept")
 	}
 }

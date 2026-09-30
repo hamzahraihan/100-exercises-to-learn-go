@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -117,5 +118,66 @@ func TestFetchRemote404Hint(t *testing.T) {
 	msg := err.Error()
 	if !strings.Contains(msg, "main") || !strings.Contains(msg, "try --local") {
 		t.Fatalf("404 error missing branch/hint: %v", err)
+	}
+}
+
+func TestParseArgsErrors(t *testing.T) {
+	if _, err := parseArgs([]string{"--nope"}); err == nil || !strings.Contains(err.Error(), "unknown flag") {
+		t.Fatalf("want unknown flag, got %v", err)
+	}
+	if _, err := parseArgs([]string{"a", "b"}); err == nil || !strings.Contains(err.Error(), "too many") {
+		t.Fatalf("want too many, got %v", err)
+	}
+	if err := runLocal([]string{"--nope"}); err == nil {
+		t.Fatal("runLocal should surface flag error")
+	}
+}
+
+func TestRunWithEnvLocal(t *testing.T) {
+	src := t.TempDir()
+	exDir := filepath.Join(src, "01_intro", "01_syntax")
+	if err := os.MkdirAll(exDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	for _, f := range []string{"README.md", "syntax.go", "syntax_test.go"} {
+		os.WriteFile(filepath.Join(exDir, f), []byte("x"), 0o644)
+	}
+	out := filepath.Join(t.TempDir(), "out")
+	f := fetchEnv{exRoot: src, manifestPath: filepath.Join(src, "missing.json"), client: http.DefaultClient, baseURL: "http://example.invalid"}
+	o, err := parseArgs([]string{"01_syntax", "--out", out, "--local"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := runWithEnv(o, f); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(out, "syntax.go")); err != nil {
+		t.Fatalf("copied file missing: %v", err)
+	}
+}
+
+func TestRunWithEnvRemoteFallback(t *testing.T) {
+	want := []entry{{Section: "01_intro", Name: "01_syntax", Files: []string{"README.md", "syntax.go"}}}
+	mux := http.NewServeMux()
+	mux.HandleFunc("/main/tools/fetch/manifest.json", func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(want)
+	})
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("remote:" + r.URL.Path))
+	})
+	srv := httptest.NewServer(mux)
+	defer srv.Close()
+	out := filepath.Join(t.TempDir(), "out")
+	f := fetchEnv{exRoot: filepath.Join(t.TempDir(), "nope"), manifestPath: filepath.Join(t.TempDir(), "nope.json"), client: srv.Client(), baseURL: srv.URL}
+	o, err := parseArgs([]string{"01_syntax", "--out", out, "--remote"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := runWithEnv(o, f); err != nil {
+		t.Fatal(err)
+	}
+	data, _ := os.ReadFile(filepath.Join(out, "syntax.go"))
+	if !strings.Contains(string(data), "remote:") {
+		t.Fatalf("remote body missing: %q", data)
 	}
 }

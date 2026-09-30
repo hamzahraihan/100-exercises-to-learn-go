@@ -107,9 +107,12 @@ func quoteYAML(s string) string {
 	return `"` + r + `"`
 }
 
-func emit(ex exercise) string {
+func emit(ex exercise) (string, error) {
 	body := strings.ReplaceAll(ex.Body, "\r\n", "\n")
-	w, _ := parseWeight(ex.Name)
+	w, err := parseWeight(ex.Name)
+	if err != nil {
+		return "", err
+	}
 	var b strings.Builder
 	b.WriteString("---\n")
 	b.WriteString("# DO NOT EDIT — generated from exercises/ by tools/bookgen. Edit the source README instead.\n")
@@ -122,27 +125,61 @@ func emit(ex exercise) string {
 	}
 	b.WriteString("\n---\n\n")
 	fmt.Fprintf(&b, "*Source: `exercises/%s/%s/README.md` · Inspired by [Mainmatter's 100 Exercises to Learn Rust](https://github.com/mainmatter/100-exercises-to-learn-rust) ([CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)) — all Go prose here is original, free for non-commercial use.*\n", ex.Section, ex.Name)
-	return b.String()
+	return b.String(), nil
 }
 
 func run(exRoot, outRoot string) error {
-	list, err := walkExercises(exRoot)
+	return bookEnv{exRoot: exRoot, outRoot: outRoot}.sync()
+}
+
+// bookEnv injects roots so scan→render→reconcile is testable without CWD.
+type bookEnv struct {
+	exRoot  string
+	outRoot string
+}
+
+func (b bookEnv) sync() error {
+	list, err := walkExercises(b.exRoot)
 	if err != nil {
 		return err
 	}
+	kept := map[string]bool{}
+	sections := map[string]bool{}
 	for _, ex := range list {
-		dir := filepath.Join(outRoot, ex.Section)
+		dir := filepath.Join(b.outRoot, ex.Section)
+		sections[dir] = true
 		if err := os.MkdirAll(dir, 0o755); err != nil {
 			return err
 		}
 		dest := filepath.Join(dir, strings.TrimPrefix(ex.Name, digitsPrefix(ex.Name))+".md")
-		content := emit(ex)
+		kept[dest] = true
+		content, err := emit(ex)
+		if err != nil {
+			return fmt.Errorf("%s/%s: %w", ex.Section, ex.Name, err)
+		}
 		old, err := os.ReadFile(dest)
 		if err == nil && string(old) == content {
 			continue
 		}
 		if err := os.WriteFile(dest, []byte(content), 0o644); err != nil {
 			return err
+		}
+	}
+	for dir := range sections {
+		ents, err := os.ReadDir(dir)
+		if err != nil {
+			continue
+		}
+		for _, f := range ents {
+			if f.IsDir() || f.Name() == "_index.md" || !strings.HasSuffix(f.Name(), ".md") {
+				continue
+			}
+			p := filepath.Join(dir, f.Name())
+			if !kept[p] {
+				if err := os.Remove(p); err != nil && !os.IsNotExist(err) {
+					return err
+				}
+			}
 		}
 	}
 	return nil

@@ -125,9 +125,11 @@ func copyExercise(srcDir, outDir string, e entry) error {
 
 func writeGoMod(outDir, name string) error {
 	safe := strings.ToLower(strings.ReplaceAll(name, "-", "_"))
-	content := "module fetch/" + safe + "\n\ngo 1.23\n"
+	content := "module fetch/" + safe + "\n\ngo " + goVersion + "\n"
 	return os.WriteFile(filepath.Join(outDir, "go.mod"), []byte(content), 0o644)
 }
+
+const goVersion = "1.23" // keep in sync with root go.mod
 
 const defaultBase = "https://raw.githubusercontent.com/hamzahraihan/100-exercises-to-learn-go"
 
@@ -143,12 +145,15 @@ func fetchRemote(client *http.Client, baseURL, branch string, e entry, outDir st
 		}
 		body, err := io.ReadAll(resp.Body)
 		status := resp.StatusCode
-		resp.Body.Close()
+		closeErr := resp.Body.Close()
+		if err != nil {
+			return fmt.Errorf("GET %s: %w", url, err)
+		}
+		if closeErr != nil {
+			return fmt.Errorf("GET %s: %w", url, closeErr)
+		}
 		if status != 200 {
 			return fmt.Errorf("GET %s: status %d (check --branch, try --local)", url, status)
-		}
-		if err != nil {
-			return err
 		}
 		if err := os.WriteFile(filepath.Join(outDir, f), body, 0o644); err != nil {
 			return err
@@ -158,18 +163,55 @@ func fetchRemote(client *http.Client, baseURL, branch string, e entry, outDir st
 }
 
 func loadList() ([]entry, error) {
-	if _, err := os.Stat("exercises"); err == nil {
-		return scanExercises("exercises")
+	return defaultEnv().loadList("main", false)
+}
+
+// fetchEnv injects filesystem/network seams so dispatch is testable
+// without depending on process CWD.
+type fetchEnv struct {
+	exRoot       string
+	manifestPath string
+	client       *http.Client
+	baseURL      string
+}
+
+func defaultEnv() fetchEnv {
+	return fetchEnv{
+		exRoot:       "exercises",
+		manifestPath: filepath.Join("tools", "fetch", "manifest.json"),
+		client:       http.DefaultClient,
+		baseURL:      defaultBase,
 	}
-	data, err := os.ReadFile(filepath.Join("tools", "fetch", "manifest.json"))
-	if err != nil {
-		return nil, fmt.Errorf("no ./exercises dir and no tools/fetch/manifest.json: %w", err)
+}
+
+func (f fetchEnv) loadList(branch string, useRemote bool) ([]entry, error) {
+	if _, err := os.Stat(f.exRoot); err == nil {
+		return scanExercises(f.exRoot)
 	}
-	var list []entry
-	if err := json.Unmarshal(data, &list); err != nil {
-		return nil, err
+	if data, err := os.ReadFile(f.manifestPath); err == nil {
+		var list []entry
+		if err := json.Unmarshal(data, &list); err != nil {
+			return nil, err
+		}
+		return list, nil
 	}
-	return list, nil
+	if !useRemote {
+		return nil, fmt.Errorf("no ./%s dir and no %s", f.exRoot, f.manifestPath)
+	}
+	return fetchManifestRemote(f.client, f.baseURL, branch)
+}
+
+func (f fetchEnv) materialize(e entry, outDir, branch string, useRemote bool) error {
+	if useRemote {
+		return fetchRemote(f.client, f.baseURL, branch, e, outDir)
+	}
+	if _, err := os.Stat(f.exRoot); err != nil {
+		return fmt.Errorf("no ./%s dir (try --remote)", f.exRoot)
+	}
+	if err := copyExercise(f.exRoot, outDir, e); err != nil {
+		return err
+	}
+	return writeGoMod(outDir, e.Name)
 }
 
 func isEmptyDir(dir string) (bool, error) {
@@ -197,62 +239,77 @@ func main() {
 	}
 }
 
-func runLocal(args []string) error {
-	var query, out, branch string
-	var force, listOnly, wantRemote, wantLocal bool
-	branch = "main"
+type fetchOpts struct {
+	query, out, branch    string
+	force, listOnly       bool
+	wantRemote, wantLocal bool
+}
+
+func parseArgs(args []string) (fetchOpts, error) {
+	var o fetchOpts
+	o.branch = "main"
 	for i := 0; i < len(args); i++ {
 		a := args[i]
 		switch {
 		case a == "--list":
-			listOnly = true
+			o.listOnly = true
 		case a == "--force":
-			force = true
+			o.force = true
 		case a == "--local":
-			wantLocal = true
+			o.wantLocal = true
 		case a == "--remote":
-			wantRemote = true
+			o.wantRemote = true
 		case a == "--out" && i+1 < len(args):
 			i++
-			out = args[i]
+			o.out = args[i]
 		case strings.HasPrefix(a, "--out="):
-			out = strings.TrimPrefix(a, "--out=")
+			o.out = strings.TrimPrefix(a, "--out=")
 		case a == "--branch" && i+1 < len(args):
 			i++
-			branch = args[i]
+			o.branch = args[i]
 		case strings.HasPrefix(a, "--branch="):
-			branch = strings.TrimPrefix(a, "--branch=")
+			o.branch = strings.TrimPrefix(a, "--branch=")
 		case strings.HasPrefix(a, "--"):
-			return fmt.Errorf("unknown flag %q", a)
+			return o, fmt.Errorf("unknown flag %q", a)
 		default:
-			if query == "" {
-				query = a
+			if o.query == "" {
+				o.query = a
 			} else {
-				return fmt.Errorf("too many arguments")
+				return o, fmt.Errorf("too many arguments")
 			}
 		}
 	}
-	useRemote := wantRemote || (!wantLocal && isMissingDir("exercises"))
-	list, err := loadList()
-	if err != nil && useRemote {
-		list, err = fetchManifestRemote(http.DefaultClient, defaultBase, branch)
-	}
+	return o, nil
+}
+
+func runLocal(args []string) error {
+	o, err := parseArgs(args)
 	if err != nil {
 		return err
 	}
-	if listOnly {
+	return runWithEnv(o, defaultEnv())
+}
+
+func runWithEnv(o fetchOpts, f fetchEnv) error {
+	useRemote := o.wantRemote || (!o.wantLocal && isMissingDir(f.exRoot))
+	list, err := f.loadList(o.branch, useRemote)
+	if err != nil {
+		return err
+	}
+	if o.listOnly {
 		for _, e := range list {
 			fmt.Println(e.Section + "/" + e.Name)
 		}
 		return nil
 	}
-	if query == "" {
+	if o.query == "" {
 		return fmt.Errorf("usage: fetch <query> [--out DIR] [--force] [--list]")
 	}
-	e, err := resolve(query, list)
+	e, err := resolve(o.query, list)
 	if err != nil {
 		return err
 	}
+	out := o.out
 	if out == "" {
 		out = "./" + e.Name
 	}
@@ -260,19 +317,10 @@ func runLocal(args []string) error {
 	if err != nil {
 		return err
 	}
-	if !empty && !force {
+	if !empty && !o.force {
 		return fmt.Errorf("%s not empty (use --force)", out)
 	}
-	if useRemote {
-		return fetchRemote(http.DefaultClient, defaultBase, branch, e, out)
-	}
-	if _, err := os.Stat("exercises"); err != nil {
-		return fmt.Errorf("no ./exercises dir (try --remote)")
-	}
-	if err := copyExercise("exercises", out, e); err != nil {
-		return err
-	}
-	return writeGoMod(out, e.Name)
+	return f.materialize(e, out, o.branch, useRemote)
 }
 
 func isMissingDir(p string) bool {
