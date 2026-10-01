@@ -33,3 +33,16 @@ func TestBindBad(t *testing.T) {
 		t.Fatalf("status = %d, want 400", rec.Code)
 	}
 }
+
+func TestBindMalformed(t *testing.T) {
+	r := NewRouter()
+	// id has the wrong type: bind fails even though title is present.
+	// An implementation that ignores the ShouldBindJSON error and only
+	// checks Title would wrongly answer 201 here.
+	body := strings.NewReader(`{"id":"not-a-number","title":"Fix bug","status":"open"}`)
+	rec := httptest.NewRecorder()
+	r.ServeHTTP(rec, httptest.NewRequest(http.MethodPost, "/tickets", body))
+	if rec.Code != http.StatusBadRequest {
+		t.Fatalf("status = %d, want 400", rec.Code)
+	}
+}
