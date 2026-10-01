@@ -318,3 +318,21 @@
 "16_appendix/cut":
   difficulty: 1
   minutes: 10
+"17_frameworks/router":
+  difficulty: 2
+  minutes: 10
+"17_frameworks/params":
+  difficulty: 2
+  minutes: 10
+"17_frameworks/bind_json":
+  difficulty: 2
+  minutes: 15
+"17_frameworks/groups":
+  difficulty: 2
+  minutes: 10
+"17_frameworks/middleware":
+  difficulty: 2
+  minutes: 15
+"17_frameworks/errors":
+  difficulty: 2
+  minutes: 15
