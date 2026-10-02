@@ -20,7 +20,7 @@ jobs:
       - run: go run ./tools/bookgen
       - uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.135.0"
+          hugo-version: "0.158.0"
           extended: true
       - run: hugo --minify --source book
   deploy:
@@ -40,7 +40,7 @@ jobs:
           go-version: "1.23"
       - uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.135.0"
+          hugo-version: "0.158.0"
           extended: true
       - run: go run ./tools/bookgen && hugo --minify --source book
       - uses: actions/configure-pages@v5
