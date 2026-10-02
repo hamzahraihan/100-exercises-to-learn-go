@@ -14,9 +14,11 @@ r.GET("/tickets/:id", func(c *gin.Context) {
 
 The `return` after Abort is load-bearing — without it Gin double-writes.
 
-## What the docs add
+## From one handler to all of them
 
-Per the [error-handling middleware](https://gin-gonic.com/en/docs/middleware/error-handling-middleware) docs: the per-handler `AbortWithStatusJSON` you write here scales into a centralized pattern. Handlers record failures with `c.Error(err)` and keep going; one middleware placed with `r.Use()` runs **after** `c.Next()` returns, inspects `c.Errors`, and writes a single envelope:
+The `AbortWithStatusJSON` you write here handles one failure in one handler. But a ticket API has dozens of handlers, and each one can fail the same ways — not found, bad input, something broke. Copying the envelope into every handler rots the same way duplicated middleware does.
+
+The way out is the post-`Next` phase from the middleware lesson, turned into a pattern. Handlers stop answering their own failures: they record them with `c.Error(err)` and keep going. One middleware, attached with `r.Use()`, runs after `c.Next()` returns, inspects the collected `c.Errors`, and writes the single envelope:
 
 ```go
 func ErrorHandler() gin.HandlerFunc {
@@ -29,7 +31,13 @@ func ErrorHandler() gin.HandlerFunc {
 }
 ```
 
-That removes repetitive error handling from every handler — the same factoring-out that middleware itself performs. Related: `gin.CustomRecovery()` takes a `func(c *gin.Context, recovered any)` where you must call an abort method (e.g. `c.AbortWithStatus()`) or subsequent handlers keep executing past the panic.
+Same factoring-out as middleware itself, one level up: per-handler aborts become per-request error collection.
+
+One related trap: `gin.CustomRecovery()` takes a `func(c *gin.Context, recovered any)` for panics, and inside it you must call an abort method yourself — `c.AbortWithStatus()`, for example. Forget it and subsequent handlers keep executing right past the panic.
+
+## Further reading
+
+- [Error-handling middleware](https://gin-gonic.com/en/docs/middleware/error-handling-middleware) in the Gin docs.
 
 <details>
 <summary>Hint</summary>

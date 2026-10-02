@@ -14,17 +14,21 @@ r.Use(WithHeader())
 
 Set-then-`Next`, same as set-then-delegate. Skip `Next` and the chain stops.
 
-## What the docs add
+## Three zoom levels
 
-Per the [middleware docs](https://gin-gonic.com/en/docs/middleware): middleware attaches at three levels — globally, per group, or per route:
+Logging belongs on every route. Auth belongs on a slice of them. A benchmark harness belongs on exactly one. Gin attaches middleware at all three zoom levels:
 
 ```go
-router.Use(Logger(), Recovery()) // global: every route
-v1.Use(AuthRequired())           // group: everything under /v1
+router.Use(Logger(), Recovery())         // global: every route
+v1.Use(AuthRequired())                   // group: everything under /v1
 router.GET("/bench", BenchMw(), handler) // one route only
 ```
 
-`gin.Default()` is just `gin.New()` plus `Logger()` and `Recovery()` pre-attached. And `c.Next()` splits the function into pre- and post-phases — the canonical logger measures latency this way:
+`gin.Default()` is nothing more than `gin.New()` with `Logger()` and `Recovery()` pre-attached at the global level.
+
+## Before and after `Next`
+
+`c.Next()` splits a middleware in two. Everything before it runs on the way in — headers, auth checks, setup. Everything after runs on the way out, with the response already written and observable. The canonical logger is the whole pattern in miniature:
 
 ```go
 func Logger() gin.HandlerFunc {
@@ -36,7 +40,11 @@ func Logger() gin.HandlerFunc {
 }
 ```
 
-Code before `Next` is request setup (headers, auth checks); code after is response observation (status, latency, logging).
+Skip the `Next` call and the chain stops dead — requests answered mid-stack, handlers never reached. A middleware that never delegates isn't layered behavior; it's a wall.
+
+## Further reading
+
+- [Middleware](https://gin-gonic.com/en/docs/middleware) in the Gin docs.
 
 <details>
 <summary>Hint</summary>
