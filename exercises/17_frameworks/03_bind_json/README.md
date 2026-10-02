@@ -17,6 +17,22 @@ c.JSON(201, t)
 
 `ShouldBindJSON` (not `BindJSON`) returns the error for you to shape — same 400 envelope on malformed JSON and empty title.
 
+## What the docs add
+
+Per [model binding and validation](https://gin-gonic.com/en/docs/binding/binding-and-validation): Gin ships **two** binding families. `MustBind` methods (`Bind`, `BindJSON`) abort the request with 400 automatically on failure; `ShouldBind` methods (`ShouldBind`, `ShouldBindJSON`) return the error and let **you** decide the status and envelope — which is why this exercise uses the latter.
+
+Validation can also move into the struct itself with `binding` tags ([FAQ](https://gin-gonic.com/en/docs/faq)):
+
+```go
+type User struct {
+    Name  string `json:"name" binding:"required,min=3,max=50"`
+    Email string `json:"email" binding:"required,email"`
+    Age   int    `json:"age" binding:"gte=0,lte=130"`
+}
+```
+
+`ShouldBindJSON` then enforces both shape *and* rules in one call. Two gotchas from the docs: fields must be **exported** (lowercase `age` never binds), and the returned `err.Error()` is safe to put in the 400 envelope since it describes the client's payload, not your internals.
+
 <details>
 <summary>Hint</summary>
 

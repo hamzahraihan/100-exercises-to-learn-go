@@ -11,6 +11,19 @@ r.GET("/tickets", func(c *gin.Context) {
 
 `c.String` writes status + plain body. Unmatched paths 404 automatically — same default as ServeMux.
 
+## What the docs add
+
+Per [Gin routing](https://gin-gonic.com/en/docs/routing) and [HTTP methods](https://gin-gonic.com/en/docs/routing/http-method): routes are registered per HTTP verb — `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS` — and each route answers **only** its own method. A `POST` to a `GET`-only path falls through to 404, exactly like ServeMux method patterns.
+
+Two constructors, from the [quick start](https://gin-gonic.com/en/docs):
+
+```go
+r := gin.Default() // Logger + Recovery middleware attached
+r := gin.New()      // bare engine, no middleware
+```
+
+These exercises use `gin.New()` plus `gin.SetMode(gin.TestMode)` in tests to keep output quiet. `gin.Default()` is what real servers reach for — its Recovery middleware is the framework version of panic-vs-error discipline.
+
 <details>
 <summary>Hint</summary>
 
