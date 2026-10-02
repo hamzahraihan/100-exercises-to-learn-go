@@ -11,9 +11,11 @@ v1.GET("/tickets", func(c *gin.Context) {
 
 Only grouped paths exist — bare `/tickets` 404s.
 
-## What the docs add
+## One route is a line; an API is a tree
 
-Per [grouping routes](https://gin-gonic.com/en/docs/routing/grouping-routes) and [API design](https://gin-gonic.com/en/docs/routing/api-design): groups exist for three jobs — shared prefixes (versioning as `/api/v1`, `/api/v2` side by side), shared middleware for a whole slice of routes at once, and keeping related handlers visually grouped. Groups nest:
+A single versioned prefix fits in one call. A real API doesn't stay single for long — v1 beside v2, users beside posts, each with its own auth and logging. Without groups, every route repeats its full prefix and its middleware stack; the version string ends up copy-pasted a dozen times, and the day v2 arrives you get to rename it a dozen times.
+
+Groups exist for exactly three jobs: a **shared prefix**, **shared middleware** for a whole slice of routes at once, and keeping related handlers visually together. And they nest:
 
 ```go
 api := router.Group("/api")
@@ -23,7 +25,11 @@ users.GET("/", listUsers)
 users.GET("/:id", getUser)
 ```
 
-Middleware can attach at group level (`v1.Use(AuthRequired())`), so auth/versioning/logging apply to everything under the prefix without repeating the call. As APIs grow, the docs recommend one file per resource, each registering on its own `gin.RouterGroup`.
+A middleware call on the group covers everything under it — `v1.Use(AuthRequired())` guards every v1 endpoint without touching a single handler. As the API grows, give each resource its own file, each registering on its own `gin.RouterGroup`: adding or removing a resource then can't disturb its neighbors.
+
+## Further reading
+
+- [Grouping routes](https://gin-gonic.com/en/docs/routing/grouping-routes) and [API design](https://gin-gonic.com/en/docs/routing/api-design) in the Gin docs.
 
 <details>
 <summary>Hint</summary>

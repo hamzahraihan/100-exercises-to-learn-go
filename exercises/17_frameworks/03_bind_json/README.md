@@ -17,11 +17,15 @@ c.JSON(201, t)
 
 `ShouldBindJSON` (not `BindJSON`) returns the error for you to shape — same 400 envelope on malformed JSON and empty title.
 
-## What the docs add
+## Who answers a failure?
 
-Per [model binding and validation](https://gin-gonic.com/en/docs/binding/binding-and-validation): Gin ships **two** binding families. `MustBind` methods (`Bind`, `BindJSON`) abort the request with 400 automatically on failure; `ShouldBind` methods (`ShouldBind`, `ShouldBindJSON`) return the error and let **you** decide the status and envelope — which is why this exercise uses the latter.
+Binding fails — malformed JSON, a wrong type, a missing field. Who decides what the client sees?
 
-Validation can also move into the struct itself with `binding` tags ([FAQ](https://gin-gonic.com/en/docs/faq)):
+Gin ships **two** binding families, and they answer that question differently. The `MustBind` family (`Bind`, `BindJSON`) aborts the request with a 400 on failure, verdict included, no questions asked. The `ShouldBind` family (`ShouldBind`, `ShouldBindJSON`) hands the error back and lets **you** choose the status and the envelope. This exercise uses the latter, because a ticket API worthy of the name speaks in its own error shape, not the framework's default.
+
+## Rules on the struct
+
+Validation can move out of the handler entirely, into `binding` tags:
 
 ```go
 type User struct {
@@ -31,7 +35,11 @@ type User struct {
 }
 ```
 
-`ShouldBindJSON` then enforces both shape *and* rules in one call. Two gotchas from the docs: fields must be **exported** (lowercase `age` never binds), and the returned `err.Error()` is safe to put in the 400 envelope since it describes the client's payload, not your internals.
+Now `ShouldBindJSON` enforces shape *and* rules in one call. Two traps, both silent. First: fields must be **exported** — a lowercase `age` never binds, and nothing complains. Second: the returned `err.Error()` is safe to echo in the 400 envelope, since it describes the client's payload, not your internals.
+
+## Further reading
+
+- [Model binding and validation](https://gin-gonic.com/en/docs/binding/binding-and-validation) in the Gin docs.
 
 <details>
 <summary>Hint</summary>

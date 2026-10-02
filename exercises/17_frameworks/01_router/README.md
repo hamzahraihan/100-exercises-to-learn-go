@@ -11,18 +11,22 @@ r.GET("/tickets", func(c *gin.Context) {
 
 `c.String` writes status + plain body. Unmatched paths 404 automatically — same default as ServeMux.
 
-## What the docs add
+## One method per route
 
-Per [Gin routing](https://gin-gonic.com/en/docs/routing) and [HTTP methods](https://gin-gonic.com/en/docs/routing/http-method): routes are registered per HTTP verb — `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS` — and each route answers **only** its own method. A `POST` to a `GET`-only path falls through to 404, exactly like ServeMux method patterns.
+A Gin route answers exactly one HTTP verb. Register `GET /tickets` and a `POST` to that same path falls through to 404 — the method is part of the match, not decoration. The full family is there when you need it: `GET` for reading, `POST` for creating, `PUT` for replacing, `PATCH` for partial updates, `DELETE` for removing, plus `HEAD` and `OPTIONS`.
 
-Two constructors, from the [quick start](https://gin-gonic.com/en/docs):
+## Two constructors
 
 ```go
 r := gin.Default() // Logger + Recovery middleware attached
 r := gin.New()      // bare engine, no middleware
 ```
 
-These exercises use `gin.New()` plus `gin.SetMode(gin.TestMode)` in tests to keep output quiet. `gin.Default()` is what real servers reach for — its Recovery middleware is the framework version of panic-vs-error discipline.
+`gin.Default()` is what real servers reach for — its Recovery middleware is the framework's answer to the panic-vs-error discipline. These exercises use `gin.New()`, with the tests silencing debug output via `gin.SetMode(gin.TestMode)`.
+
+## Further reading
+
+- [Routing](https://gin-gonic.com/en/docs/routing) and [HTTP methods](https://gin-gonic.com/en/docs/routing/http-method) in the Gin docs.
 
 <details>
 <summary>Hint</summary>
